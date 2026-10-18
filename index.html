@@ -517,10 +517,10 @@ body{
 
 <script>
 /* ==========================================================
-   SUPABASE CONFIGURATION (GANTI DENGAN KUNCI ANDA)
+   SUPABASE CONFIGURATION
    ========================================================== */
-const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co'; // Ganti dengan URL Supabase Anda
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs'; // Ganti dengan Public Anon Key Supabase Anda
+const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* UTILITIES & TOAST */
@@ -1102,7 +1102,6 @@ async function finalizeCheckout() {
   const grandTotal = subtotal + shipping;
 
   try {
-    // Perbarui status produk di tabel Supabase menjadi 'sold'
     for (const cartItem of state.cart) {
       await supabase
         .from('listings')
@@ -1147,7 +1146,6 @@ async function submitSellForm(e) {
   btn.disabled = true;
 
   try {
-    // 1. Upload foto ke Supabase Storage (Bucket: product-images)
     const filePath = `public/${Date.now()}-${file.name}`;
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('product-images')
@@ -1155,14 +1153,12 @@ async function submitSellForm(e) {
 
     if (uploadError) throw uploadError;
 
-    // 2. Ambil URL Publik Gambar
     const { data: publicUrlData } = supabase.storage
       .from('product-images')
       .getPublicUrl(filePath);
 
     const imageUrl = publicUrlData.publicUrl;
 
-    // 3. Simpan data ke tabel Supabase 'listings'
     const newListing = {
       brand: sanitize($('#sellBrand').value),
       name: sanitize($('#sellName').value),
