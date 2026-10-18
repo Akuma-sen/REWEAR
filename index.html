@@ -16,9 +16,18 @@
 </script>
 <!-- Supabase JS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Safe Global Supabase Initialization (Anti Duplicate Error)
+  if (typeof window.supabaseClient === 'undefined') {
+    const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
+    window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+  const supabase = window.supabaseClient;
+</script>
 <style>
 /* ============================================================
-   DESIGN SYSTEM: EDITORIAL LUXURY & NEO-ORGANIC v11.0
+   DESIGN SYSTEM: EDITORIAL LUXURY & NEO-ORGANIC v12.0
 ============================================================ */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -517,13 +526,8 @@ body{
 
 <script>
 /* ==========================================================
-   SUPABASE CONFIGURATION (MENGGUNAKAN SUPABASECLIENT)
+   GLOBAL APP LOGIC & WINDOW BINDINGS
    ========================================================== */
-const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-/* UTILITIES & TOAST */
 const $ = (s, p = document) => p.querySelector(s);
 const $$ = (s, p = document) => [...p.querySelectorAll(s)];
 const fmt = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
@@ -531,6 +535,7 @@ const sanitize = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','
 
 function showToast(msg, type = 'default') {
   const container = $('#toastContainer');
+  if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.innerHTML = `<span>${type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ'}</span> ${sanitize(msg)}`;
@@ -538,7 +543,6 @@ function showToast(msg, type = 'default') {
   setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 400); }, 3500);
 }
 
-/* GLOBAL STATE */
 let state = {
   user: null,
   users: [{ email: 'user@gmail.com', pass: '123456', name: 'Ziya' }],
@@ -552,10 +556,9 @@ let state = {
   activeStyle: null
 };
 
-// Ambil data produk secara real-time dari Database Supabase
 async function fetchListingsFromCloud() {
   try {
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
       .from('listings')
       .select('*')
       .eq('status', 'available');
@@ -567,12 +570,11 @@ async function fetchListingsFromCloud() {
       updateImpactTracker();
     }
   } catch (err) {
-    console.warn('Gagal memuat dari Supabase, menggunakan data cadangan lokal.', err);
+    console.warn('Gagal memuat dari Supabase, menggunakan data cadangan.', err);
   }
 }
 fetchListingsFromCloud();
 
-/* ROUTER */
 function navigate(route, param) {
   $$('.view').forEach(v => v.classList.remove('active'));$$
 ('.nav-links a').forEach(a => a.classList.remove('active'));
@@ -588,17 +590,16 @@ function navigate(route, param) {
   if (route === 'impact') updateImpactTracker();
 }
 
-/* THEME TOGGLE */
-$('#themeToggle').onclick = () => {
-  const curr = document.documentElement.getAttribute('data-theme');
-  const next = curr === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  $('#themeToggle').textContent = next === 'dark' ? '☀️' : '🌙';
-};
+const themeToggleBtn = $('#themeToggle');
+if (themeToggleBtn) {
+  themeToggleBtn.onclick = () => {
+    const curr = document.documentElement.getAttribute('data-theme');
+    const next = curr === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    themeToggleBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+  };
+}
 
-/* ==========================================================
-   AUTHENTICATION & REAL GMAIL OTP SYSTEM
-   ========================================================== */
 let authMode = 'register'; 
 let tempAuthData = null;
 let generatedOtp = '';
@@ -693,17 +694,18 @@ function verifyOtpCode() {
 }
 
 function updateAuthUI() {
+  const btn = $('#authBtn');
+  if (!btn) return;
   if (state.user) {
-    $('#authBtn').textContent = state.user.name;
-    $('#authBtn').onclick = openProfileModal;
+    btn.textContent = state.user.name;
+    btn.onclick = openProfileModal;
   } else {
-    $('#authBtn').textContent = 'Masuk';
-    $('#authBtn').onclick = openAuthModal;
+    btn.textContent = 'Masuk';
+    btn.onclick = openAuthModal;
   }
 }
 updateAuthUI();
 
-/* PROFILE MODAL & TABS MANAGEMENT */
 async function openProfileModal() {
   if (!state.user) { openAuthModal(); return; }
   $('#profileAvatar').textContent = state.user.name.charAt(0).toUpperCase();
@@ -713,68 +715,72 @@ async function openProfileModal() {
   await renderProfileTabs();
   $('#profileModal').classList.add('show');
   $('#overlay').classList.add('show'); }  function switchProfileTab(tabName, btn) { $$('.profile-tab-content').forEach(c => c.style.display = 'none');
-  $('#profileTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).style.display = 'block'; $$('#profileModal .chip').forEach(c => c.classList.remove('active'));
+  const targetTab = $('#profileTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)); if (targetTab) targetTab.style.display = 'block'; $$('#profileModal .chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
 }
 
 async function renderProfileTabs() {
   const userOrders = state.orders.filter(o => o.userEmail === state.user.email);
   
-  // Tab 1: Pesanan Aktif
   const activeList = $('#activeOrdersList');
-  if (userOrders.length === 0) {
-    activeList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada pesanan aktif.</div>';
-  } else {
-    activeList.innerHTML = userOrders.map(o => `
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-          <strong>Resi: ${o.receipt}</strong>
-          <span style="color:var(--success);font-weight:600">Dikirim (2-3 Hari)</span>
+  if (activeList) {
+    if (userOrders.length === 0) {
+      activeList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada pesanan aktif.</div>';
+    } else {
+      activeList.innerHTML = userOrders.map(o => `
+        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <strong>Resi: ${o.receipt}</strong>
+            <span style="color:var(--success);font-weight:600">Dikirim (2-3 Hari)</span>
+          </div>
+          <p style="font-size:13px;color:var(--ink-muted)">Total: ${fmt(o.total)} • Alamat: ${sanitize(o.address)}</p>
         </div>
-        <p style="font-size:13px;color:var(--ink-muted)">Total: ${fmt(o.total)} • Alamat: ${sanitize(o.address)}</p>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 
-  // Tab 2: Riwayat / Selesai
   const completedList = $('#completedOrdersList');
-  if (userOrders.length === 0) {
-    completedList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada riwayat selesai.</div>';
-  } else {
-    completedList.innerHTML = userOrders.map(o => `
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-          <strong>Resi: ${o.receipt} (${o.date})</strong>
-          <span style="color:var(--eco);font-weight:600">Selesai ✓</span>
+  if (completedList) {
+    if (userOrders.length === 0) {
+      completedList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada riwayat selesai.</div>';
+    } else {
+      completedList.innerHTML = userOrders.map(o => `
+        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+            <strong>Resi: ${o.receipt} (${o.date})</strong>
+            <span style="color:var(--eco);font-weight:600">Selesai ✓</span>
+          </div>
+          <p style="font-size:13px;color:var(--ink-muted)">Total Transaksi: ${fmt(o.total)}</p>
         </div>
-        <p style="font-size:13px;color:var(--ink-muted)">Total Transaksi: ${fmt(o.total)}</p>
-      </div>
-    `).join('');
+      `).join('');
+    }
   }
 
-  // Tab 3: Barang Jualan Saya (Ambil dari Supabase Database)
   try {
-    const { data: myListings } = await supabaseClient
+    const { data: myListings } = await supabase
       .from('listings')
       .select('*')
       .ilike('seller', state.user.name);
 
     const myListingsEl = $('#myListingsList');
-    if (!myListings || myListings.length === 0) {
-      myListingsEl.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Anda belum mengunggah produk jualan.</div>';
-    } else {
-      myListingsEl.innerHTML = myListings.map(l => `
-        <div style="display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px">
-          <img src="${l.img}" style="width:50px;height:60px;object-fit:cover;border-radius:8px">
-          <div style="flex:1">
-            <h4 style="font-size:14px;font-weight:600">${sanitize(l.name)}</h4>
-            <p style="font-size:12.5px;color:var(--accent);font-weight:600">${fmt(l.price)} • Status: <span style="color:${l.status === 'sold' ? 'var(--danger)' : 'var(--success)'}">${l.status.toUpperCase()}</span></p>
+    if (myListingsEl) {
+      if (!myListings || myListings.length === 0) {
+        myListingsEl.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Anda belum mengunggah produk jualan.</div>';
+      } else {
+        myListingsEl.innerHTML = myListings.map(l => `
+          <div style="display:flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px;margin-bottom:10px">
+            <img src="${l.img}" style="width:50px;height:60px;object-fit:cover;border-radius:8px">
+            <div style="flex:1">
+              <h4 style="font-size:14px;font-weight:600">${sanitize(l.name)}</h4>
+              <p style="font-size:12.5px;color:var(--accent);font-weight:600">${fmt(l.price)} • Status: <span style="color:${l.status === 'sold' ? 'var(--danger)' : 'var(--success)'}">${l.status.toUpperCase()}</span></p>
+            </div>
           </div>
-        </div>
-      `).join('');
+        `).join('');
+      }
     }
   } catch(e) {
-    $('#myListingsList').innerHTML = 'Gagal memuat barang jualan.';
+    const myListingsEl = $('#myListingsList');
+    if (myListingsEl) myListingsEl.innerHTML = 'Gagal memuat barang jualan.';
   }
 }
 
@@ -788,11 +794,8 @@ function logoutUser() {
   }
 }
 
-/* ==========================================================
-   CATALOG & WISHLIST
-   ========================================================== */
 function toggleWishlist(id, event) {
-  event.stopPropagation();
+  if (event) event.stopPropagation();
   const index = state.wishlist.indexOf(id);
   if (index > -1) {
     state.wishlist.splice(index, 1);
@@ -808,10 +811,13 @@ function toggleWishlist(id, event) {
 function updateWishlistUI() {
   const count = state.wishlist.length;
   const badge = $('#wishCount');
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
 
   const body = $('#wishBody');
+  if (!body) return;
   if (count === 0) {
     body.innerHTML = `<div style="text-align:center;padding:50px;color:var(--ink-muted)">Wishlist Anda masih kosong.</div>`;
     return;
@@ -835,13 +841,15 @@ updateWishlistUI();
 function setCatFilter(cat, btn) {
   state.activeCat = cat;
   $$('.filter-chips .chip').forEach(c => c.classList.remove('active'));
-  btn.classList.add('active');
+  if (btn) btn.classList.add('active');
   renderCatalog();
 }
+
 function setCondFilter(cond, btn) {
   state.activeCond = cond;
   renderCatalog();
 }
+
 function filterByStyle(style) {
   state.activeStyle = style;
   navigate('catalog');
@@ -849,6 +857,7 @@ function filterByStyle(style) {
 
 function renderCatalog() {
   const grid = $('#catalogGrid');
+  if (!grid) return;
   const q = $('#searchInput')?.value.toLowerCase() || '';
 
   let list = state.listings.filter(p => {
@@ -888,13 +897,15 @@ function renderCatalog() {
   }).join('');
 }
 
-/* PRODUCT DETAIL & NEGO */
 function renderProductDetail(id) {
   const p = state.listings.find(x => x.id == id);
   if (!p || p.status === 'sold') { navigate('catalog'); showToast('Produk sudah terjual atau tidak ditemukan.', 'error'); return; }
   const currentPrice = state.agreedPrices[p.id] || p.price;
 
-  $('#productDetailContainer').innerHTML = `
+  const container = $('#productDetailContainer');
+  if (!container) return;
+
+  container.innerHTML = `
     <div style="margin-bottom:24px"><button class="btn btn-outline btn-sm" onclick="navigate('catalog')">← Kembali ke Katalog</button></div>
     <div class="detail-wrap">
       <div>
@@ -960,7 +971,6 @@ function submitNegoOffer() {
   renderProductDetail(p.id);
 }
 
-/* TB & BB SIZING RECOMMENDATION */
 function calculateSizing() {
   const tb = parseFloat($('#inputTB').value);
   const bb = parseFloat($('#inputBB').value);
@@ -985,13 +995,12 @@ function calculateSizing() {
   `;
 }
 
-/* IMPACT TRACKER */
 function updateImpactTracker() {
   const totalResold = state.listings.filter(l => l.status === 'sold').length + 1240;
-  $('#impactBigCount').textContent = totalResold;
+  const countEl = $('#impactBigCount');
+  if (countEl) countEl.textContent = totalResold;
 }
 
-/* CART & CHECKOUT */
 function addToCart(id) {
   const p = state.listings.find(x => x.id == id);
   const price = state.agreedPrices[p.id] || p.price;
@@ -1009,10 +1018,13 @@ function addToCart(id) {
 function updateCartUI() {
   const count = state.cart.reduce((s, i) => s + i.qty, 0);
   const badge = $('#cartCount');
-  badge.textContent = count;
-  badge.style.display = count > 0 ? 'flex' : 'none';
+  if (badge) {
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'flex' : 'none';
+  }
 
   const body = $('#cartBody');
+  if (!body) return;
   if (state.cart.length === 0) {
     body.innerHTML = `<div style="text-align:center;padding:50px;color:var(--ink-muted)">Keranjang belanja Anda masih kosong.</div>`;
     $('#cartTotal').textContent = 'Rp 0';
@@ -1043,6 +1055,7 @@ function proceedToCheckout() {
 function renderCheckout() {
   const subtotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
   const container = $('#checkoutContainer');
+  if (!container) return;
 
   container.innerHTML = `
     <div>
@@ -1103,7 +1116,7 @@ async function finalizeCheckout() {
 
   try {
     for (const cartItem of state.cart) {
-      await supabaseClient
+      await supabase
         .from('listings')
         .update({ status: 'sold' })
         .eq('id', cartItem.id);
@@ -1132,7 +1145,6 @@ async function finalizeCheckout() {
   }
 }
 
-/* SELL FORM DENGAN SUPABASE STORAGE */
 async function submitSellForm(e) {
   e.preventDefault();
   if (!state.user) { showToast('Silakan login terlebih dahulu untuk menjual barang.', 'error'); openAuthModal(); return; }
@@ -1147,13 +1159,13 @@ async function submitSellForm(e) {
 
   try {
     const filePath = `public/${Date.now()}-${file.name}`;
-    const { data: uploadData, error: uploadError } = await supabaseClient.storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from('product-images')
       .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
-    const { data: publicUrlData } = supabaseClient.storage
+    const { data: publicUrlData } = supabase.storage
       .from('product-images')
       .getPublicUrl(filePath);
 
@@ -1177,7 +1189,7 @@ async function submitSellForm(e) {
       status: 'available'
     };
 
-    const { error: insertError } = await supabaseClient.from('listings').insert([newListing]);
+    const { error: insertError } = await supabase.from('listings').insert([newListing]);
     if (insertError) throw insertError;
 
     showToast('Produk Anda berhasil di-upload dan tayang secara publik!', 'success');
@@ -1194,11 +1206,41 @@ async function submitSellForm(e) {
   }
 }
 
-/* DRAWERS & MODALS CONTROL */
 function openDrawer(id) {
-  $('#' + id).classList.add('show');
-  $('#overlay').classList.add('show'); }  function closeAll() { $$('.drawer').forEach(d => d.classList.remove('show'));$$('.modal-wrap').forEach(m => m.classList.remove('show'));$('#overlay').classList.remove('show');
+  const el = $('#' + id);
+  if (el) el.classList.add('show');
+  const overlay = $('#overlay');
+  if (overlay) overlay.classList.add('show');
 }
+
+function closeAll() {
+  $$('.drawer').forEach(d => d.classList.remove('show'));$$
+('.modal-wrap').forEach(m => m.classList.remove('show'));
+  const overlay = $('#overlay');
+  if (overlay) overlay.classList.remove('show');
+}
+
+// Explicitly bind all core functions to window to guarantee zero reference errors
+window.navigate = navigate;
+window.openAuthModal = openAuthModal;
+window.closeAll = closeAll;
+window.toggleWishlist = toggleWishlist;
+window.setCatFilter = setCatFilter;
+window.setCondFilter = setCondFilter;
+window.filterByStyle = filterByStyle;
+window.openNegoModal = openNegoModal;
+window.submitNegoOffer = submitNegoOffer;
+window.calculateSizing = calculateSizing;
+window.addToCart = addToCart;
+window.proceedToCheckout = proceedToCheckout;
+window.finalizeCheckout = finalizeCheckout;
+window.submitSellForm = submitSellForm;
+window.openDrawer = openDrawer;
+window.switchAuthMode = switchAuthMode;
+window.handleAuthSubmit = handleAuthSubmit;
+window.verifyOtpCode = verifyOtpCode;
+window.switchProfileTab = switchProfileTab;
+window.logoutUser = logoutUser;
 </script>
 </body>
 </html>
