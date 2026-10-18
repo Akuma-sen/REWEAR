@@ -517,11 +517,11 @@ body{
 
 <script>
 /* ==========================================================
-   SUPABASE CONFIGURATION
+   SUPABASE CONFIGURATION (MENGGUNAKAN SUPABASECLIENT)
    ========================================================== */
 const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* UTILITIES & TOAST */
 const $ = (s, p = document) => p.querySelector(s);
@@ -555,7 +555,7 @@ let state = {
 // Ambil data produk secara real-time dari Database Supabase
 async function fetchListingsFromCloud() {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from('listings')
       .select('*')
       .eq('status', 'available');
@@ -754,7 +754,7 @@ async function renderProfileTabs() {
 
   // Tab 3: Barang Jualan Saya (Ambil dari Supabase Database)
   try {
-    const { data: myListings } = await supabase
+    const { data: myListings } = await supabaseClient
       .from('listings')
       .select('*')
       .ilike('seller', state.user.name);
@@ -1103,7 +1103,7 @@ async function finalizeCheckout() {
 
   try {
     for (const cartItem of state.cart) {
-      await supabase
+      await supabaseClient
         .from('listings')
         .update({ status: 'sold' })
         .eq('id', cartItem.id);
@@ -1147,13 +1147,13 @@ async function submitSellForm(e) {
 
   try {
     const filePath = `public/${Date.now()}-${file.name}`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { data: uploadData, error: uploadError } = await supabaseClient.storage
       .from('product-images')
       .upload(filePath, file);
 
     if (uploadError) throw uploadError;
 
-    const { data: publicUrlData } = supabase.storage
+    const { data: publicUrlData } = supabaseClient.storage
       .from('product-images')
       .getPublicUrl(filePath);
 
@@ -1177,7 +1177,7 @@ async function submitSellForm(e) {
       status: 'available'
     };
 
-    const { error: insertError } = await supabase.from('listings').insert([newListing]);
+    const { error: insertError } = await supabaseClient.from('listings').insert([newListing]);
     if (insertError) throw insertError;
 
     showToast('Produk Anda berhasil di-upload dan tayang secara publik!', 'success');
