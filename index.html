@@ -17,7 +17,6 @@
 <!-- Supabase JS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  // Safe Global Supabase Initialization (Anti Duplicate Error)
   if (typeof window.supabaseClient === 'undefined') {
     const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
@@ -26,9 +25,6 @@
   const supabase = window.supabaseClient;
 </script>
 <style>
-/* ============================================================
-   DESIGN SYSTEM: EDITORIAL LUXURY & NEO-ORGANIC v12.0
-============================================================ */
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#f6f1eb;--bg-card:#ffffff;--surface:#fcf9f5;
@@ -53,14 +49,12 @@ body{
 }
 .container{max-width:1320px;margin:0 auto;padding:0 28px}
 
-/* TOAST NOTIFICATION */
 #toastContainer{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:10px}
 .toast{background:var(--ink);color:var(--bg);padding:14px 22px;border-radius:12px;font-size:13.5px;font-weight:500;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:12px;animation:toastIn .4s cubic-bezier(.16,1,.3,1)}
 .toast.success{background:var(--success);color:#fff}
 .toast.error{background:var(--danger);color:#fff}
 @keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:translateY(0) scale(1)}}
 
-/* BUTTONS & INPUTS */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 28px;border-radius:var(--radius-pill);font-weight:600;font-size:14px;cursor:pointer;transition:all .3s cubic-bezier(.4,0,.2,1);border:none;white-space:nowrap}
 .btn-primary{background:var(--ink);color:var(--bg)}
 .btn-primary:hover{background:var(--accent);color:#fff;transform:translateY(-2px);box-shadow:var(--shadow)}
@@ -79,7 +73,6 @@ body{
 .field .hint{font-size:11.5px;color:var(--ink-muted);margin-top:4px}
 .row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
-/* NAVBAR */
 .navbar{position:sticky;top:0;z-index:200;background:rgba(246,241,235,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .4s}
 [data-theme="dark"] .navbar{background:rgba(10,9,8,.85)}
 .nav-wrap{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;max-width:1320px;margin:0 auto}
@@ -93,12 +86,10 @@ body{
 .icon-btn:hover{border-color:var(--accent);transform:scale(1.05)}
 .badge{position:absolute;top:-2px;right:-2px;background:var(--accent);color:#fff;font-size:10px;font-weight:700;min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;padding:0 4px}
 
-/* VIEWS */
 .view{display:none;animation:viewIn .5s cubic-bezier(.16,1,.3,1)}
 .view.active{display:block}
 @keyframes viewIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
 
-/* HERO */
 .hero{padding:60px 0 60px}
 .hero-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:center}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:var(--accent-soft);color:var(--accent);border-radius:var(--radius-pill);font-size:12.5px;font-weight:600;margin-bottom:24px}
@@ -106,7 +97,6 @@ body{
 .hero-title em{color:var(--accent);font-style:italic;font-weight:400}
 .hero-desc{font-size:16px;color:var(--ink-muted);line-height:1.7;margin-bottom:32px;max-width:520px}
 
-/* CATALOG & CARDS */
 .toolbar{display:flex;gap:16px;margin:30px 0 40px;flex-wrap:wrap;align-items:center}
 .search-box{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-pill);flex:1;min-width:280px;box-shadow:var(--shadow)}
 .search-box input{border:none;background:none;outline:none;font-size:14px;color:var(--ink);width:100%}
@@ -127,12 +117,10 @@ body{
 .product-name{font-size:15px;font-weight:600;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .product-price{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--accent)}
 
-/* DETAIL VIEW */
 .detail-wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:50px;padding:40px 0 80px}
 .gallery-main{aspect-ratio:1;border-radius:var(--radius);overflow:hidden;background:var(--surface);border:1.5px solid var(--border);box-shadow:var(--shadow)}
 .gallery-main img{width:100%;height:100%;object-fit:cover}
 
-/* CHECKOUT & WIDGETS */
 .checkout-wrap{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;padding:30px 0 80px}
 .checkout-section{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:var(--shadow)}
 .checkout-section h3{font-family:'Fraunces',serif;font-size:20px;margin-bottom:20px}
@@ -144,7 +132,6 @@ body{
 .summary-line{display:flex;justify-content:space-between;padding:10px 0;font-size:14.5px;border-bottom:1px solid rgba(255,255,255,.08)}
 .summary-total{display:flex;justify-content:space-between;padding:18px 0;font-family:'Fraunces',serif;font-size:24px;border-top:1.5px solid rgba(255,255,255,.2);margin-top:10px}
 
-/* MODALS & DRAWERS */
 .overlay{position:fixed;inset:0;background:rgba(12,10,8,.65);z-index:300;opacity:0;visibility:hidden;transition:all .4s;backdrop-filter:blur(8px)}
 .overlay.show{opacity:1;visibility:visible}
 .modal-wrap{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;pointer-events:none}
@@ -162,11 +149,9 @@ body{
 .cart-line{display:flex;gap:14px;padding:14px 0;border-bottom:1.5px solid var(--border)}
 .cart-line img{width:70px;height:85px;object-fit:cover;border-radius:10px}
 
-/* WIDGETS & IMPACT */
 .widget-card{background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);padding:32px;margin-bottom:30px;box-shadow:var(--shadow)}
 .impact-hero{background:linear-gradient(135deg, var(--ink), #2b2520);color:var(--bg);border-radius:var(--radius);padding:48px;margin:30px 0;text-align:center;box-shadow:var(--shadow-lg)}
 
-/* SPINNER */
 .spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -228,7 +213,6 @@ body{
       </div>
     </div>
 
-    <!-- Curated Style Collections -->
     <div style="padding:40px 0 60px">
       <div style="margin-bottom:30px">
         <span style="font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700">Kurasi Pilihan</span>
@@ -294,7 +278,7 @@ body{
   <div class="container" id="productDetailContainer"></div>
 </section>
 
-<!-- SIZING / TB & BB RECOMMENDATION VIEW -->
+<!-- SIZING VIEW -->
 <section class="view" id="view-sizing">
   <div class="container">
     <div style="padding:40px 0 20px">
@@ -409,7 +393,7 @@ body{
 </section>
 </main>
 
-<!-- CART DRAWER -->
+<!-- DRAWERS -->
 <aside class="drawer" id="cartDrawer">
   <div class="drawer-head">
     <h3 style="font-family:'Fraunces',serif;font-size:20px">Keranjang Belanja</h3>
@@ -422,7 +406,6 @@ body{
   </div>
 </aside>
 
-<!-- WISHLIST DRAWER -->
 <aside class="drawer" id="wishDrawer">
   <div class="drawer-head">
     <h3 style="font-family:'Fraunces',serif;font-size:20px">Wishlist Anda</h3>
@@ -431,47 +414,37 @@ body{
   <div class="drawer-body" id="wishBody"></div>
 </aside>
 
-<!-- AUTH MODAL -->
+<!-- AUTH MODAL WITH CLOUD SUPABASE AUTH -->
 <div class="modal-wrap" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAll()">✕</button>
-    <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:8px">Autentikasi Akun</h2>
-    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px">Masuk atau daftar dengan verifikasi email asli.</p>
+    <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:8px" id="authTitle">Masuk ke Akun REWEAR</h2>
+    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px" id="authSub">Akun Anda tersimpan aman di Cloud & dapat diakses dari device mana saja.</p>
 
-    <div id="authStep1">
-      <form onsubmit="handleAuthSubmit(event)">
-        <div class="field" id="nameField">
-          <label>Nama Lengkap</label>
-          <input type="text" class="input" id="authName" placeholder="Nama Anda">
-        </div>
-        <div class="field">
-          <label>Email (Gmail Aktif)</label>
-          <input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required>
-        </div>
-        <div class="field">
-          <label>Password (Wajib Minimal 6 Karakter)</label>
-          <input type="password" class="input" id="authPassword" placeholder="Minimal 6 karakter" required minlength="6">
-          <div class="hint">Keamanan sistem memerlukan minimal 6 karakter.</div>
-        </div>
-        <div style="display:flex;gap:10px;margin-top:20px">
-          <button type="button" class="btn btn-outline" style="flex:1" onclick="switchAuthMode('login')">Masuk</button>
-          <button type="submit" class="btn btn-accent" style="flex:1" id="authSubmitBtn">Kirim OTP ke Gmail</button>
-        </div>
-      </form>
-    </div>
-
-    <div id="authStep2" style="display:none">
-      <div class="field">
-        <label>Masukkan Kode 6-Digit OTP</label>
-        <p style="color:var(--ink-muted);font-size:13px;margin-bottom:12px">Kode verifikasi telah dikirimkan secara langsung ke Gmail Anda.</p>
-        <input type="text" class="input" id="otpInput" placeholder="123456" maxlength="6" style="letter-spacing:4px;font-size:18px;text-align:center">
+    <form onsubmit="handleAuthSubmit(event)">
+      <div class="field" id="nameField" style="display:none">
+        <label>Nama Lengkap</label>
+        <input type="text" class="input" id="authName" placeholder="Nama Anda">
       </div>
-      <button class="btn btn-accent btn-full" onclick="verifyOtpCode()">Verifikasi & Selesai</button>
-    </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required>
+      </div>
+      <div class="field">
+        <label>Password (Minimal 6 Karakter)</label>
+        <input type="password" class="input" id="authPassword" placeholder="******" required minlength="6">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+        <button type="submit" class="btn btn-accent btn-full" id="authSubmitBtn">Masuk Akun</button>
+        <p style="text-align:center;font-size:13px;color:var(--ink-muted)" id="authToggleText">
+          Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode('register')">Daftar Akun Baru</a>
+        </p>
+      </div>
+    </form>
   </div>
 </div>
 
-<!-- ENHANCED USER PROFILE MODAL WITH TABS -->
+<!-- PROFILE MODAL -->
 <div class="modal-wrap" id="profileModal">
   <div class="modal-box" style="max-width:640px">
     <button class="modal-close" onclick="closeAll()">✕</button>
@@ -483,14 +456,12 @@ body{
       </div>
     </div>
 
-    <!-- Tabs Navigation -->
     <div style="display:flex;gap:10px;margin-bottom:18px;border-bottom:1.5px solid var(--border);padding-bottom:10px;overflow-x:auto">
       <button class="chip active" onclick="switchProfileTab('orders', this)">📦 Lihat Pesanan</button>
       <button class="chip" onclick="switchProfileTab('history', this)">📜 Riwayat & Selesai</button>
       <button class="chip" onclick="switchProfileTab('listings', this)">🏷️ Barang Jualan Saya</button>
     </div>
 
-    <!-- Tab Contents -->
     <div id="profileTabOrders" class="profile-tab-content">
       <div id="activeOrdersList" style="max-height:220px;overflow-y:auto;font-size:13.5px">Memuat pesanan...</div>
     </div>
@@ -525,11 +496,7 @@ body{
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
 <script>
-/* ==========================================================
-   GLOBAL APP LOGIC & WINDOW BINDINGS
-   ========================================================== */
-const $ = (s, p = document) => p.querySelector(s);
-const $$ = (s, p = document) => [...p.querySelectorAll(s)];
+const $ = (s, p = document) => p.querySelector(s); const $$ = (s, p = document) => [...p.querySelectorAll(s)];
 const fmt = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 const sanitize = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
@@ -545,7 +512,6 @@ function showToast(msg, type = 'default') {
 
 let state = {
   user: null,
-  users: [{ email: 'user@gmail.com', pass: '123456', name: 'Ziya' }],
   cart: [],
   wishlist: [],
   orders: [],
@@ -555,6 +521,22 @@ let state = {
   activeCond: 'all',
   activeStyle: null
 };
+
+// Auto Check Active Session from Supabase Cloud Auth
+async function checkAuthSession() {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session && session.user) {
+    state.user = {
+      id: session.user.id,
+      email: session.user.email,
+      name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+    };
+  } else {
+    state.user = null;
+  }
+  updateAuthUI();
+}
+checkAuthSession();
 
 async function fetchListingsFromCloud() {
   try {
@@ -570,14 +552,14 @@ async function fetchListingsFromCloud() {
       updateImpactTracker();
     }
   } catch (err) {
-    console.warn('Gagal memuat dari Supabase, menggunakan data cadangan.', err);
+    console.warn('Gagal memuat katalog dari Supabase.', err);
   }
 }
 fetchListingsFromCloud();
 
 function navigate(route, param) {
-  $$('.view').forEach(v => v.classList.remove('active'));$$
-('.nav-links a').forEach(a => a.classList.remove('active'));
+  $$('.view').forEach(v => v.classList.remove('active'));
+  $$('.nav-links a').forEach(a => a.classList.remove('active'));
   const target = $('#view-' + route);
   if (target) target.classList.add('active');
   const navLink = $('#nav-' + route);
@@ -600,97 +582,80 @@ if (themeToggleBtn) {
   };
 }
 
-let authMode = 'register'; 
-let tempAuthData = null;
-let generatedOtp = '';
+let authMode = 'login';
 
 function openAuthModal() {
   $('#authModal').classList.add('show');
   $('#overlay').classList.add('show');
-  $('#authStep1').style.display = 'block';
-  $('#authStep2').style.display = 'none';
-  switchAuthMode('register');
+  switchAuthMode('login');
 }
 
 function switchAuthMode(mode) {
   authMode = mode;
-  $('#nameField').style.display = mode === 'register' ? 'block' : 'none';
-  $('#authSubmitBtn').textContent = mode === 'register' ? 'Kirim OTP ke Gmail' : 'Masuk Langsung';
+  if (mode === 'login') {
+    $('#authTitle').textContent = 'Masuk ke Akun REWEAR';
+    $('#nameField').style.display = 'none';
+    $('#authSubmitBtn').textContent = 'Masuk Akun';
+    $('#authToggleText').innerHTML = 'Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode(\'register\')">Daftar Akun Baru</a>';
+  } else {
+    $('#authTitle').textContent = 'Daftar Akun REWEAR';
+    $('#nameField').style.display = 'block';
+    $('#authSubmitBtn').textContent = 'Daftar Akun Baru';
+    $('#authToggleText').innerHTML = 'Sudah punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode(\'login\')">Masuk di Sini</a>';
+  }
 }
 
-function handleAuthSubmit(e) {
+async function handleAuthSubmit(e) {
   e.preventDefault();
   const email = $('#authEmail').value.trim().toLowerCase();
   const pass = $('#authPassword').value;
   const name = $('#authName').value.trim();
+  const btn = $('#authSubmitBtn');
 
   if (pass.length < 6) {
-    showToast('Password wajib memiliki minimal 6 karakter!', 'error');
+    showToast('Password wajib minimal 6 karakter!', 'error');
     return;
   }
 
-  if (authMode === 'login') {
-    const found = state.users.find(u => u.email === email && u.pass === pass);
-    if (!found) {
-      showToast('Email belum terdaftar atau password salah!', 'error');
-      return;
+  btn.innerHTML = '<div class="spinner"></div> Memproses...';
+  btn.disabled = true;
+
+  try {
+    if (authMode === 'register') {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: pass,
+        options: { data: { name: name || email.split('@')[0] } }
+      });
+      if (error) throw error;
+      showToast('Pendaftaran berhasil! Akun tersimpan di Cloud.', 'success');
+      state.user = {
+        id: data.user.id,
+        email: data.user.email,
+        name: name || email.split('@')[0]
+      };
+    } else {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password: pass
+      });
+      if (error) throw error;
+      showToast('Berhasil masuk ke akun!', 'success');
+      state.user = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.user_metadata?.name || email.split('@')[0]
+      };
     }
-    state.user = { email: found.email, name: found.name };
     closeAll();
     updateAuthUI();
-    showToast(`Selamat datang kembali, ${found.name}!`, 'success');
-  } else {
-    const exist = state.users.find(u => u.email === email);
-    if (exist) {
-      showToast('Email sudah terdaftar. Silakan pilih Masuk.', 'error');
-      return;
-    }
-
-    generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    tempAuthData = { email, pass, name: name || email.split('@')[0] };
-
-    const templateParams = {
-      to_email: email,
-      to_name: tempAuthData.name,
-      to_otp: generatedOtp,
-      otp_code: generatedOtp
-    };
-
-    const btn = $('#authSubmitBtn');
-    const oldText = btn.textContent;
-    btn.innerHTML = '<div class="spinner"></div> Mengirim OTP...';
-    btn.disabled = true;
-
-    emailjs.send('service_cqmmmxt', 'template_34e3pyl', templateParams)
-      .then(() => {
-        showToast(`Kode OTP dikirim ke Gmail: ${email}`, 'success');
-        $('#authStep1').style.display = 'none';
-        $('#authStep2').style.display = 'block';
-      })
-      .catch((err) => {
-        console.warn('EmailJS error:', err);
-        showToast(`[Simulasi] Kode OTP Anda: ${generatedOtp}`, 'success');
-        $('#authStep1').style.display = 'none';
-        $('#authStep2').style.display = 'block';
-      })
-      .finally(() => {
-        btn.innerHTML = oldText;
-        btn.disabled = false;
-      });
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Gagal autentikasi akun.', 'error');
+  } finally {
+    btn.innerHTML = authMode === 'login' ? 'Masuk Akun' : 'Daftar Akun Baru';
+    btn.disabled = false;
   }
-}
-
-function verifyOtpCode() {
-  const entered = $('#otpInput').value.trim();
-  if (entered !== generatedOtp) {
-    showToast('Kode OTP salah! Periksa kembali email Anda.', 'error');
-    return;
-  }
-  state.users.push(tempAuthData);
-  state.user = { email: tempAuthData.email, name: tempAuthData.name };
-  closeAll();
-  updateAuthUI();
-  showToast('Akun berhasil diverifikasi & terdaftar!', 'success');
 }
 
 function updateAuthUI() {
@@ -704,7 +669,6 @@ function updateAuthUI() {
     btn.onclick = openAuthModal;
   }
 }
-updateAuthUI();
 
 async function openProfileModal() {
   if (!state.user) { openAuthModal(); return; }
@@ -714,8 +678,14 @@ async function openProfileModal() {
   
   await renderProfileTabs();
   $('#profileModal').classList.add('show');
-  $('#overlay').classList.add('show'); }  function switchProfileTab(tabName, btn) { $$('.profile-tab-content').forEach(c => c.style.display = 'none');
-  const targetTab = $('#profileTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)); if (targetTab) targetTab.style.display = 'block'; $$('#profileModal .chip').forEach(c => c.classList.remove('active'));
+  $('#overlay').classList.add('show');
+}
+
+function switchProfileTab(tabName, btn) {
+  $$('.profile-tab-content').forEach(c => c.style.display = 'none');
+  const targetTab = $('#profileTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+  if (targetTab) targetTab.style.display = 'block';
+  $$('#profileModal .chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
 }
 
@@ -724,36 +694,28 @@ async function renderProfileTabs() {
   
   const activeList = $('#activeOrdersList');
   if (activeList) {
-    if (userOrders.length === 0) {
-      activeList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada pesanan aktif.</div>';
-    } else {
-      activeList.innerHTML = userOrders.map(o => `
-        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <strong>Resi: ${o.receipt}</strong>
-            <span style="color:var(--success);font-weight:600">Dikirim (2-3 Hari)</span>
-          </div>
-          <p style="font-size:13px;color:var(--ink-muted)">Total: ${fmt(o.total)} • Alamat: ${sanitize(o.address)}</p>
+    activeList.innerHTML = userOrders.length === 0 ? '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada pesanan aktif.</div>' : userOrders.map(o => `
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <strong>Resi: ${o.receipt}</strong>
+          <span style="color:var(--success);font-weight:600">Dikirim (2-3 Hari)</span>
         </div>
-      `).join('');
-    }
+        <p style="font-size:13px;color:var(--ink-muted)">Total: ${fmt(o.total)} • Alamat: ${sanitize(o.address)}</p>
+      </div>
+    `).join('');
   }
 
   const completedList = $('#completedOrdersList');
   if (completedList) {
-    if (userOrders.length === 0) {
-      completedList.innerHTML = '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada riwayat selesai.</div>';
-    } else {
-      completedList.innerHTML = userOrders.map(o => `
-        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
-          <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-            <strong>Resi: ${o.receipt} (${o.date})</strong>
-            <span style="color:var(--eco);font-weight:600">Selesai ✓</span>
-          </div>
-          <p style="font-size:13px;color:var(--ink-muted)">Total Transaksi: ${fmt(o.total)}</p>
+    completedList.innerHTML = userOrders.length === 0 ? '<div style="color:var(--ink-muted);padding:20px;text-align:center">Belum ada riwayat selesai.</div>' : userOrders.map(o => `
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <strong>Resi: ${o.receipt} (${o.date})</strong>
+          <span style="color:var(--eco);font-weight:600">Selesai ✓</span>
         </div>
-      `).join('');
-    }
+        <p style="font-size:13px;color:var(--ink-muted)">Total Transaksi: ${fmt(o.total)}</p>
+      </div>
+    `).join('');
   }
 
   try {
@@ -784,8 +746,9 @@ async function renderProfileTabs() {
   }
 }
 
-function logoutUser() {
+async function logoutUser() {
   if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
+    await supabase.auth.signOut();
     state.user = null;
     updateAuthUI();
     closeAll();
@@ -1092,8 +1055,8 @@ function renderCheckout() {
     </div>
   `;
 
-  $$('.pay-option').forEach(opt => opt.onclick = () => {$$
-('.pay-option').forEach(o => o.classList.remove('active'));
+  $$('.pay-option').forEach(opt => opt.onclick = () => {
+    $$('.pay-option').forEach(o => o.classList.remove('active'));
     opt.classList.add('active');
     opt.querySelector('input').checked = true;
   });
@@ -1137,7 +1100,7 @@ async function finalizeCheckout() {
     updateCartUI();
     fetchListingsFromCloud();
 
-    showToast('Pembayaran berhasil dikonfirmasi! Pesanan masuk ke riwayat.', 'success');
+    showToast('Pembayaran berhasil dikonfirmasi!', 'success');
     navigate('home');
   } catch (err) {
     console.error(err);
@@ -1147,7 +1110,11 @@ async function finalizeCheckout() {
 
 async function submitSellForm(e) {
   e.preventDefault();
-  if (!state.user) { showToast('Silakan login terlebih dahulu untuk menjual barang.', 'error'); openAuthModal(); return; }
+  if (!state.user) { 
+    showToast('Silakan login terlebih dahulu untuk menjual barang.', 'error'); 
+    openAuthModal(); 
+    return; 
+  }
 
   const fileInput = $('#sellImg');
   const file = fileInput.files[0];
@@ -1158,10 +1125,13 @@ async function submitSellForm(e) {
   btn.disabled = true;
 
   try {
-    const filePath = `public/${Date.now()}-${file.name}`;
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
+    const filePath = `${fileName}`;
+
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from('product-images')
-      .upload(filePath, file);
+      .upload(filePath, file, { cacheControl: '3600', upsert: true });
 
     if (uploadError) throw uploadError;
 
@@ -1198,8 +1168,8 @@ async function submitSellForm(e) {
     navigate('catalog');
 
   } catch (err) {
-    console.error(err);
-    showToast('Gagal mengunggah produk ke database cloud.', 'error');
+    console.error('ERROR DETAIL:', err);
+    showToast(`Gagal: ${err.message || 'Gagal mengunggah produk'}`, 'error');
   } finally {
     btn.textContent = 'Publish Listing Sekarang ✦';
     btn.disabled = false;
@@ -1214,13 +1184,12 @@ function openDrawer(id) {
 }
 
 function closeAll() {
-  $$('.drawer').forEach(d => d.classList.remove('show'));$$
-('.modal-wrap').forEach(m => m.classList.remove('show'));
+  $$('.drawer').forEach(d => d.classList.remove('show'));
+  $$('.modal-wrap').forEach(m => m.classList.remove('show'));
   const overlay = $('#overlay');
   if (overlay) overlay.classList.remove('show');
 }
 
-// Explicitly bind all core functions to window to guarantee zero reference errors
 window.navigate = navigate;
 window.openAuthModal = openAuthModal;
 window.closeAll = closeAll;
@@ -1238,7 +1207,6 @@ window.submitSellForm = submitSellForm;
 window.openDrawer = openDrawer;
 window.switchAuthMode = switchAuthMode;
 window.handleAuthSubmit = handleAuthSubmit;
-window.verifyOtpCode = verifyOtpCode;
 window.switchProfileTab = switchProfileTab;
 window.logoutUser = logoutUser;
 </script>
