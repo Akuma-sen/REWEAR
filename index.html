@@ -418,33 +418,44 @@ body{
   <div class="drawer-body" id="wishBody"></div>
 </aside>
 
-<!-- AUTH MODAL -->
+<!-- AUTH MODAL WITH EMAILJS OTP -->
 <div class="modal-wrap" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAll()">✕</button>
     <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:8px" id="authTitle">Masuk ke Akun REWEAR</h2>
-    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px">Akun Anda tersimpan aman di Cloud & dapat diakses dari device mana saja.</p>
+    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px" id="authSub">Verifikasi OTP Gmail untuk pendaftaran aman.</p>
 
-    <form onsubmit="handleAuthSubmit(event)">
-      <div class="field" id="nameField" style="display:none">
-        <label>Nama Lengkap</label>
-        <input type="text" class="input" id="authName" placeholder="Nama Anda">
-      </div>
+    <div id="authStep1">
+      <form onsubmit="handleAuthSubmit(event)">
+        <div class="field" id="nameField" style="display:none">
+          <label>Nama Lengkap</label>
+          <input type="text" class="input" id="authName" placeholder="Nama Anda">
+        </div>
+        <div class="field">
+          <label>Email (Gmail)</label>
+          <input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required>
+        </div>
+        <div class="field">
+          <label>Password (Minimal 6 Karakter)</label>
+          <input type="password" class="input" id="authPassword" placeholder="******" required minlength="6">
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+          <button type="submit" class="btn btn-accent btn-full" id="authSubmitBtn">Masuk Akun</button>
+          <p style="text-align:center;font-size:13px;color:var(--ink-muted)" id="authToggleText">
+            Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode('register')">Daftar dengan OTP Gmail</a>
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <div id="authStep2" style="display:none">
       <div class="field">
-        <label>Email</label>
-        <input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required>
+        <label>Masukkan Kode 6-Digit OTP</label>
+        <p style="color:var(--ink-muted);font-size:13px;margin-bottom:12px">Kode verifikasi telah dikirimkan ke Gmail Anda.</p>
+        <input type="text" class="input" id="otpInput" placeholder="123456" maxlength="6" style="letter-spacing:4px;font-size:18px;text-align:center">
       </div>
-      <div class="field">
-        <label>Password (Minimal 6 Karakter)</label>
-        <input type="password" class="input" id="authPassword" placeholder="******" required minlength="6">
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
-        <button type="submit" class="btn btn-accent btn-full" id="authSubmitBtn">Masuk Akun</button>
-        <p style="text-align:center;font-size:13px;color:var(--ink-muted)" id="authToggleText">
-          Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode('register')">Daftar Akun Baru</a>
-        </p>
-      </div>
-    </form>
+      <button class="btn btn-accent btn-full" onclick="verifyOtpAndRegister()">Verifikasi & Selesai</button>
+    </div>
   </div>
 </div>
 
@@ -546,7 +557,7 @@ async function checkAuthSession() {
 }
 checkAuthSession();
 
-// Fetch All Listings (Both available and sold out)
+// Fetch All Listings
 async function fetchListingsFromCloud() {
   try {
     const { data, error } = await supabase
@@ -592,6 +603,8 @@ if (themeToggleBtn) {
 }
 
 let authMode = 'login';
+let tempAuthData = null;
+let generatedOtp = '';
 
 function openAuthModal() {
   $('#authModal').classList.add('show');
@@ -601,15 +614,17 @@ function openAuthModal() {
 
 function switchAuthMode(mode) {
   authMode = mode;
+  $('#authStep1').style.display = 'block';
+  $('#authStep2').style.display = 'none';
   if (mode === 'login') {
     $('#authTitle').textContent = 'Masuk ke Akun REWEAR';
     $('#nameField').style.display = 'none';
     $('#authSubmitBtn').textContent = 'Masuk Akun';
-    $('#authToggleText').innerHTML = 'Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode(\'register\')">Daftar Akun Baru</a>';
+    $('#authToggleText').innerHTML = 'Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode(\'register\')">Daftar dengan OTP Gmail</a>';
   } else {
-    $('#authTitle').textContent = 'Daftar Akun REWEAR';
+    $('#authTitle').textContent = 'Daftar Akun Baru (OTP Gmail)';
     $('#nameField').style.display = 'block';
-    $('#authSubmitBtn').textContent = 'Daftar Akun Baru';
+    $('#authSubmitBtn').textContent = 'Kirim Kode OTP ke Gmail';
     $('#authToggleText').innerHTML = 'Sudah punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:600" onclick="switchAuthMode(\'login\')">Masuk di Sini</a>';
   }
 }
@@ -626,44 +641,101 @@ async function handleAuthSubmit(e) {
     return;
   }
 
-  btn.innerHTML = '<div class="spinner"></div> Memproses...';
-  btn.disabled = true;
-
-  try {
-    if (authMode === 'register') {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: pass,
-        options: { data: { name: name || email.split('@')[0] } }
-      });
+  if (authMode === 'login') {
+    btn.innerHTML = '<div class="spinner"></div> Masuk...';
+    btn.disabled = true;
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
       if (error) throw error;
-      showToast('Pendaftaran berhasil! Akun tersimpan di Cloud.', 'success');
-      state.user = {
-        id: data.user.id,
-        email: data.user.email,
-        name: name || email.split('@')[0]
-      };
-    } else {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password: pass
-      });
-      if (error) throw error;
-      showToast('Berhasil masuk ke akun!', 'success');
       state.user = {
         id: data.user.id,
         email: data.user.email,
         name: data.user.user_metadata?.name || email.split('@')[0]
       };
+      closeAll();
+      updateAuthUI();
+      showToast('Berhasil masuk ke akun!', 'success');
+    } catch (err) {
+      showToast(err.message || 'Gagal login. Periksa email & password.', 'error');
+    } finally {
+      btn.innerHTML = 'Masuk Akun';
+      btn.disabled = false;
     }
+  } else {
+    generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    tempAuthData = { email, pass, name: name || email.split('@')[0] };
+
+    const templateParams = {
+      to_email: email,
+      to_name: tempAuthData.name,
+      to_otp: generatedOtp,
+      otp_code: generatedOtp
+    };
+
+    btn.innerHTML = '<div class="spinner"></div> Mengirim OTP...';
+    btn.disabled = true;
+
+    emailjs.send('service_cqmmmxt', 'template_34e3pyl', templateParams)
+      .then(() => {
+        showToast(`Kode OTP dikirim ke Gmail: ${email}`, 'success');
+        $('#authStep1').style.display = 'none';
+        $('#authStep2').style.display = 'block';
+      })
+      .catch((err) => {
+        console.warn('EmailJS error:', err);
+        showToast(`[Simulasi] Kode OTP Anda: ${generatedOtp}`, 'success');
+        $('#authStep1').style.display = 'none';
+        $('#authStep2').style.display = 'block';
+      })
+      .finally(() => {
+        btn.innerHTML = 'Kirim Kode OTP ke Gmail';
+        btn.disabled = false;
+      });
+  }
+}
+
+async function verifyOtpAndRegister() {
+  const entered = $('#otpInput').value.trim();
+  if (entered !== generatedOtp) {
+    showToast('Kode OTP salah! Periksa kembali email Anda.', 'error');
+    return;
+  }
+
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email: tempAuthData.email,
+      password: tempAuthData.pass,
+      options: { data: { name: tempAuthData.name } }
+    });
+    
+    if (error) {
+      if (error.message.includes('already registered')) {
+        const { data: loginData, error: loginErr } = await supabase.auth.signInWithPassword({
+          email: tempAuthData.email,
+          password: tempAuthData.pass
+        });
+        if (loginErr) throw loginErr;
+        state.user = {
+          id: loginData.user.id,
+          email: loginData.user.email,
+          name: tempAuthData.name
+        };
+      } else {
+        throw error;
+      }
+    } else if (data.user) {
+      state.user = {
+        id: data.user.id,
+        email: data.user.email,
+        name: tempAuthData.name
+      };
+    }
+
     closeAll();
     updateAuthUI();
+    showToast('Verifikasi OTP berhasil & Akun terdaftar ke Cloud!', 'success');
   } catch (err) {
-    console.error(err);
-    showToast(err.message || 'Gagal autentikasi akun.', 'error');
-  } finally {
-    btn.innerHTML = authMode === 'login' ? 'Masuk Akun' : 'Daftar Akun Baru';
-    btn.disabled = false;
+    showToast(err.message || 'Gagal mendaftarkan akun ke cloud.', 'error');
   }
 }
 
@@ -1116,7 +1188,6 @@ function updateCheckoutTotal(subtotal) {
   $('#grandTotalText').textContent = fmt(subtotal + shipping);
 }
 
-// FINALIZE CHECKOUT - MARK AS SOLD BUT KEEP IN DATABASE
 async function finalizeCheckout() {
   const addr = $('#checkoutAddress').value.trim();
   const phone = $('#checkoutPhone').value.trim();
@@ -1157,7 +1228,6 @@ async function finalizeCheckout() {
   }
 }
 
-// SUBMIT SELL FORM FIXED & IMMEDIATE RELOAD
 async function submitSellForm(e) {
   e.preventDefault();
   if (!state.user) { 
@@ -1257,6 +1327,7 @@ window.submitSellForm = submitSellForm;
 window.openDrawer = openDrawer;
 window.switchAuthMode = switchAuthMode;
 window.handleAuthSubmit = handleAuthSubmit;
+window.verifyOtpAndRegister = verifyOtpAndRegister;
 window.switchProfileTab = switchProfileTab;
 window.logoutUser = logoutUser;
 </script>
