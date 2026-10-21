@@ -15,14 +15,16 @@
    })();
 </script>
 <!-- Supabase JS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  if (typeof window.supabaseClient === 'undefined') {
+  // Inisialisasi Supabase SDK Universal
+  if (!window.supabaseClient) {
     const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
-    window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const createClient = window.supabase ? window.supabase.createClient : window.supabaseJs.createClient;
+    window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
-  const supabase = window.supabaseClient;
+  var supabase = window.supabaseClient;
 </script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
