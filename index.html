@@ -14,10 +14,9 @@
       emailjs.init({ publicKey: "j0L3s9aT8VDHS1qPr" });
    })();
 </script>
-<!-- Supabase JS SDK -->
+<!-- Supabase JS SDK UMD -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  // Inisialisasi Supabase SDK Universal
   if (!window.supabaseClient) {
     const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
@@ -64,12 +63,12 @@ body{
 .btn-accent:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:var(--shadow)}
 .btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--ink)}
 .btn-outline:hover{border-color:var(--ink);background:var(--surface)}
+.btn-disabled{background:#a69e94!important;cursor:not-allowed!important;transform:none!important;box-shadow:none!important;color:#fff!important}
 .btn-sm{padding:10px 20px;font-size:13px}
 .btn-full{width:100%}
 
 .input,.select,.textarea{width:100%;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-family:inherit;font-size:14px;background:var(--surface);color:var(--ink);outline:none;transition:all .3s}
 .input:focus,.select:focus,.textarea:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
-.textarea{resize:vertical;min-height:100px}
 .field{margin-bottom:18px}
 .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink)}
 .field .hint{font-size:11.5px;color:var(--ink-muted);margin-top:4px}
@@ -109,12 +108,14 @@ body{
 .grid-products{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-bottom:60px}
 .product-card{cursor:pointer;background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius);overflow:hidden;padding:14px;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;box-shadow:var(--shadow)}
 .product-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.product-card.sold-out{opacity:0.8;filter:grayscale(0.3)}
 .product-img{position:relative;aspect-ratio:3/4;border-radius:12px;overflow:hidden;background:var(--surface);margin-bottom:14px}
 .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
 .product-card:hover .product-img img{transform:scale(1.06)}
 .product-tag{position:absolute;top:10px;left:10px;background:var(--bg-card);backdrop-filter:blur(8px);padding:4px 10px;border-radius:var(--radius-pill);font-size:10.5px;font-weight:700;text-transform:uppercase;box-shadow:var(--shadow)}
-.wishlist-btn{position:absolute;top:10px;right:10px;background:var(--bg-card);border:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;box-shadow:var(--shadow);transition:transform .2s}
-.wishlist-btn:hover{transform:scale(1.1)}
+.sold-badge{position:absolute;top:10px;right:10px;background:var(--danger);color:#fff;padding:4px 12px;border-radius:var(--radius-pill);font-size:11px;font-weight:800;letter-spacing:1px;box-shadow:var(--shadow)}
+.wishlist-btn{position:absolute;bottom:10px;right:10px;background:var(--bg-card);border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;box-shadow:var(--shadow);transition:transform .2s;z-index:10}
+.wishlist-btn:hover{transform:scale(1.15)}
 .product-brand{font-size:11.5px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .product-name{font-size:15px;font-weight:600;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .product-price{font-family:'Fraunces',serif;font-size:18px;font-weight:600;color:var(--accent)}
@@ -259,14 +260,15 @@ body{
         <input type="text" id="searchInput" placeholder="Cari brand, nama pakaian, atau kota..." oninput="renderCatalog()">
       </div>
       <div class="filter-chips">
-        <button class="chip active" onclick="setCatFilter('all', this)">Semua</button>
-        <button class="chip" onclick="setCatFilter('Cowo', this)">Pria (Cowo)</button>
-        <button class="chip" onclick="setCatFilter('Cewe', this)">Wanita (Cewe)</button>
+        <button class="chip active" onclick="setGenderFilter('all', this)">Semua Gender</button>
+        <button class="chip" onclick="setGenderFilter('Cowo', this)">Pria (Cowo)</button>
+        <button class="chip" onclick="setGenderFilter('Cewe', this)">Wanita (Cewe)</button>
+        <button class="chip" onclick="setCondFilter('all', this)">Semua Kondisi</button>
         <button class="chip" onclick="setCondFilter('Baru', this)">Baru (New)</button>
         <button class="chip" onclick="setCondFilter('Bekas', this)">Bekas (Preloved)</button>
       </div>
       <select class="select" id="sortSelect" onchange="renderCatalog()" style="width:auto;border-radius:var(--radius-pill);padding:10px 20px">
-        <option value="default">Urutkan: Unggulan</option>
+        <option value="default">Urutkan: Terbaru</option>
         <option value="low">Harga Terendah</option>
         <option value="high">Harga Tertinggi</option>
       </select>
@@ -416,12 +418,12 @@ body{
   <div class="drawer-body" id="wishBody"></div>
 </aside>
 
-<!-- AUTH MODAL WITH CLOUD SUPABASE AUTH -->
+<!-- AUTH MODAL -->
 <div class="modal-wrap" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAll()">✕</button>
     <h2 style="font-family:'Fraunces',serif;font-size:26px;margin-bottom:8px" id="authTitle">Masuk ke Akun REWEAR</h2>
-    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px" id="authSub">Akun Anda tersimpan aman di Cloud & dapat diakses dari device mana saja.</p>
+    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px">Akun Anda tersimpan aman di Cloud & dapat diakses dari device mana saja.</p>
 
     <form onsubmit="handleAuthSubmit(event)">
       <div class="field" id="nameField" style="display:none">
@@ -515,37 +517,42 @@ function showToast(msg, type = 'default') {
 let state = {
   user: null,
   cart: [],
-  wishlist: [],
+  wishlist: JSON.parse(localStorage.getItem('rewear_wishlist') || '[]'),
   orders: [],
   listings: [],
   agreedPrices: {},
-  activeCat: 'all',
+  activeGender: 'all',
   activeCond: 'all',
   activeStyle: null
 };
 
-// Auto Check Active Session from Supabase Cloud Auth
+// Auto Check Active Session
 async function checkAuthSession() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session && session.user) {
-    state.user = {
-      id: session.user.id,
-      email: session.user.email,
-      name: session.user.user_metadata?.name || session.user.email.split('@')[0]
-    };
-  } else {
+  try {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session && session.user) {
+      state.user = {
+        id: session.user.id,
+        email: session.user.email,
+        name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+      };
+    } else {
+      state.user = null;
+    }
+  } catch(e) {
     state.user = null;
   }
   updateAuthUI();
 }
 checkAuthSession();
 
+// Fetch All Listings (Both available and sold out)
 async function fetchListingsFromCloud() {
   try {
     const { data, error } = await supabase
       .from('listings')
       .select('*')
-      .eq('status', 'available');
+      .order('id', { ascending: false });
     
     if (error) throw error;
     if (data) {
@@ -759,6 +766,7 @@ async function logoutUser() {
   }
 }
 
+// WISHLIST FUNCTIONALITY FIXED
 function toggleWishlist(id, event) {
   if (event) event.stopPropagation();
   const index = state.wishlist.indexOf(id);
@@ -767,8 +775,9 @@ function toggleWishlist(id, event) {
     showToast('Dihapus dari wishlist.', 'info');
   } else {
     state.wishlist.push(id);
-    showToast('Ditambahkan ke wishlist!', 'success');
+    showToast('Ditambahkan ke wishlist! ❤️', 'success');
   }
+  localStorage.setItem('rewear_wishlist', JSON.stringify(state.wishlist));
   updateWishlistUI();
   renderCatalog();
 }
@@ -793,25 +802,43 @@ function updateWishlistUI() {
     return `
       <div class="cart-line" style="cursor:pointer" onclick="closeAll(); navigate('product', ${p.id})">
         <img src="${p.img}" alt="">
-        <div>
+        <div style="flex:1">
           <h4 style="font-size:14px;font-weight:600">${sanitize(p.name)}</h4>
           <p style="font-size:13.5px;color:var(--accent);font-weight:600;margin-top:4px">${fmt(p.price)}</p>
         </div>
+        <button style="border:none;background:none;cursor:pointer;font-size:16px" onclick="toggleWishlist(${p.id}, event)">✕</button>
       </div>
     `;
   }).join('');
 }
 updateWishlistUI();
 
-function setCatFilter(cat, btn) {
-  state.activeCat = cat;
-  $$('.filter-chips .chip').forEach(c => c.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+// CATEGORY & GENDER FILTER FIXED
+function setGenderFilter(gen, btn) {
+  state.activeGender = gen;
+  if (btn) {
+    const siblings = btn.parentElement.querySelectorAll('.chip');
+    siblings.forEach(c => {
+      if (c.textContent.includes('Pria') || c.textContent.includes('Wanita') || c.textContent.includes('Semua Gender')) {
+        c.classList.remove('active');
+      }
+    });
+    btn.classList.add('active');
+  }
   renderCatalog();
 }
 
 function setCondFilter(cond, btn) {
   state.activeCond = cond;
+  if (btn) {
+    const siblings = btn.parentElement.querySelectorAll('.chip');
+    siblings.forEach(c => {
+      if (c.textContent.includes('Baru') || c.textContent.includes('Bekas') || c.textContent.includes('Semua Kondisi')) {
+        c.classList.remove('active');
+      }
+    });
+    btn.classList.add('active');
+  }
   renderCatalog();
 }
 
@@ -820,18 +847,25 @@ function filterByStyle(style) {
   navigate('catalog');
 }
 
+// RENDER CATALOG WITH SOLD OUT DISPLAY & FIX FILTERS
 function renderCatalog() {
   const grid = $('#catalogGrid');
   if (!grid) return;
   const q = $('#searchInput')?.value.toLowerCase() || '';
 
   let list = state.listings.filter(p => {
-    if (p.status === 'sold') return false;
-    const matchQ = p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.city.toLowerCase().includes(q);
-    const matchCat = state.activeCat === 'all' || p.gender === state.activeCat || p.cat === state.activeCat;
+    const matchQ = p.name.toLowerCase().includes(q) || 
+                   p.brand.toLowerCase().includes(q) || 
+                   p.city.toLowerCase().includes(q) ||
+                   (p.cat && p.cat.toLowerCase().includes(q));
+
+    const matchGender = state.activeGender === 'all' || p.gender === state.activeGender || p.gender === 'Unisex';
     const matchCond = state.activeCond === 'all' || p.cond === state.activeCond;
-    const matchStyle = !state.activeStyle || p.name.toLowerCase().includes(state.activeStyle.toLowerCase()) || p.brand.toLowerCase().includes(state.activeStyle.toLowerCase());
-    return matchQ && matchCat && matchCond && matchStyle;
+    const matchStyle = !state.activeStyle || 
+                       p.name.toLowerCase().includes(state.activeStyle.toLowerCase()) || 
+                       p.brand.toLowerCase().includes(state.activeStyle.toLowerCase());
+
+    return matchQ && matchGender && matchCond && matchStyle;
   });
 
   const sort = $('#sortSelect')?.value;
@@ -846,17 +880,20 @@ function renderCatalog() {
   grid.innerHTML = list.map(p => {
     const finalPrice = state.agreedPrices[p.id] || p.price;
     const isWished = state.wishlist.includes(p.id);
+    const isSold = p.status === 'sold';
+
     return `
-      <div class="product-card" onclick="navigate('product', ${p.id})">
+      <div class="product-card ${isSold ? 'sold-out' : ''}" onclick="navigate('product', ${p.id})">
         <div class="product-img">
           <span class="product-tag">${p.cond} • ${p.gender}</span>
+          ${isSold ? '<span class="sold-badge">SOLD OUT</span>' : ''}
           <button class="wishlist-btn" onclick="toggleWishlist(${p.id}, event)" title="Wishlist">${isWished ? '❤️' : '♡'}</button>
           <img src="${p.img}" alt="${sanitize(p.name)}" loading="lazy">
         </div>
         <p class="product-brand">${sanitize(p.brand)}</p>
         <h4 class="product-name">${sanitize(p.name)}</h4>
         <p style="font-size:12px;color:var(--ink-muted);margin-bottom:8px">Ukuran: ${p.size} • 📍 ${sanitize(p.city)}</p>
-        <p class="product-price">${fmt(finalPrice)} ${state.agreedPrices[p.id] ? '<span style="font-size:11px;color:var(--success)">(Nego Deal)</span>' : ''}</p>
+        <p class="product-price">${fmt(finalPrice)} ${isSold ? '<span style="font-size:11px;color:var(--danger)">(Terjual)</span>' : ''}</p>
       </div>
     `;
   }).join('');
@@ -864,9 +901,10 @@ function renderCatalog() {
 
 function renderProductDetail(id) {
   const p = state.listings.find(x => x.id == id);
-  if (!p || p.status === 'sold') { navigate('catalog'); showToast('Produk sudah terjual atau tidak ditemukan.', 'error'); return; }
+  if (!p) { navigate('catalog'); showToast('Produk tidak ditemukan.', 'error'); return; }
+  
   const currentPrice = state.agreedPrices[p.id] || p.price;
-
+  const isSold = p.status === 'sold';
   const container = $('#productDetailContainer');
   if (!container) return;
 
@@ -874,12 +912,15 @@ function renderProductDetail(id) {
     <div style="margin-bottom:24px"><button class="btn btn-outline btn-sm" onclick="navigate('catalog')">← Kembali ke Katalog</button></div>
     <div class="detail-wrap">
       <div>
-        <div class="gallery-main"><img src="${p.img}" alt="${sanitize(p.name)}"></div>
+        <div class="gallery-main" style="position:relative">
+          <img src="${p.img}" alt="${sanitize(p.name)}">
+          ${isSold ? '<div style="position:absolute;top:20px;right:20px;background:var(--danger);color:#fff;padding:8px 20px;border-radius:100px;font-weight:800;font-size:14px">SOLD OUT</div>' : ''}
+        </div>
       </div>
       <div>
         <span style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:700">${sanitize(p.brand)} • ${p.gender} • ${p.cond}</span>
         <h1 style="font-family:'Fraunces',serif;font-size:36px;margin:10px 0 16px">${sanitize(p.name)}</h1>
-        <p style="font-family:'Fraunces',serif;font-size:30px;color:var(--accent);margin-bottom:24px">${fmt(currentPrice)} ${state.agreedPrices[p.id] ? '<span style="font-size:13px;color:var(--success)">(Disetujui Penjual)</span>' : ''}</p>
+        <p style="font-family:'Fraunces',serif;font-size:30px;color:var(--accent);margin-bottom:24px">${fmt(currentPrice)} ${isSold ? '<span style="font-size:14px;color:var(--danger)">(Barang Terjual)</span>' : ''}</p>
         
         <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:24px">
           <h4 style="font-size:14.5px;font-weight:600;margin-bottom:12px">Detail Ukuran & Kondisi Fisik</h4>
@@ -890,8 +931,11 @@ function renderProductDetail(id) {
         </div>
 
         <div style="display:flex;gap:12px;margin-bottom:24px">
-          <button class="btn btn-accent" style="flex:1" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
-          ${p.nego ? `<button class="btn btn-outline" onclick="openNegoModal(${p.id})">💬 Nego Harga</button>` : ''}
+          ${isSold ? 
+            '<button class="btn btn-disabled btn-full">Barang Sudah Terjual (Sold Out)</button>' : 
+            `<button class="btn btn-accent" style="flex:1" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
+             ${p.nego ? `<button class="btn btn-outline" onclick="openNegoModal(${p.id})">💬 Nego Harga</button>` : ''}`
+          }
         </div>
         <p style="color:var(--ink-muted);font-size:13.5px">Penjual Terverifikasi: <strong>${sanitize(p.seller)}</strong> (${sanitize(p.city)})</p>
       </div>
@@ -968,6 +1012,8 @@ function updateImpactTracker() {
 
 function addToCart(id) {
   const p = state.listings.find(x => x.id == id);
+  if (p.status === 'sold') { showToast('Barang ini sudah terjual.', 'error'); return; }
+  
   const price = state.agreedPrices[p.id] || p.price;
   const exist = state.cart.find(x => x.id == id);
   if (exist) {
@@ -1070,6 +1116,7 @@ function updateCheckoutTotal(subtotal) {
   $('#grandTotalText').textContent = fmt(subtotal + shipping);
 }
 
+// FINALIZE CHECKOUT - MARK AS SOLD BUT KEEP IN DATABASE
 async function finalizeCheckout() {
   const addr = $('#checkoutAddress').value.trim();
   const phone = $('#checkoutPhone').value.trim();
@@ -1100,9 +1147,9 @@ async function finalizeCheckout() {
     state.orders.unshift(newOrder);
     state.cart = [];
     updateCartUI();
-    fetchListingsFromCloud();
+    await fetchListingsFromCloud();
 
-    showToast('Pembayaran berhasil dikonfirmasi!', 'success');
+    showToast('Pembayaran berhasil dikonfirmasi! Produk bertanda SOLD OUT.', 'success');
     navigate('home');
   } catch (err) {
     console.error(err);
@@ -1110,6 +1157,7 @@ async function finalizeCheckout() {
   }
 }
 
+// SUBMIT SELL FORM FIXED & IMMEDIATE RELOAD
 async function submitSellForm(e) {
   e.preventDefault();
   if (!state.user) { 
@@ -1166,7 +1214,7 @@ async function submitSellForm(e) {
 
     showToast('Produk Anda berhasil di-upload dan tayang secara publik!', 'success');
     e.target.reset();
-    fetchListingsFromCloud();
+    await fetchListingsFromCloud();
     navigate('catalog');
 
   } catch (err) {
@@ -1196,7 +1244,7 @@ window.navigate = navigate;
 window.openAuthModal = openAuthModal;
 window.closeAll = closeAll;
 window.toggleWishlist = toggleWishlist;
-window.setCatFilter = setCatFilter;
+window.setGenderFilter = setGenderFilter;
 window.setCondFilter = setCondFilter;
 window.filterByStyle = filterByStyle;
 window.openNegoModal = openNegoModal;
