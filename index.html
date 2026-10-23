@@ -1480,10 +1480,6 @@ async function submitSellForm(e) {
 
   reader.readAsDataURL(file);
 }
-
-  reader.readAsDataURL(file);
-}
-
 function renderCheckout() {
   const subtotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
   const container = $('#checkoutContainer');
