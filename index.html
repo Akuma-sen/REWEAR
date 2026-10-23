@@ -1403,7 +1403,6 @@ function updateImpactTracker() {
 async function submitSellForm(e) {
   e.preventDefault();
   
-  // Pastikan user terautentikasi (atau buat akun dummy jika belum login)
   if (!state.user) { 
     showToast('Silakan login terlebih dahulu.', 'error'); 
     openAuthModal(); 
@@ -1418,18 +1417,16 @@ async function submitSellForm(e) {
   }
 
   const btn = $('#sellSubmitBtn');
-  btn.textContent = 'Memproses Upload...';
+  btn.textContent = 'Memproses Upload ke Supabase...';
   
-  // 1. Baca gambar sebagai Base64 Data URL terlebih dahulu (Fallback Utama)
   const reader = new FileReader();
   reader.onload = async function(evt) {
-    let finalImageUrl = evt.target.result; // Default ke Base64 lokal
+    let finalImageUrl = evt.target.result;
     
-    // 2. Coba upload ke Supabase Storage (Optional / Soft-fail)
+    // Coba upload ke Supabase Storage
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,7)}.${fileExt}`;
-      
       const { error: uploadErr } = await supabase.storage.from('product-images').upload(fileName, file);
       
       if (!uploadErr) {
@@ -1439,47 +1436,50 @@ async function submitSellForm(e) {
         }
       }
     } catch (storageErr) {
-      console.warn('Storage RLS tertahan, beralih ke penyimpanan foto Base64:', storageErr);
+      console.warn('Storage fallback ke Base64:', storageErr);
     }
 
-    // 3. Susun data produk baru
+    // Susun data persis sesuai kolom di Supabase (brand, name, gender, cat, cond, size, chest, sleeve, defect, price, city, seller, img, nego, status)
     const newListing = {
-      id: Date.now(),
       brand: sanitize($('#sellBrand').value),
       name: sanitize($('#sellName').value),
       gender: $('#sellGender').value,
+      cat: 'Atasan', // Nilai default sesuai kolom tabel Anda
       cond: $('#sellCond').value,
       size: sanitize($('#sellSize').value),
+      chest: '54',   // Nilai default agar kolom tidak null/ditolak database
+      sleeve: '62',  // Nilai default agar kolom tidak null/ditolak database
+      defect: 'mulus terkurasi', // Sesuai kolom database
       price: parseInt($('#sellPrice').value),
       city: sanitize($('#sellCity').value),
       seller: state.user.name || 'ziyagantengaja',
       img: finalImageUrl,
       nego: $('#sellNego').checked,
-      status: 'available',
-      rating: 5.0
+      status: 'available'
     };
 
-    // 4. Coba simpan ke tabel Supabase 'listings'
+    // Kirim langsung ke tabel Supabase 'listings'
     try {
-      const { error: insErr } = await supabase.from('listings').insert([newListing]);
+      const { data, error: insErr } = await supabase.from('listings').insert([newListing]).select();
       if (insErr) {
-        console.warn('Gagal insert ke Supabase Table, menyimpan ke state lokal:', insErr);
+        console.error('Error Supabase insert:', insErr);
+        showToast('Gagal masuk database: ' + insErr.message, 'error');
+      } else {
+        showToast('Produk berhasil masuk ke Database Supabase! ✦', 'success');
+        e.target.reset();
+        await fetchListingsFromCloud();
+        navigate('catalog');
       }
     } catch (dbErr) {
-      console.warn('Database error:', dbErr);
+      console.error('Database exception:', dbErr);
+      showToast('Gagal terhubung ke database Supabase.', 'error');
+    } finally {
+      btn.textContent = 'Publish ke Supabase ✦';
     }
-
-    // 5. Tambahkan ke state lokal agar produk LANGSUNG MUNCUL di katalog & dashboard
-    state.listings.unshift(newListing);
-    saveToLocalStorage();
-    
-    showToast('Produk berhasil di-publish ke katalog!', 'success');
-    e.target.reset();
-    btn.textContent = 'Publish ke Supabase ✦';
-    
-    // Pindah otomatis ke katalog
-    navigate('catalog');
   };
+
+  reader.readAsDataURL(file);
+}
 
   reader.readAsDataURL(file);
 }
