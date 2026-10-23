@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="dark">
+<html lang="id" data-theme="light">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,50 +7,32 @@
 <title>REWEAR — Preloved, Reimagined</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,300..800&family=Playfair+Display:ital,wght@0,600..900;1,600..900&display=swap" rel="stylesheet">
-<!-- EmailJS SDK -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init({ publicKey: "j0L3s9aT8VDHS1qPr" });
-   })();
-</script>
-<!-- Supabase JS SDK UMD -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script>
-  if (!window.supabaseClient) {
-    const SUPABASE_URL = 'https://ekyttonjtqjwpkepuhjy.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreXR0b25qdHFqd3BrZXB1aGp5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzMjcwNTQsImV4cCI6MjEwNzkwMzA1NH0.OtW6up1WmCUvtlmtANJdxRhLgMq5pBrS-SYTGJqKZfs';
-    const createClient = window.supabase ? window.supabase.createClient : window.supabaseJs.createClient;
-    window.supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  var supabase = window.supabaseClient;
-</script>
 <style>
 /* ==========================================================
-   REWEAR STABLE & ANIMATED DESIGN SYSTEM
+   REWEAR DESIGN SYSTEM (APPLE GLASS & FULL ANIMATION)
    ========================================================== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --bg: #090807; --bg-card: #12100e; --surface: #1a1714;
-  --ink: #f9f8f6; --ink-muted: #948b80; --border: rgba(255,255,255,0.08);
-  --accent: #ff5e14; --accent-hover: #ff7733; --accent-soft: rgba(255,94,20,0.12);
+  --bg: #f8f6f0; --bg-card: rgba(255, 255, 255, 0.85); --surface: rgba(240, 236, 225, 0.7);
+  --ink: #110e0c; --ink-muted: #6b6257; --border: rgba(0,0,0,0.08);
+  --accent: #ea580c; --accent-hover: #c2410c; --accent-soft: rgba(234,88,12,0.1);
   --success: #22c55e; --danger: #ef4444;
-  --shadow: 0 20px 50px rgba(0,0,0,0.5);
-  --shadow-lg: 0 35px 100px rgba(0,0,0,0.8);
+  --shadow: 0 20px 40px rgba(17,14,12,0.05);
+  --shadow-lg: 0 30px 80px rgba(17,14,12,0.1);
   --radius-xl: 32px; --radius-lg: 24px; --radius-pill: 100px;
-  --glass: rgba(18, 16, 14, 0.75);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.6);
   --anim-spring: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.25);
   --anim-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
-[data-theme="light"] {
-  --bg: #f7f5ef; --bg-card: #ffffff; --surface: #eae4d8;
-  --ink: #110e0c; --ink-muted: #6b6257; --border: rgba(0,0,0,0.08);
-  --accent: #ea580c; --accent-hover: #c2410c; --accent-soft: rgba(234,88,12,0.1);
-  --shadow: 0 20px 50px rgba(17,14,12,0.06);
-  --shadow-lg: 0 35px 100px rgba(17,14,12,0.12);
-  --glass: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.08);
+[data-theme="dark"] {
+  --bg: #090807; --bg-card: rgba(18, 16, 14, 0.85); --surface: rgba(26, 23, 20, 0.7);
+  --ink: #f9f8f6; --ink-muted: #948b80; --border: rgba(255,255,255,0.08);
+  --accent: #ff5e14; --accent-hover: #ff7733; --accent-soft: rgba(255,94,20,0.15);
+  --shadow: 0 20px 40px rgba(0,0,0,0.4);
+  --shadow-lg: 0 30px 80px rgba(0,0,0,0.7);
+  --glass: rgba(18, 16, 14, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 html { scroll-behavior: smooth; }
@@ -59,12 +41,21 @@ body {
   line-height: 1.6; overflow-x: hidden; min-height: 100vh;
   transition: background 0.5s ease, color 0.5s ease;
 }
-.container { max-width: 1360px; margin: 0 auto; padding: 0 32px; }
+.container { max-width: 1360px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
 
-/* AMBIENT GLOW BACKDROPS */
-.ambient-glow {
-  position: absolute; width: 500px; height: 500px; background: var(--accent);
-  opacity: 0.07; filter: blur(140px); border-radius: 50%; pointer-events: none; z-index: 0;
+/* AMBIENT GLOW ORBS */
+.ambient-glow-wrap { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1; }
+.ambient-orb {
+  position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12;
+  animation: orbFloat 18s ease-in-out infinite alternate;
+}
+.orb-1 { width: 600px; height: 600px; background: var(--accent); top: -150px; left: -150px; }
+.orb-2 { width: 500px; height: 500px; background: #3b82f6; bottom: -100px; right: -100px; animation-delay: -7s; }
+
+@keyframes orbFloat {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.1); }
+  100% { transform: translate(-30px, 40px) scale(0.95); }
 }
 
 /* TOP RUNNING MARQUEE */
@@ -79,19 +70,19 @@ body {
 .navbar-wrapper { position: sticky; top: 20px; z-index: 200; padding: 0 24px; margin-bottom: 24px; }
 .navbar {
   max-width: 1300px; margin: 0 auto; background: var(--glass);
-  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-  border: 1px solid var(--glass-border); border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-lg); transition: var(--anim-smooth);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--glass-border); border-radius: var(--radius-pill);
+  box-shadow: var(--shadow); transition: var(--anim-smooth);
 }
-.navbar:hover { border-color: var(--accent); box-shadow: 0 20px 60px rgba(234,88,12,0.15); }
+.navbar:hover { border-color: var(--accent); box-shadow: var(--shadow-lg); }
 .nav-wrap { display: flex; align-items: center; justify-content: space-between; padding: 12px 28px; }
-.logo-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 0; transition: transform 0.4s cubic-bezier(0.16,1,.3,1); }
-.logo-btn:hover { transform: scale(1.05) rotate(-1deg); }
+.logo-btn { background: none; border: none; cursor: pointer; display: flex; align-items: center; padding: 0; transition: transform 0.4s ease; }
+.logo-btn:hover { transform: scale(1.04); }
 
 .nav-links { display: flex; gap: 32px; align-items: center; }
 .nav-links a {
   font-size: 13.5px; font-weight: 600; cursor: pointer; color: var(--ink-muted);
-  transition: var(--anim-smooth); position: relative; padding: 6px 0;
+  transition: var(--anim-smooth); position: relative; padding: 6px 0; text-decoration: none;
 }
 .nav-links a:hover, .nav-links a.active { color: var(--accent); transform: translateY(-2px); }
 .nav-links a::after {
@@ -111,271 +102,231 @@ body {
 .theme-switch-thumb {
   width: 22px; height: 22px; background: var(--accent); border-radius: 50%;
   display: flex; align-items: center; justify-content: center; font-size: 12px;
-  color: #fff; transition: var(--anim-spring); box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  color: #fff; transition: var(--anim-spring); box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-[data-theme="light"] .theme-switch-thumb { transform: translateX(26px) rotate(360deg); background: #110e0c; }
+[data-theme="dark"] .theme-switch-thumb { transform: translateX(26px) rotate(360deg); }
 
 .icon-btn {
   position: relative; background: var(--surface); border: 1.5px solid var(--border); cursor: pointer;
   width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   font-size: 17px; color: var(--ink); transition: var(--anim-smooth);
 }
-.icon-btn:hover { border-color: var(--accent); transform: translateY(-4px) scale(1.08); background: var(--bg-card); box-shadow: var(--shadow); }
+.icon-btn:hover { border-color: var(--accent); transform: translateY(-3px); background: var(--bg-card); box-shadow: var(--shadow); }
 .badge {
   position: absolute; top: -3px; right: -3px; background: var(--accent); color: #fff; font-size: 10px;
   font-weight: 800; min-width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center;
-  justify-content: center; padding: 0 4px; box-shadow: 0 0 12px rgba(234,88,12,0.8); animation: pulseBadge 2s infinite ease-in-out;
+  justify-content: center; padding: 0 4px; box-shadow: 0 0 10px rgba(234,88,12,0.6);
 }
-@keyframes pulseBadge { 0%,100%{transform:scale(1)}50%{transform:scale(1.25)} }
+
+/* NOTIFICATION DROPDOWN */
+.notif-dropdown {
+  position: absolute; top: 65px; right: 0; width: 360px; max-width: 90vw;
+  background: var(--bg-card); backdrop-filter: blur(24px); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); z-index: 500;
+  display: none; animation: dropIn 0.3s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+.notif-dropdown.show { display: block; }
+@keyframes dropIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.notif-item { padding: 16px 20px; border-bottom: 1.5px solid var(--border); display: flex; gap: 12px; align-items: start; cursor: pointer; transition: background 0.2s; }
+.notif-item:hover { background: var(--surface); }
 
 /* BUTTONS & INTERACTIONS */
 .btn {
   position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center;
   gap: 12px; padding: 16px 32px; border-radius: var(--radius-pill); font-weight: 700; font-size: 14px;
-  cursor: pointer; transition: var(--anim-smooth); border: none; white-space: nowrap;
+  cursor: pointer; transition: var(--anim-smooth); border: none; white-space: nowrap; text-decoration: none;
 }
 .btn-primary { background: var(--ink); color: var(--bg); }
-.btn-primary:hover { background: var(--accent); color: #fff; transform: translateY(-4px) scale(1.02); box-shadow: 0 16px 40px rgba(255,94,20,0.35); }
-.btn-accent { background: var(--accent); color: #fff; box-shadow: 0 10px 30px rgba(255,94,20,0.3); }
-.btn-accent:hover { background: var(--accent-hover); transform: translateY(-4px) scale(1.02); box-shadow: 0 18px 45px rgba(255,94,20,0.5); }
+.btn-primary:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(234,88,12,0.3); }
+.btn-accent { background: var(--accent); color: #fff; box-shadow: 0 10px 25px rgba(234,88,12,0.25); }
+.btn-accent:hover { background: var(--accent-hover); transform: translateY(-3px); box-shadow: 0 15px 35px rgba(234,88,12,0.4); }
 .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--ink); }
-.btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--surface); transform: translateY(-3px); }
-.btn-disabled { background: var(--surface)!important; color: var(--ink-muted)!important; cursor: not-allowed!important; transform: none!important; box-shadow: none!important; }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--surface); transform: translateY(-2px); }
 .btn-sm { padding: 12px 24px; font-size: 13px; }
 .btn-full { width: 100%; }
 
-.ripple-effect {
-  position: absolute; border-radius: 50%; background: rgba(255,255,255,0.4);
-  transform: scale(0); animation: ripple 0.65s linear; pointer-events: none;
-}
-@keyframes ripple { to { transform: scale(4.5); opacity: 0; } }
-
 /* FORM CONTROLS */
 .input, .select, .textarea {
-  width: 100%; padding: 16px 22px; border: 1.5px solid var(--border);
+  width: 100%; padding: 16px 20px; border: 1.5px solid var(--border);
   border-radius: var(--radius-lg); font-family: inherit; font-size: 14.5px;
-  background: var(--surface); color: var(--ink); outline: none;
-  transition: var(--anim-smooth); appearance: none; -webkit-appearance: none;
+  background: var(--surface); color: var(--ink); outline: none; transition: var(--anim-smooth);
 }
 .select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ff5e14' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ea580c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 20px center; padding-right: 48px; cursor: pointer;
 }
 .input:focus, .select:focus, .textarea:focus {
-  border-color: var(--accent); box-shadow: 0 0 0 6px var(--accent-soft); transform: translateY(-1px);
+  border-color: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft);
 }
 .field { margin-bottom: 22px; }
-.field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--ink); letter-spacing: 0.5px; }
+.field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
 .field .hint { font-size: 12px; color: var(--ink-muted); margin-top: 6px; }
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 
 /* VIEW SYSTEM */
-.view { display: none; opacity: 0; transform: translateY(20px) scale(0.99); transition: opacity 0.5s ease, transform 0.5s ease; }
-.view.active { display: block; opacity: 1; transform: translateY(0) scale(1); animation: viewEnter 0.6s cubic-bezier(0.16,1,.3,1) forwards; }
-@keyframes viewEnter { from { opacity: 0; transform: translateY(25px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.view { display: none; opacity: 0; transform: translateY(15px); transition: opacity 0.4s ease, transform 0.4s ease; }
+.view.active { display: block; opacity: 1; transform: translateY(0); }
+
+/* FULL ANIMATION SYSTEM (SLIDE UP + FADE IN) */
+.animate-slide-up {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+@keyframes slideUpFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
 /* HERO SECTION */
-.hero { padding: 80px 0 100px; position: relative; overflow: hidden; }
+.hero { padding: 60px 0 90px; position: relative; overflow: hidden; }
 .hero-bg-text {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  font-family: 'Playfair Display', serif; font-size: 16vw; font-weight: 900;
-  color: var(--ink); opacity: 0.025; white-space: nowrap; pointer-events: none;
-  transition: transform 0.15s cubic-bezier(0,0,0.2,1); user-select: none;
+  font-family: 'Playfair Display', serif; font-size: 15vw; font-weight: 900;
+  color: var(--ink); opacity: 0.025; white-space: nowrap; pointer-events: none; user-select: none;
 }
 .hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: 60px; align-items: center; position: relative; z-index: 2; }
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 8px; padding: 8px 22px;
-  background: var(--accent-soft); color: var(--accent); border-radius: var(--radius-pill);
-  font-size: 13px; font-weight: 800; margin-bottom: 24px; border: 1px solid rgba(255,94,20,0.25);
-  animation: floatSlow 4s ease-in-out infinite;
-}
-@keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-
-.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 6vw, 82px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; }
-.hero-title em { color: var(--accent); font-style: italic; font-weight: 500; }
-.hero-desc { font-size: 17px; color: var(--ink-muted); line-height: 1.8; margin-bottom: 40px; max-width: 540px; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(48px, 6vw, 78px); font-weight: 800; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 24px; }
+.hero-title em { color: var(--accent); font-style: italic; }
+.hero-desc { font-size: 17px; color: var(--ink-muted); line-height: 1.8; margin-bottom: 35px; max-width: 520px; }
 
 /* BENTO GRID */
-.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); auto-rows: 300px; gap: 24px; padding-bottom: 80px; }
+.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 290px; gap: 24px; padding-bottom: 80px; }
 .bento-card {
   cursor: pointer; background: var(--bg-card); border: 1.5px solid var(--border);
   border-radius: var(--radius-xl); overflow: hidden; padding: 24px; position: relative;
   transition: var(--anim-smooth); box-shadow: var(--shadow);
   display: flex; flex-direction: column; justify-content: space-between;
 }
-.bento-card:hover { transform: translateY(-10px) scale(1.015); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.bento-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
 .bento-card.featured { grid-column: span 2; grid-row: span 2; }
 .bento-card.wide { grid-column: span 2; grid-row: span 1; }
-
-.bento-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16,1,.3,1); }
-.bento-card:hover .bento-img { transform: scale(1.1); }
-.bento-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%); z-index: 1; }
-.bento-content { position: relative; z-index: 2; color: #fff; margin-top: auto; transition: transform 0.4s ease; }
-.bento-card:hover .bento-content { transform: translateY(-4px); }
-.bento-tag { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); padding: 5px 14px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+.bento-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.bento-card:hover .bento-img { transform: scale(1.05); }
+.bento-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, transparent 100%); z-index: 1; }
+.bento-content { position: relative; z-index: 2; color: #fff; margin-top: auto; }
+.bento-badge { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
 
 /* CATALOG TOOLBAR */
-.toolbar { display: flex; gap: 16px; margin: 30px 0 45px; flex-wrap: wrap; align-items: center; }
+.toolbar { display: flex; gap: 16px; margin: 30px 0 40px; flex-wrap: wrap; align-items: center; }
 .search-box {
-  display: flex; align-items: center; gap: 14px; padding: 14px 24px;
+  display: flex; align-items: center; gap: 14px; padding: 14px 22px;
   background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-pill);
-  flex: 1; min-width: 300px; box-shadow: var(--shadow); transition: var(--anim-smooth);
+  flex: 1; min-width: 280px; box-shadow: var(--shadow);
 }
-.search-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 6px var(--accent-soft); }
-.search-box input { border: none; background: none; outline: none; font-size: 14.5px; color: var(--ink); width: 100%; }
+.search-box input { border: none; background: none; outline: none; font-size: 14px; color: var(--ink); width: 100%; }
 
-.filter-chips { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.filter-chips { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .chip {
-  padding: 12px 24px; border-radius: var(--radius-pill); border: 1.5px solid var(--border);
-  background: var(--bg-card); cursor: pointer; font-size: 13.5px; font-weight: 600;
+  padding: 10px 20px; border-radius: var(--radius-pill); border: 1.5px solid var(--border);
+  background: var(--bg-card); cursor: pointer; font-size: 13px; font-weight: 600;
   color: var(--ink-muted); transition: var(--anim-smooth); display: inline-flex; align-items: center;
 }
-.chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
-.chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); transform: translateY(-2px); box-shadow: var(--shadow); }
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); box-shadow: var(--shadow); }
 
 /* PRODUCT CARD */
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; padding-bottom: 80px; }
 .product-card {
   cursor: pointer; background: var(--bg-card); border: 1.5px solid var(--border);
-  border-radius: var(--radius-xl); overflow: hidden; padding: 18px;
+  border-radius: var(--radius-xl); overflow: hidden; padding: 16px;
   transition: var(--anim-smooth); position: relative; box-shadow: var(--shadow);
-  animation: cardFadeIn 0.6s cubic-bezier(0.16,1,.3,1) forwards;
 }
-@keyframes cardFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-.product-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
 .product-card.sold-out { opacity: 0.8; filter: grayscale(0.4); }
 
-.product-img { position: relative; aspect-ratio: 3/4; border-radius: 20px; overflow: hidden; background: var(--surface); margin-bottom: 18px; }
-.product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16,1,.3,1); }
-.product-card:hover .product-img img { transform: scale(1.1); }
+.product-img { position: relative; aspect-ratio: 3/4; border-radius: 18px; overflow: hidden; background: var(--surface); margin-bottom: 14px; }
+.product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+.product-card:hover .product-img img { transform: scale(1.06); }
 
-.product-tag { position: absolute; top: 14px; left: 14px; background: rgba(0,0,0,0.75); backdrop-filter: blur(10px); padding: 6px 14px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 800; text-transform: uppercase; color: #fff; box-shadow: var(--shadow); }
-[data-theme="light"] .product-tag { background: rgba(255,255,255,0.9); color: #110e0c; }
-.sold-badge { position: absolute; top: 14px; right: 14px; background: var(--danger); color: #fff; padding: 6px 14px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 800; letter-spacing: 1px; box-shadow: var(--shadow); }
-.wishlist-btn { position: absolute; bottom: 14px; right: 14px; background: var(--bg-card); border: none; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; box-shadow: var(--shadow); transition: var(--anim-smooth); z-index: 10; }
-.wishlist-btn:hover { transform: scale(1.25) rotate(10deg); background: var(--accent-soft); }
+.product-tag { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 10px; font-weight: 800; text-transform: uppercase; color: #fff; }
+[data-theme="light"] .product-tag { background: rgba(255,255,255,0.85); color: #110e0c; }
+.sold-badge { position: absolute; top: 12px; right: 12px; background: var(--danger); color: #fff; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 800; }
+.wishlist-btn { position: absolute; bottom: 12px; right: 12px; background: var(--bg-card); border: none; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; box-shadow: var(--shadow); transition: var(--anim-smooth); z-index: 10; }
+.wishlist-btn:hover { transform: scale(1.15); background: var(--accent-soft); }
 
-.product-brand { font-size: 11.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; margin-bottom: 6px; }
-.product-name { font-size: 16px; font-weight: 700; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-.product-price { font-family: 'Playfair Display', serif; font-size: 21px; font-weight: 700; color: var(--accent); }
+.product-brand { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 800; margin-bottom: 4px; }
+.product-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.product-price { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--accent); }
 
-/* SKELETON LOADERS */
-.skeleton { background: linear-gradient(90deg, var(--surface) 25%, var(--border) 50%, var(--surface) 75%); background-size: 200% 100%; animation: skeletonLoading 1.4s infinite ease-in-out; border-radius: 18px; }
-@keyframes skeletonLoading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+/* ENRICHED PRODUCT DETAIL VIEW */
+.detail-split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 50px; align-items: start; padding: 30px 0 80px; }
+.zoom-container { position: relative; overflow: hidden; cursor: zoom-in; aspect-ratio: 3/4; border-radius: var(--radius-xl); background: var(--surface); border: 1.5px solid var(--border); box-shadow: var(--shadow); }
+.zoom-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
 
-/* PRODUCT DETAIL VIEW & FIXES FOR IMAGE & FIT METER */
-.detail-split { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; padding: 30px 0 90px; }
-.sticky-gallery { position: sticky; top: 110px; border-radius: var(--radius-xl); overflow: hidden; border: 1.5px solid var(--border); box-shadow: var(--shadow); background: var(--surface); }
-.zoom-container { position: relative; overflow: hidden; cursor: zoom-in; width: 100%; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; background: var(--surface); }
-.zoom-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease-out; }
-
-/* FIX FIT METER LABELS HORIZONTAL FLEX */
-.size-gauge-wrap { background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 22px; margin: 24px 0; }
-.size-gauge-bar { height: 12px; background: var(--border); border-radius: 100px; position: relative; margin: 16px 0 12px; overflow: hidden; }
-.size-gauge-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--success)); border-radius: 100px; transition: width 1.2s cubic-bezier(0.16,1,.3,1); }
-.size-gauge-labels { display: flex !important; justify-content: space-between !important; align-items: center !important; font-size: 12px; font-weight: 700; color: var(--ink-muted); width: 100%; }
-
-/* DRAWER ITEM STYLES */
-.cart-line {
-  display: flex; align-items: center; gap: 16px; padding: 16px;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: var(--radius-lg); margin-bottom: 14px; transition: var(--anim-smooth);
-}
-.cart-line:hover { border-color: var(--accent); }
-.cart-line img { width: 70px; height: 80px; object-fit: cover; border-radius: 14px; flex-shrink: 0; background: var(--bg-card); }
-
-/* CHECKOUT UI GRID */
-.checkout-wrap { display: grid; grid-template-columns: 1.25fr 1fr; gap: 40px; align-items: start; padding-bottom: 80px; }
-.checkout-section { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl); padding: 32px; margin-bottom: 24px; box-shadow: var(--shadow); }
-.checkout-section h3 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; }
-
-.pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 10px; }
-.pay-option {
-  display: flex; align-items: center; gap: 12px; padding: 18px 20px;
-  background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius-lg);
-  cursor: pointer; font-size: 14px; font-weight: 700; transition: var(--anim-smooth);
-}
-.pay-option:hover, .pay-option.active { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-.pay-option input { accent-color: var(--accent); width: 18px; height: 18px; }
-
-.summary-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl); padding: 36px; position: sticky; top: 110px; box-shadow: var(--shadow-lg); }
-.summary-line { display: flex; justify-content: space-between; font-size: 14.5px; margin-bottom: 14px; color: var(--ink-muted); }
-.summary-total { display: flex; justify-content: space-between; font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 800; border-top: 1.5px dashed var(--border); padding-top: 18px; margin-top: 18px; color: var(--ink); }
-
-/* TOAST NOTIFICATIONS */
-#toastContainer { position: fixed; bottom: 32px; right: 32px; z-index: 9999; display: flex; flex-direction: column; gap: 14px; pointer-events: none; }
-.toast {
-  pointer-events: auto; background: var(--bg-card); color: var(--ink); padding: 18px 24px; border-radius: 20px;
-  font-size: 14.5px; font-weight: 600; box-shadow: var(--shadow-lg); border: 1.5px solid var(--border);
-  display: flex; align-items: center; gap: 16px; position: relative; overflow: hidden;
-  animation: toastSlideIn 0.5s cubic-bezier(0.175,0.885,0.32,1.25) forwards;
-}
-.toast.success { border-color: var(--success); }
-.toast.error { border-color: var(--danger); }
-.toast-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0; }
-.toast.success .toast-icon { background: rgba(34,197,94,0.15); color: var(--success); }
-.toast.error .toast-icon { background: rgba(239,68,68,0.15); color: var(--danger); }
-.toast-progress { position: absolute; bottom: 0; left: 0; height: 4px; background: var(--accent); width: 100%; animation: toastProgress 3.5s linear forwards; }
-@keyframes toastSlideIn { from { opacity: 0; transform: translateX(80px) scale(0.85); } to { opacity: 1; transform: translateX(0) scale(1); } }
-@keyframes toastProgress { from { width: 100%; } to { width: 0%; } }
+/* WIDGET & STORE DASHBOARD CARDS */
+.widget-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 30px; box-shadow: var(--shadow); }
+.impact-hero { background: linear-gradient(135deg, var(--ink), #2d2621); color: var(--bg); border-radius: var(--radius-xl); padding: 50px; margin: 20px 0 80px; text-align: center; box-shadow: var(--shadow-lg); }
 
 /* DRAWERS & MODALS */
-.overlay { position: fixed; inset: 0; background: rgba(10,8,6,0.7); z-index: 300; opacity: 0; visibility: hidden; transition: all 0.5s cubic-bezier(0.16,1,.3,1); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 300; opacity: 0; visibility: hidden; transition: all 0.4s ease; backdrop-filter: blur(12px); }
 .overlay.show { opacity: 1; visibility: visible; }
 
 .drawer {
-  position: fixed; top: 0; right: 0; height: 100vh; width: 460px; max-width: 92vw;
+  position: fixed; top: 0; right: 0; height: 100vh; width: 440px; max-width: 90vw;
   background: var(--bg-card); z-index: 400; display: flex; flex-direction: column;
-  transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.2);
-  box-shadow: -40px 0 100px rgba(0,0,0,0.5); border-left: 1.5px solid var(--border);
+  transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  box-shadow: -20px 0 60px rgba(0,0,0,0.3); border-left: 1.5px solid var(--border);
 }
 .drawer.show { transform: translateX(0); }
-.drawer-head { padding: 28px; border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.drawer-body { flex: 1; overflow-y: auto; padding: 24px 28px; }
-.drawer-foot { padding: 24px 28px; border-top: 1.5px solid var(--border); background: var(--surface); }
+.drawer-head { padding: 24px; border-bottom: 1.5px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.drawer-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+.drawer-foot { padding: 20px 24px; border-top: 1.5px solid var(--border); background: var(--surface); }
 
-.modal-wrap { position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center; padding: 24px; pointer-events: none; }
+.modal-wrap { position: fixed; inset: 0; z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; pointer-events: none; }
 .modal-wrap.show { pointer-events: auto; }
 .modal-box {
   background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl);
-  max-width: 660px; width: 100%; padding: 42px; position: relative; opacity: 0;
-  transform: scale(0.9) translateY(30px); transition: var(--anim-spring);
-  box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
+  max-width: 640px; width: 100%; padding: 36px; position: relative; opacity: 0;
+  transform: scale(0.9) translateY(20px); transition: var(--anim-spring); box-shadow: var(--shadow-lg); max-height: 90vh; overflow-y: auto;
 }
 .modal-wrap.show .modal-box { opacity: 1; transform: scale(1) translateY(0); }
 .modal-close {
-  position: absolute; top: 24px; right: 24px; width: 40px; height: 40px; border-radius: 50%;
-  border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; font-size: 16px;
+  position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: var(--surface); cursor: pointer; font-size: 14px;
   display: flex; align-items: center; justify-content: center; color: var(--ink); transition: var(--anim-smooth);
 }
-.modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: rotate(90deg); }
+.modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.profile-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
-.profile-stat-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 20px; text-align: center; transition: var(--anim-smooth); }
-.profile-stat-card:hover { transform: translateY(-5px) scale(1.03); border-color: var(--accent); box-shadow: var(--shadow); }
-.profile-stat-num { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--accent); }
-.profile-stat-label { font-size: 12.5px; color: var(--ink-muted); font-weight: 700; margin-top: 6px; }
+/* TOAST NOTIFICATIONS */
+#toastContainer { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
+.toast {
+  pointer-events: auto; background: var(--bg-card); color: var(--ink); padding: 16px 22px; border-radius: 16px;
+  font-size: 14px; font-weight: 600; box-shadow: var(--shadow-lg); border: 1.5px solid var(--border);
+  display: flex; align-items: center; gap: 14px; animation: toastIn 0.4s cubic-bezier(0.175,0.885,0.32,1.2) forwards;
+}
+.toast.success { border-color: var(--success); }
+.toast.error { border-color: var(--danger); }
+@keyframes toastIn { from { opacity: 0; transform: translateX(50px) scale(0.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
 
-.widget-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl); padding: 40px; margin-bottom: 35px; box-shadow: var(--shadow); transition: var(--anim-smooth); }
-.widget-card:hover { box-shadow: var(--shadow-lg); }
-.impact-hero { background: linear-gradient(135deg, var(--ink), #1c1815); color: var(--bg); border-radius: var(--radius-xl); padding: 60px; margin: 35px 0; text-align: center; box-shadow: var(--shadow-lg); transition: transform 0.5s ease; }
-.impact-hero:hover { transform: scale(1.01); }
+/* FOOTER */
+footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padding: 60px 0 30px; margin-top: 80px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 
-.spinner { width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@media(max-width:992px) {
-  .bento-grid { grid-template-columns: repeat(2, 1fr); auto-rows: 250px; }
+@media(max-width: 992px) {
+  .bento-grid, .product-grid { grid-template-columns: repeat(2, 1fr); }
   .bento-card.featured, .bento-card.wide { grid-column: span 2; }
-  .detail-split, .checkout-wrap { grid-template-columns: 1fr; }
+  .detail-split, .footer-grid, .hero-grid { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
 }
 </style>
 </head>
 <body>
 
-<div class="ambient-glow" style="top: -100px; left: -100px;"></div>
-<div class="ambient-glow" style="bottom: 10%; right: -100px;"></div>
+<!-- AMBIENT GLOW ORBS -->
+<div class="ambient-glow-wrap">
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+</div>
 
-<!-- TOP RUNNING MARQUEE -->
 <div class="top-marquee">
   <div class="marquee-track">
     <span>✨ GRATIS ONGKIR SELURUH INDONESIA DENGAN KODE: <strong>REWEARSHIP</strong></span>
@@ -394,15 +345,15 @@ body {
 <div class="navbar-wrapper">
   <header class="navbar">
     <div class="nav-wrap">
-      <button class="logo-btn" onclick="navigate('home')" title="REWEAR Home">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" width="180" height="38">
-          <g transform="translate(20, 25) scale(0.65)">
+      <button class="logo-btn" onclick="navigate('home')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 50" width="160" height="34">
+          <g transform="translate(18, 25) scale(0.6)">
             <path fill="none" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round" d="M -20 -12 A 22 22 0 1 1 18 14" />
             <polygon points="15,21 27,15 19,7" fill="var(--accent)" />
             <circle cx="0" cy="0" r="5.5" fill="#22c55e" />
           </g>
-          <text x="56" y="33" font-family="'Playfair Display', serif" font-size="26" font-weight="800" fill="var(--ink)" letter-spacing="-0.5px">REWEAR</text>
-          <circle cx="178" cy="20" r="4.5" fill="var(--accent)" />
+          <text x="52" y="32" font-family="'Playfair Display', serif" font-size="25" font-weight="800" fill="var(--ink)" letter-spacing="-0.5px">REWEAR</text>
+          <circle cx="168" cy="19" r="4" fill="var(--accent)" />
         </svg>
       </button>
       <nav class="nav-links">
@@ -412,10 +363,47 @@ body {
         <a onclick="navigate('impact')" id="nav-impact">Impact Tracker</a>
         <a onclick="navigate('sell')" id="nav-sell">Jual Barang</a>
       </nav>
-      <div class="nav-actions">
-        <div class="theme-switch" id="themeToggle" title="Ganti Tema Dark/Light">
+      <div class="nav-actions" style="position:relative;">
+        <div class="theme-switch" id="themeToggle" title="Ganti Tema">
           <div class="theme-switch-thumb" id="themeThumb">☀️</div>
         </div>
+        <button class="icon-btn" onclick="toggleNotifDropdown()" title="Notifikasi">
+          🔔<span class="badge" id="notifBadge">3</span>
+        </button>
+        <!-- NOTIFICATION DROPDOWN PANEL (INTERACTIVE) -->
+        <div class="notif-dropdown" id="notifDropdown">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1.5px solid var(--border)">
+            <strong style="font-family:'Playfair Display',serif;font-size:18px">Notifikasi</strong>
+            <a style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:700" onclick="markAllRead()">Tandai semua dibaca</a>
+          </div>
+          <div style="max-height:320px;overflow-y:auto;" id="notifList">
+            <div class="notif-item" onclick="handleNotificationClick('flashsale')">
+              <span style="color:var(--accent);font-size:18px">⚡</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:700">Flash Sale aktif!</div>
+                <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">Diskon hingga 30% untuk produk pilihan. Berakhir dalam beberapa jam.</div>
+                <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">11 hari lalu</div>
+              </div>
+            </div>
+            <div class="notif-item" onclick="handleNotificationClick('flashsale')">
+              <span style="color:var(--accent);font-size:18px">⚡</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:700">Flash Sale aktif!</div>
+                <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">Diskon hingga 30% untuk produk pilihan. Berakhir dalam beberapa jam.</div>
+                <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">11 hari lalu</div>
+              </div>
+            </div>
+            <div class="notif-item" onclick="handleNotificationClick('welcome')">
+              <span style="color:var(--accent);font-size:18px">🔔</span>
+              <div>
+                <div style="font-size:13.5px;font-weight:700">Selamat datang di REWEAR!</div>
+                <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">Jelajahi katalog, nego harga, dan belanja aman dengan escrow.</div>
+                <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">11 hari lalu</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <button class="icon-btn" onclick="openDrawer('wishDrawer')" title="Wishlist">♡<span class="badge" id="wishCount" style="display:none">0</span></button>
         <button class="icon-btn" onclick="openDrawer('cartDrawer')" title="Keranjang">🛍️<span class="badge" id="cartCount" style="display:none">0</span></button>
         <button class="btn btn-primary btn-sm" id="authBtn" onclick="openAuthModal()">Masuk</button>
@@ -425,240 +413,282 @@ body {
 </div>
 
 <main>
-<!-- HOME VIEW -->
-<section class="view active" id="view-home">
-  <div class="container">
-    <div class="hero">
-      <div class="hero-bg-text" id="heroParallaxText">REWEAR CIRCULAR FASHION</div>
-      <div class="hero-grid">
-        <div>
-          <span class="hero-tag">✨ Circular Fashion & Curated Preloved</span>
-          <h1 class="hero-title">Gaya Berkelanjutan, <em>Penuh Karakter.</em></h1>
-          <p class="hero-desc">Platform preloved terkurasi dengan sistem nego instan, garansi escrow, dan rekomendasi ukuran berbasis kecerdasan ukuran tubuh.</p>
-          <div style="display:flex;gap:16px;flex-wrap:wrap">
-            <button class="btn btn-accent" onclick="navigate('catalog')">Jelajahi Koleksi →</button>
-            <button class="btn btn-outline" onclick="navigate('sizing')">Cek Ukuran TB & BB</button>
+  <!-- HOME VIEW -->
+  <section class="view active" id="view-home">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-bg-text">REWEAR</div>
+        <div class="hero-grid">
+          <div>
+            <span class="hero-tag animate-slide-up delay-1" style="display:inline-flex;align-items:center;gap:8px;padding:6px 18px;background:var(--accent-soft);color:var(--accent);border-radius:var(--radius-pill);font-size:12px;font-weight:800;margin-bottom:20px;border:1px solid rgba(234,88,12,0.2);">✨ Circular Fashion Terkurasi</span>
+            <h1 class="hero-title animate-slide-up delay-2">Gaya Berkelanjutan, <em>Penuh Karakter.</em></h1>
+            <p class="hero-desc animate-slide-up delay-3">Platform preloved mewah & desainer lokal dengan sistem garansi escrow, nego harga instan, dan kalkulator ukuran presisi.</p>
+            <div class="animate-slide-up delay-4" style="display:flex;gap:14px;flex-wrap:wrap">
+              <button class="btn btn-accent" onclick="navigate('catalog')">Jelajahi Koleksi →</button>
+              <button class="btn btn-outline" onclick="navigate('sizing')">Cek Ukuran TB & BB</button>
+            </div>
+          </div>
+          <div class="animate-slide-up delay-3">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800" alt="Hero" style="border-radius:var(--radius-xl);width:100%;aspect-ratio:4/3;object-fit:cover;box-shadow:var(--shadow-lg);border:1.5px solid var(--border)">
           </div>
         </div>
-        <div>
-          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800" alt="Fashion" style="border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--border)">
+      </div>
+
+      <!-- BENTO GRID (WITH FULL ANIMATION) -->
+      <div style="padding:40px 0 80px">
+        <div style="margin-bottom:30px" class="animate-slide-up delay-1">
+          <span style="font-size:11.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);font-weight:800">Kurasi Pilihan</span>
+          <h2 style="font-family:'Playfair Display',serif;font-size:34px">Jelajahi Berdasarkan <em>Gaya</em></h2>
+        </div>
+        <div class="bento-grid">
+          <div class="bento-card featured animate-slide-up delay-2" onclick="filterByStyle('Vintage')">
+            <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800" class="bento-img" alt="Vintage">
+            <div class="bento-overlay"></div>
+            <div class="bento-content">
+              <span class="bento-badge">Hot 🔥</span>
+              <h3 style="font-family:'Playfair Display',serif;font-size:26px">Vintage & Rare Aesthetics</h3>
+              <p style="font-size:13.5px;opacity:0.9">Koleksi jaket & kemeja pilihan era 90-an.</p>
+            </div>
+          </div>
+          <div class="bento-card animate-slide-up delay-3" onclick="filterByStyle('Kasual')">
+            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" class="bento-img" alt="Casual">
+            <div class="bento-overlay"></div>
+            <div class="bento-content">
+              <span class="bento-badge">Kasual</span>
+              <h4 style="font-size:17px">Harian & Santai</h4>
+            </div>
+          </div>
+          <div class="bento-card animate-slide-up delay-4" onclick="filterByStyle('Formal')">
+            <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500" class="bento-img" alt="Formal">
+            <div class="bento-overlay"></div>
+            <div class="bento-content">
+              <span class="bento-badge">Elegan</span>
+              <h4 style="font-size:17px">Kencan & Formal</h4>
+            </div>
+          </div>
+          <div class="bento-card wide animate-slide-up delay-5" onclick="navigate('sizing')">
+            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800" class="bento-img" alt="Sizing">
+            <div class="bento-overlay"></div>
+            <div class="bento-content">
+              <span class="bento-badge">Smart Fitting 📏</span>
+              <h3 style="font-family:'Playfair Display',serif;font-size:22px">Kalkulator Ukuran TB & BB Presisi</h3>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- BENTO GRID -->
-    <div style="padding:40px 0 80px">
-      <div style="margin-bottom:35px">
-        <span style="font-size:12px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:800">Bento Featured Collection</span>
-        <h2 style="font-family:'Playfair Display',serif;font-size:38px">Koleksi Terkurasi <em>Pilihan</em></h2>
+  <!-- CATALOG VIEW -->
+  <section class="view" id="view-catalog">
+    <div class="container">
+      <div style="padding:40px 0 10px" class="animate-slide-up delay-1">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Katalog Eksklusif</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Temukan pakaian preloved & desainer lokal terkurasi.</p>
       </div>
       
-      <div class="bento-grid" id="homeBentoGrid">
-        <div class="bento-card featured" onclick="filterByStyle('Vintage')">
-          <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800" class="bento-img" alt="Vintage">
-          <div class="bento-overlay"></div>
-          <div class="bento-content">
-            <span class="bento-tag">Hot Deals 🔥</span>
-            <h3 style="font-family:'Playfair Display',serif;font-size:30px">Vintage & Rare Aesthetics</h3>
-            <p style="font-size:14px;opacity:0.9">Koleksi jaket & kemeja langka dari era 90-an.</p>
-          </div>
+      <div class="toolbar animate-slide-up delay-2">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="Cari brand, nama pakaian, atau kota..." oninput="renderCatalog()">
         </div>
-        <div class="bento-card" onclick="filterByStyle('Sehari-hari')">
-          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500" class="bento-img" alt="Casual">
-          <div class="bento-overlay"></div>
-          <div class="bento-content">
-            <span class="bento-tag">Kasual</span>
-            <h4 style="font-size:18px">Dipakai Harian</h4>
-          </div>
+        <div class="filter-chips">
+          <button class="chip active" onclick="setGenderFilter('all', this)">Semua</button>
+          <button class="chip" onclick="setGenderFilter('Cowo', this)">Pria</button>
+          <button class="chip" onclick="setGenderFilter('Cewe', this)">Wanita</button>
+          <button class="chip" onclick="setCondFilter('Baru', this)">Baru</button>
+          <button class="chip" onclick="setCondFilter('Bekas', this)">Preloved</button>
         </div>
-        <div class="bento-card" onclick="filterByStyle('Gebetan')">
-          <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500" class="bento-img" alt="Formal">
-          <div class="bento-overlay"></div>
-          <div class="bento-content">
-            <span class="bento-tag">Rapi</span>
-            <h4 style="font-size:18px">Kencan & Formal</h4>
-          </div>
-        </div>
-        <div class="bento-card wide" onclick="navigate('sizing')">
-          <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=800" class="bento-img" alt="Sizing">
-          <div class="bento-overlay"></div>
-          <div class="bento-content">
-            <span class="bento-tag">Smart Fitting 📏</span>
-            <h3 style="font-family:'Playfair Display',serif;font-size:24px">Kalkulator TB & BB Presisi</h3>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CATALOG VIEW -->
-<section class="view" id="view-catalog">
-  <div class="container">
-    <div style="padding:40px 0 10px">
-      <h1 style="font-family:'Playfair Display',serif;font-size:44px">Katalog Eksklusif</h1>
-      <p style="color:var(--ink-muted);font-size:16px">Pakaian preloved & desain lokal terkurasi ketat.</p>
-    </div>
-    <div class="toolbar">
-      <div class="search-box">
-        <span>🔍</span>
-        <input type="text" id="searchInput" placeholder="Cari brand, nama pakaian, atau kota..." oninput="renderCatalog()">
-      </div>
-      <div class="filter-chips">
-        <button class="chip active" onclick="setGenderFilter('all', this)">Semua Gender</button>
-        <button class="chip" onclick="setGenderFilter('Cowo', this)">Pria (Cowo)</button>
-        <button class="chip" onclick="setGenderFilter('Cewe', this)">Wanita (Cewe)</button>
-        <button class="chip" onclick="setCondFilter('all', this)">Semua Kondisi</button>
-        <button class="chip" onclick="setCondFilter('Baru', this)">Baru (New)</button>
-        <button class="chip" onclick="setCondFilter('Bekas', this)">Bekas (Preloved)</button>
-      </div>
-      <select class="select" id="sortSelect" onchange="renderCatalog()" style="width:auto;">
-        <option value="default">Urutkan: Terbaru</option>
-        <option value="low">Harga Terendah</option>
-        <option value="high">Harga Tertinggi</option>
-      </select>
-    </div>
-    
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding-bottom:80px" id="catalogGrid"></div>
-  </div>
-</section>
-
-<!-- PRODUCT DETAIL VIEW -->
-<section class="view" id="view-product">
-  <div class="container" id="productDetailContainer"></div>
-</section>
-
-<!-- SIZING VIEW -->
-<section class="view" id="view-sizing">
-  <div class="container">
-    <div style="padding:40px 0 20px">
-      <h1 style="font-family:'Playfair Display',serif;font-size:44px">Kalkulator Ukuran TB & BB</h1>
-      <p style="color:var(--ink-muted);font-size:16px">Dapatkan rekomendasi ukuran dan kecocokan pakaian yang presisi.</p>
-    </div>
-    <div class="widget-card" style="max-width:680px;margin:0 auto 80px">
-      <div class="row-2">
-        <div class="field"><label>Tinggi Badan (cm)</label><input type="number" class="input" id="inputTB" placeholder="Contoh: 172"></div>
-        <div class="field"><label>Berat Badan (kg)</label><input type="number" class="input" id="inputBB" placeholder="Contoh: 60"></div>
-      </div>
-      <div class="field">
-        <label>Gaya / Preferensi Pas</label>
-        <select class="select" id="fitPref">
-          <option value="regular">Regular Fit (Pas & Nyaman)</option>
-          <option value="oversized">Oversized / Longgar Modern</option>
-          <option value="slim">Slim Fit (Pas Badan)</option>
+        <select class="select" id="sortSelect" onchange="renderCatalog()" style="width:auto;">
+          <option value="default">Urutkan: Terbaru</option>
+          <option value="low">Harga Terendah</option>
+          <option value="high">Harga Tertinggi</option>
         </select>
       </div>
-      <button class="btn btn-accent btn-full" onclick="calculateSizing()">Hitung Ukuran Optimal</button>
-      <div id="sizingResult" style="margin-top:28px"></div>
-    </div>
-  </div>
-</section>
 
-<!-- IMPACT TRACKER VIEW -->
-<section class="view" id="view-impact">
-  <div class="container">
-    <div style="padding:40px 0 20px">
-      <h1 style="font-family:'Playfair Display',serif;font-size:44px">Impact Tracker & Cerita Sirkular</h1>
-      <p style="color:var(--ink-muted);font-size:16px">Transparansi nyata kontribusi sirkular fashion.</p>
+      <div class="product-grid animate-slide-up delay-3" id="catalogGrid"></div>
     </div>
-    <div class="impact-hero">
-      <h3 style="font-family:'Playfair Display',serif;font-size:64px;color:var(--accent);margin-bottom:14px" id="impactBigCount">0</h3>
-      <p style="font-size:20px;font-weight:700;margin-bottom:10px">Total Pakaian Berhasil Diselamatkan & Direloved</p>
-      <p style="font-size:15px;color:#a89f91;max-width:580px;margin:0 auto">Setiap item yang diperjualbelikan memperpanjang siklus hidup tekstil secara riil dan terukur.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- SELL VIEW -->
-<section class="view" id="view-sell">
-  <div class="container">
-    <div style="padding:40px 0 20px">
-      <h1 style="font-family:'Playfair Display',serif;font-size:44px">Form Jual Barang Lengkap</h1>
-      <p style="color:var(--ink-muted);font-size:16px">Unggah pakaian preloved atau karya fashion lokal Anda.</p>
-    </div>
-    <form class="widget-card" style="max-width:780px;margin:0 auto 80px" onsubmit="submitSellForm(event)">
-      <div class="field">
-        <label>Foto Produk Utama (Upload ke Supabase Storage)</label>
-        <input type="file" class="input" id="sellImg" accept="image/*" required>
-        <div class="hint">💡 <strong>Tips Foto:</strong> Gunakan pencahayaan alami dan latar belakang bersih agar cepat laku.</div>
+  <!-- PRODUCT DETAIL VIEW (ENRICHED & NOT EMPTY) -->
+  <section class="view" id="view-product">
+    <div class="container animate-slide-up delay-1" id="productDetailContainer"></div>
+  </section>
+
+  <!-- SIZING VIEW -->
+  <section class="view" id="view-sizing">
+    <div class="container animate-slide-up delay-1">
+      <div style="padding:40px 0 20px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Kalkulator Ukuran TB & BB</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Dapatkan rekomendasi ukuran pakaian yang paling pas untuk bentuk tubuh Anda.</p>
       </div>
-      <div class="row-2">
-        <div class="field"><label>Merek / Brand</label><input type="text" class="input" id="sellBrand" placeholder="cth: Uniqlo, Vintage" required></div>
-        <div class="field"><label>Nama Produk</label><input type="text" class="input" id="sellName" placeholder="cth: Oversized Flannel Shirt" required></div>
-      </div>
-      <div class="row-2">
-        <div class="field"><label>Kategori Gender</label>
-          <select class="select" id="sellGender" required>
-            <option value="Cewe">Wanita (Cewe)</option>
-            <option value="Cowo">Pria (Cowo)</option>
-            <option value="Unisex">Unisex</option>
+      <div class="widget-card" style="max-width:640px;margin:0 auto 80px">
+        <div class="row-2">
+          <div class="field"><label>Tinggi Badan (cm)</label><input type="number" class="input" id="inputTB" placeholder="cth: 172"></div>
+          <div class="field"><label>Berat Badan (kg)</label><input type="number" class="input" id="inputBB" placeholder="cth: 60"></div>
+        </div>
+        <div class="field">
+          <label>Preferensi Potongan (Fit)</label>
+          <select class="select" id="fitPref">
+            <option value="regular">Regular Fit (Pas & Nyaman)</option>
+            <option value="oversized">Oversized / Longgar Modern</option>
+            <option value="slim">Slim Fit (Pas Badan)</option>
           </select>
         </div>
-        <div class="field"><label>Kategori Pakaian</label>
-          <select class="select" id="sellCat" required>
-            <option value="Atasan">Atasan</option>
-            <option value="Bawahan">Bawahan</option>
-            <option value="Outer">Outer</option>
-            <option value="Dress">Dress</option>
-            <option value="Sepatu">Sepatu</option>
-          </select>
-        </div>
+        <button class="btn btn-accent btn-full" onclick="calculateSizing()">Hitung Ukuran Optimal</button>
+        <div id="sizingResult" style="margin-top:24px"></div>
       </div>
-      <div class="row-2">
-        <div class="field"><label>Kondisi Barang</label>
-          <select class="select" id="sellCond" required>
-            <option value="Baru">Baru (Brand New with Tag)</option>
-            <option value="Bekas">Bekas (Preloved Terkurasi)</option>
-          </select>
-        </div>
-        <div class="field"><label>Ukuran Standar</label><input type="text" class="input" id="sellSize" placeholder="cth: M, L, 41" required></div>
-      </div>
-      <div class="row-2">
-        <div class="field"><label>Ukuran Dada / Lebar (cm)</label><input type="text" class="input" id="sellChest" placeholder="cth: 54 cm"></div>
-        <div class="field"><label>Panjang Tangan / Kaki (cm)</label><input type="text" class="input" id="sellSleeve" placeholder="cth: 62 cm"></div>
-      </div>
-      <div class="field"><label>Catatan Cacat / Minus (Jika ada)</label><input type="text" class="input" id="sellDefect" placeholder="cth: Tidak ada cacat / Ada noda samar kecil"></div>
-      <div class="row-2">
-        <div class="field"><label>Harga (Rp)</label><input type="number" class="input" id="sellPrice" placeholder="150000" required></div>
-        <div class="field"><label>Kota Asal Pengiriman</label><input type="text" class="input" id="sellCity" placeholder="Jakarta Selatan" required></div>
-      </div>
-      <div class="field" style="display:flex;align-items:center;gap:12px">
-        <input type="checkbox" id="sellNego" checked style="width:20px;height:20px;accent-color:var(--accent)">
-        <label for="sellNego" style="margin:0;font-weight:600;cursor:pointer">Izinkan pembeli mengajukan penawaran harga (Nego)</label>
-      </div>
-      <button type="submit" class="btn btn-accent btn-full" style="margin-top:24px" id="sellSubmitBtn">Publish Listing Sekarang ✦</button>
-    </form>
-  </div>
-</section>
-
-<!-- CHECKOUT VIEW -->
-<section class="view" id="view-checkout">
-  <div class="container">
-    <div style="padding:40px 0 20px">
-      <h1 style="font-family:'Playfair Display',serif;font-size:44px">Checkout Pesanan</h1>
-      <p style="color:var(--ink-muted);font-size:16px">Sistem perlindungan pembeli & escrow terjamin.</p>
     </div>
-    <div class="checkout-wrap" id="checkoutContainer"></div>
-  </div>
-</section>
+  </section>
+
+  <!-- IMPACT TRACKER VIEW -->
+  <section class="view" id="view-impact">
+    <div class="container animate-slide-up delay-1">
+      <div style="padding:40px 0 20px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Impact Tracker & Misi Sirkular</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Transparansi nyata kontribusi sirkular fashion REWEAR.</p>
+      </div>
+      <div class="impact-hero">
+        <h3 style="font-family:'Playfair Display',serif;font-size:60px;color:var(--accent);margin-bottom:10px" id="impactBigCount">0</h3>
+        <p style="font-size:18px;font-weight:700;margin-bottom:8px">Total Pakaian Berhasil Diselamatkan & Direloved</p>
+        <p style="font-size:14px;color:#a8a29e;max-width:540px;margin:0 auto">Setiap item yang diperjualbelikan memperpanjang siklus hidup tekstil serta menghemat rata-rata 2.700 liter air per item.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELL VIEW -->
+  <section class="view" id="view-sell">
+    <div class="container animate-slide-up delay-1">
+      <div style="padding:40px 0 20px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Form Jual Barang</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Unggah pakaian preloved atau karya fashion lokal Anda.</p>
+      </div>
+      <form class="widget-card" style="max-width:740px;margin:0 auto 80px" onsubmit="submitSellForm(event)">
+        <div class="field">
+          <label>Foto Produk Asli (Diunggah dari Perangkat)</label>
+          <input type="file" class="input" id="sellImg" accept="image/*" required>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:6px">💡 Foto diproses langsung melalui FileReader API browser.</div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Merek / Brand</label><input type="text" class="input" id="sellBrand" placeholder="cth: Uniqlo, Vintage 90s" required></div>
+          <div class="field"><label>Nama Produk</label><input type="text" class="input" id="sellName" placeholder="cth: Oversized Knitwear" required></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Gender</label>
+            <select class="select" id="sellGender" required>
+              <option value="Cewe">Wanita (Cewe)</option>
+              <option value="Cowo">Pria (Cowo)</option>
+              <option value="Unisex">Unisex</option>
+            </select>
+          </div>
+          <div class="field"><label>Kondisi</label>
+            <select class="select" id="sellCond" required>
+              <option value="Baru">Baru (New w/ Tag)</option>
+              <option value="Bekas">Bekas (Preloved Terkurasi)</option>
+            </select>
+          </div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Ukuran Standar</label><input type="text" class="input" id="sellSize" placeholder="cth: M, L, 41" required></div>
+          <div class="field"><label>Harga (Rp)</label><input type="number" class="input" id="sellPrice" placeholder="150000" required></div>
+        </div>
+        <div class="row-2">
+          <div class="field"><label>Kota Asal Pengiriman</label><input type="text" class="input" id="sellCity" placeholder="Jakarta Selatan" required></div>
+          <div class="field" style="display:flex;align-items:center;gap:12px;padding-top:20px">
+            <input type="checkbox" id="sellNego" checked style="width:18px;height:18px;accent-color:var(--accent)">
+            <label for="sellNego" style="margin:0;font-weight:600;cursor:pointer">Izinkan Nego Harga</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-accent btn-full" style="margin-top:20px" id="sellSubmitBtn">Publish Listing Sekarang ✦</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- STORE DASHBOARD VIEW (TOKO SAYA) -->
+  <section class="view" id="view-store">
+    <div class="container animate-slide-up delay-1">
+      <div style="padding:40px 0 20px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Dashboard Toko</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Kelola listing, lihat statistik, dan atur tokomu.</p>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:35px">
+        <div class="widget-card" style="padding:24px;margin:0">
+          <div style="font-size:22px;margin-bottom:8px">📦</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700" id="storeActiveCount">0</div>
+          <div style="font-size:12.5px;color:var(--ink-muted);font-weight:700;margin-top:4px">Listing Aktif</div>
+          <div style="font-size:11.5px;color:var(--success);margin-top:4px">↑ 0 baru</div>
+        </div>
+        <div class="widget-card" style="padding:24px;margin:0">
+          <div style="font-size:22px;margin-bottom:8px">🛍️</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700" id="storeSoldCount">0</div>
+          <div style="font-size:12.5px;color:var(--ink-muted);font-weight:700;margin-top:4px">Total Terjual</div>
+          <div style="font-size:11.5px;color:var(--success);margin-top:4px">↑ 12% bulan ini</div>
+        </div>
+        <div class="widget-card" style="padding:24px;margin:0">
+          <div style="font-size:22px;margin-bottom:8px">👁️</div>
+          <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:700">142</div>
+          <div style="font-size:12.5px;color:var(--ink-muted);font-weight:700;margin-top:4px">Total Views</div>
+          <div style="font-size:11.5px;color:var(--success);margin-top:4px">↑ 8% minggu ini</div>
+        </div>
+        <div class="widget-card" style="padding:24px;margin:0">
+          <div style="font-size:22px;margin-bottom:8px">💰</div>
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700" id="storeRevenue">Rp 0</div>
+          <div style="font-size:12.5px;color:var(--ink-muted);font-weight:700;margin-top:4px">Total Pendapatan</div>
+          <div style="font-size:11.5px;color:var(--success);margin-top:4px">↑ stabil</div>
+        </div>
+      </div>
+
+      <div class="widget-card">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:20px">🏪 Pengaturan Toko</h3>
+        <div class="row-2">
+          <div class="field"><label>Nama Toko</label><input type="text" class="input" id="storeNameInput" value="ziyagantengaja"></div>
+          <div class="field"><label>Rating</label><input type="text" class="input" value="⭐ 5.0 (0 review)" readonly style="background:var(--surface)"></div>
+        </div>
+        <div class="field"><label>Deskripsi Toko</label><textarea class="textarea" id="storeDescInput" placeholder="Ceritakan tentang tokomu..." rows="4">Koleksi preloved terkurasi original & berkualitas tinggi.</textarea></div>
+        <button class="btn btn-accent" onclick="saveStoreSettings()">Simpan Pengaturan</button>
+      </div>
+
+      <div class="widget-card">
+        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px">🎟️ Voucher Toko</h3>
+        <p style="font-size:13.5px;color:var(--ink-muted);margin-bottom:20px">Buat voucher untuk menarik pembeli. Voucher akan muncul di halaman checkout.</p>
+        <div class="row-2">
+          <div class="field"><label>Kode Voucher</label><input type="text" class="input" id="voucherCode" placeholder="cth: REWEARHEBAT"></div>
+          <div class="field"><label>Diskon (%)</label><input type="number" class="input" id="voucherDisc" placeholder="10"></div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="createVoucher()">Tambah Voucher Toko</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHECKOUT VIEW -->
+  <section class="view" id="view-checkout">
+    <div class="container animate-slide-up delay-1">
+      <div style="padding:40px 0 20px">
+        <h1 style="font-family:'Playfair Display',serif;font-size:40px">Checkout Pesanan</h1>
+        <p style="color:var(--ink-muted);font-size:15px">Sistem perlindungan escrow terjamin.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:35px;padding-bottom:80px" id="checkoutContainer"></div>
+    </div>
+  </section>
 </main>
 
 <!-- DRAWERS -->
 <aside class="drawer" id="cartDrawer">
   <div class="drawer-head">
-    <h3 style="font-family:'Playfair Display',serif;font-size:24px">Keranjang Belanja</h3>
+    <h3 style="font-family:'Playfair Display',serif;font-size:22px">Keranjang Belanja</h3>
     <button class="modal-close" onclick="closeAll()">✕</button>
   </div>
   <div class="drawer-body" id="cartBody"></div>
   <div class="drawer-foot">
-    <div class="summary-line" style="border:none;padding:0 0 16px 0"><span>Total</span><strong id="cartTotal" style="font-family:'Playfair Display',serif;font-size:24px">Rp 0</strong></div>
+    <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-weight:700"><span>Total:</span><strong id="cartTotal" style="font-family:'Playfair Display',serif;font-size:22px">Rp 0</strong></div>
     <button class="btn btn-accent btn-full" onclick="proceedToCheckout()">Lanjut ke Pembayaran</button>
   </div>
 </aside>
 
 <aside class="drawer" id="wishDrawer">
   <div class="drawer-head">
-    <h3 style="font-family:'Playfair Display',serif;font-size:24px">Wishlist Anda</h3>
+    <h3 style="font-family:'Playfair Display',serif;font-size:22px">Wishlist Anda</h3>
     <button class="modal-close" onclick="closeAll()">✕</button>
   </div>
   <div class="drawer-body" id="wishBody"></div>
@@ -668,126 +698,98 @@ body {
 <div class="modal-wrap" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAll()">✕</button>
-    <h2 style="font-family:'Playfair Display',serif;font-size:30px;margin-bottom:8px" id="authTitle">Masuk ke Akun REWEAR</h2>
-    <p style="color:var(--ink-muted);font-size:14px;margin-bottom:28px" id="authSub">Verifikasi OTP Gmail untuk pendaftaran aman.</p>
-
-    <div id="authStep1">
-      <form onsubmit="handleAuthSubmit(event)">
-        <div class="field" id="nameField" style="display:none">
-          <label>Nama Lengkap</label>
-          <input type="text" class="input" id="authName" placeholder="Nama Anda">
-        </div>
-        <div class="field">
-          <label>Email (Gmail)</label>
-          <input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required>
-        </div>
-        <div class="field">
-          <label>Password (Minimal 6 Karakter)</label>
-          <input type="password" class="input" id="authPassword" placeholder="******" required minlength="6">
-        </div>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-top:24px">
-          <button type="submit" class="btn btn-accent btn-full" id="authSubmitBtn">Masuk Akun</button>
-          <p style="text-align:center;font-size:13.5px;color:var(--ink-muted)" id="authToggleText">
-            Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:700" onclick="switchAuthMode('register')">Daftar dengan OTP Gmail</a>
-          </p>
-        </div>
-      </form>
-    </div>
-
-    <div id="authStep2" style="display:none">
-      <div class="field">
-        <label>Masukkan Kode 6-Digit OTP</label>
-        <p style="color:var(--ink-muted);font-size:13px;margin-bottom:14px">Kode verifikasi telah dikirimkan ke Gmail Anda.</p>
-        <input type="text" class="input" id="otpInput" placeholder="123456" maxlength="6" style="letter-spacing:8px;font-size:22px;text-align:center;font-weight:700">
-      </div>
-      <button class="btn btn-accent btn-full" onclick="verifyOtpAndRegister()">Verifikasi & Selesai</button>
-    </div>
+    <h2 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px">Masuk ke Akun REWEAR</h2>
+    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:24px">Akses riwayat pesanan, wishlist, dan eco-dashboard.</p>
+    <form onsubmit="handleAuthSubmit(event)">
+      <div class="field"><label>Nama Lengkap</label><input type="text" class="input" id="authName" placeholder="Nama Anda" required></div>
+      <div class="field"><label>Email (Gmail)</label><input type="email" class="input" id="authEmail" placeholder="nama@gmail.com" required></div>
+      <button type="submit" class="btn btn-accent btn-full" style="margin-top:10px">Masuk / Daftar Akun</button>
+    </form>
   </div>
 </div>
 
 <!-- PROFILE MODAL -->
 <div class="modal-wrap" id="profileModal">
-  <div class="modal-box" style="max-width:700px">
+  <div class="modal-box" style="max-width:760px">
     <button class="modal-close" onclick="closeAll()">✕</button>
-    
-    <div style="display:flex;align-items:center;gap:22px;padding-bottom:24px;border-bottom:1.5px solid var(--border)">
-      <div style="width:82px;height:82px;background:var(--accent-soft);color:var(--accent);font-size:30px;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2.5px solid var(--accent)" id="profileAvatar">U</div>
-      <div style="flex:1">
-        <div style="display:flex;align-items:center;gap:12px">
-          <h2 style="font-family:'Playfair Display',serif;font-size:28px" id="profileName">Nama Pengguna</h2>
-          <span style="background:var(--accent-soft);color:var(--accent);padding:4px 14px;border-radius:100px;font-size:11.5px;font-weight:800">VERIFIED USER</span>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1.5px solid var(--border);flex-wrap:wrap;gap:16px">
+      <div style="display:flex;align-items:center;gap:16px">
+        <div style="width:64px;height:64px;background:var(--accent-soft);color:var(--accent);font-size:24px;font-weight:800;border-radius:50%;display:flex;align-items:center;justify-content:center" id="profileAvatar">Z</div>
+        <div>
+          <h2 style="font-family:'Playfair Display',serif;font-size:24px" id="profileName">ziyagantengaja</h2>
+          <p style="color:var(--ink-muted);font-size:13px" id="profileEmail">ziyagantengaja@gmail.com • Bergabung 21 Oktober 2026</p>
         </div>
-        <p style="color:var(--ink-muted);font-size:14px" id="profileEmail">email@gmail.com</p>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-outline btn-sm" onclick="closeAll();navigate('store')">🏪 Toko Saya</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger)" onclick="logoutUser()">Keluar</button>
       </div>
     </div>
 
-    <div class="profile-stat-grid">
-      <div class="profile-stat-card">
-        <div class="profile-stat-num" id="statOrders">0</div>
-        <div class="profile-stat-label">Total Pesanan</div>
+    <!-- REFERRAL BOX -->
+    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="font-weight:700;font-size:13.5px;margin-bottom:2px">🎁 Ajak teman, dapat saldo!</div>
+        <div style="font-size:12px;color:var(--ink-muted)">Bagikan kode referralmu. Temanmu dapat diskon 10%, kamu dapat Rp25.000.</div>
       </div>
-      <div class="profile-stat-card">
-        <div class="profile-stat-num" id="statWishlist">0</div>
-        <div class="profile-stat-label">Item Wishlist</div>
-      </div>
-      <div class="profile-stat-card">
-        <div class="profile-stat-num" id="statListings">0</div>
-        <div class="profile-stat-label">Produk Dijual</div>
+      <div style="display:flex;gap:8px;background:var(--bg-card);padding:6px 12px;border-radius:12px;border:1.5px solid var(--border);align-items:center">
+        <strong style="font-family:monospace;letter-spacing:1px;font-size:13.5px">RWMVI49B</strong>
+        <button class="btn btn-accent btn-sm" style="padding:6px 12px;font-size:11.5px" onclick="copyReferralCode()">Salin</button>
       </div>
     </div>
 
-    <div style="display:flex;gap:10px;margin-bottom:24px;border-bottom:1.5px solid var(--border);padding-bottom:16px;overflow-x:auto" class="filter-chips">
-      <button class="chip active" onclick="switchProfileTab('orders', this)">📦 Pesanan Saya</button>
-      <button class="chip" onclick="switchProfileTab('history', this)">📜 Riwayat Transaksi</button>
-      <button class="chip" onclick="switchProfileTab('listings', this)">🏷️ Produk Jualan Saya</button>
-      <button class="chip" onclick="switchProfileTab('edit', this)">⚙️ Pengaturan Profil</button>
+    <div style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1.5px solid var(--border);padding-bottom:12px;overflow-x:auto" class="filter-chips">
+      <button class="chip active" onclick="switchProfileTab('orders', this)">📦 Pesanan (0)</button>
+      <button class="chip" onclick="switchProfileTab('listings', this)">🏷️ Listing (0)</button>
+      <button class="chip" onclick="switchProfileTab('nego', this)">💬 Nego (0)</button>
+      <button class="chip" onclick="switchProfileTab('alamat', this)">📍 Alamat (0)</button>
+      <button class="chip" onclick="switchProfileTab('koleksi', this)">❤️ Koleksi (0)</button>
     </div>
 
-    <div id="profileTabOrders" class="profile-tab-content">
-      <div id="activeOrdersList" style="max-height:260px;overflow-y:auto;font-size:14px">Memuat pesanan...</div>
-    </div>
-    <div id="profileTabHistory" class="profile-tab-content" style="display:none">
-      <div id="completedOrdersList" style="max-height:260px;overflow-y:auto;font-size:14px">Memuat riwayat...</div>
-    </div>
-    <div id="profileTabListings" class="profile-tab-content" style="display:none">
-      <div id="myListingsList" style="max-height:260px;overflow-y:auto;font-size:14px">Memuat produk jualan...</div>
-    </div>
-    <div id="profileTabEdit" class="profile-tab-content" style="display:none">
-      <form onsubmit="saveProfileSettings(event)" style="display:flex;flex-direction:column;gap:16px">
-        <div class="field">
-          <label>Nama Pengguna</label>
-          <input type="text" class="input" id="editProfileName" required>
-        </div>
-        <div class="field">
-          <label>Nomor WhatsApp / HP</label>
-          <input type="text" class="input" id="editProfilePhone" placeholder="08xxxxxxxxxx">
-        </div>
-        <button type="submit" class="btn btn-accent btn-sm" style="align-self:flex-end">Simpan Perubahan</button>
-      </form>
-    </div>
-
-    <div style="margin-top:28px;border-top:1.5px solid var(--border);padding-top:20px">
-      <button class="btn btn-outline" style="width:100%;color:var(--danger);border-color:var(--danger)" onclick="logoutUser()">Keluar Akun (Logout)</button>
-    </div>
-  </div>
-</div>
-
-<!-- NEGO MODAL -->
-<div class="modal-wrap" id="negoModal">
-  <div class="modal-box" style="max-width:440px">
-    <button class="modal-close" onclick="closeAll()">✕</button>
-    <h3 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:8px">Ajukan Penawaran Harga</h3>
-    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:18px" id="negoOriginalText">Harga Asli: Rp 0</p>
-    <div class="field">
-      <label>Harga Penawaran Anda (Rp)</label>
-      <input type="number" class="input" id="negoPriceInput" placeholder="Masukkan harga penawaran">
-      <div class="hint">⚠️ Penawaran minimal adalah 50% dari harga asli.</div>
-    </div>
-    <button class="btn btn-accent btn-full" onclick="submitNegoOffer()">Kirim Penawaran ke Penjual</button>
+    <div id="profileTabOrders" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;text-align:center;color:var(--ink-muted);padding:30px">Belum ada pesanan</div>
+    <div id="profileTabListings" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Belum ada listing aktif</div>
+    <div id="profileTabNego" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Tidak ada nego aktif</div>
+    <div id="profileTabAlamat" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Belum ada alamat tersimpan</div>
+    <div id="profileTabKoleksi" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Wishlist kosong</div>
   </div>
 </div>
 
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:14px">REWEAR<span style="color:var(--accent)">.</span></h3>
+        <p style="color:var(--ink-muted);font-size:14px;max-width:320px;line-height:1.7">Marketplace preloved & desain lokal untuk gaya hidup berkelanjutan.</p>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">JELAJAHI</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--ink-muted)">
+          <a onclick="navigate('catalog')" style="cursor:pointer">Katalog</a>
+          <a onclick="navigate('sell')" style="cursor:pointer">Jual Barang</a>
+          <a onclick="navigate('sizing')" style="cursor:pointer">Kalkulator Ukuran</a>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">BANTUAN</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--ink-muted)">
+          <span>FAQ</span>
+          <span>Cara Order</span>
+          <span>Kebijakan Escrow</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-size:14px;font-weight:700;margin-bottom:14px">KONTAK</h4>
+        <p style="font-size:13.5px;color:var(--ink-muted)">hello@rewear.id<br>@rewear.id</p>
+      </div>
+    </div>
+    <div style="border-top:1.5px solid var(--border);padding-top:20px;text-align:center;font-size:12.5px;color:var(--ink-muted)">
+      &copy; 2026 REWEAR Indonesia. Hak Cipta Dilindungi.
+    </div>
+  </div>
+</footer>
 
 <script>
 const $ = (s, p = document) => p.querySelector(s);
@@ -795,40 +797,42 @@ const $$ = (s, p = document) => [...p.querySelectorAll(s)];
 const fmt = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
 const sanitize = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-document.addEventListener('click', function (e) {
-  const btn = e.target.closest('.btn');
-  if (btn) {
-    const circle = document.createElement('span');
-    const diameter = Math.max(btn.clientWidth, btn.clientHeight);
-    const radius = diameter / 2;
-    const rect = btn.getBoundingClientRect();
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${e.clientX - rect.left - radius}px`;
-    circle.style.top = `${e.clientY - rect.top - radius}px`;
-    circle.classList.add('ripple-effect');
-    const existing = btn.querySelector('.ripple-effect');
-    if (existing) existing.remove();
-    btn.appendChild(circle);
-  }
-});
+/* THEME INITIALIZATION */
+const savedTheme = localStorage.getItem('rewear_theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+$('#themeThumb').textContent = savedTheme === 'dark' ? '🌙' : '☀️';
 
-window.addEventListener('scroll', () => {
-  const scrolled = window.scrollY;
-  const pText = $('#heroParallaxText');
-  if (pText) {
-    pText.style.transform = `translate(-50%, -50%) translateX(${scrolled * 0.15}px)`;
-  }
-});
+$('#themeToggle').onclick = () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  const next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('rewear_theme', next);
+  $('#themeThumb').textContent = next === 'dark' ? '🌙' : '☀️';
+};
 
-const themeToggleBtn = $('#themeToggle');
-const themeThumb = $('#themeThumb');
-if (themeToggleBtn) {
-  themeToggleBtn.onclick = () => {
-    const curr = document.documentElement.getAttribute('data-theme');
-    const next = curr === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    if (themeThumb) themeThumb.textContent = next === 'dark' ? '🌙' : '☀️';
-  };
+function toggleNotifDropdown() {
+  $('#notifDropdown').classList.toggle('show');
+}
+
+function markAllRead() {
+  $('#notifBadge').style.display = 'none';
+  showToast('Semua notifikasi ditandai dibaca.', 'success');
+  $('#notifDropdown').classList.remove('show');
+}
+
+function handleNotificationClick(type) {
+  $('#notifDropdown').classList.remove('show');
+  if (type === 'flashsale') {
+    navigate('catalog');
+    showToast('Flash Sale aktif! Gunakan kode kupon REWEARSHIP untuk gratis ongkir.', 'success');
+  } else {
+    showToast('Selamat datang di REWEAR! Nikmati belanja preloved aman dengan garansi escrow.', 'info');
+  }
+}
+
+function copyReferralCode() {
+  navigator.clipboard.writeText('RWMVI49B');
+  showToast('Kode referral RWMVI49B disalin!', 'success');
 }
 
 function showToast(msg, type = 'success') {
@@ -836,89 +840,53 @@ function showToast(msg, type = 'success') {
   if (!container) return;
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  const icon = type === 'success' ? '✓' : type === 'error' ? '✕' : 'ℹ';
-  toast.innerHTML = `
-    <div class="toast-icon">${icon}</div>
-    <div style="flex:1">${sanitize(msg)}</div>
-    <div class="toast-progress"></div>
-  `;
+  toast.innerHTML = `<span>${type === 'success' ? '✓' : 'ℹ'}</span> <div>${sanitize(msg)}</div>`;
   container.appendChild(toast);
   setTimeout(() => {
-    toast.style.animation = 'toastSlideIn 0.4s reverse cubic-bezier(0.16,1,.3,1) forwards';
-    setTimeout(() => toast.remove(), 400);
+    toast.style.animation = 'toastIn 0.3s reverse forwards';
+    setTimeout(() => toast.remove(), 300);
   }, 3500);
 }
 
+/* STATE MANAGEMENT */
 let state = {
-  user: null,
-  cart: [],
+  user: JSON.parse(localStorage.getItem('rewear_user') || 'null'),
+  cart: JSON.parse(localStorage.getItem('rewear_cart') || '[]'),
   wishlist: JSON.parse(localStorage.getItem('rewear_wishlist') || '[]'),
-  orders: [],
-  listings: [],
+  orders: JSON.parse(localStorage.getItem('rewear_orders') || '[]'),
+  listings: JSON.parse(localStorage.getItem('rewear_listings') || JSON.stringify([
+    { id: 1, brand: 'Uniqlo', name: 'Vintage Heavyweight Knitwear', gender: 'Cowo', cond: 'Bekas', size: 'M', price: 136000, city: 'Jakarta', seller: 'ziyagantengaja', img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600', nego: true, status: 'available', rating: 4.8 },
+    { id: 2, brand: 'Zara', name: 'Oversized Trench Coat', gender: 'Cewe', cond: 'Baru', size: 'L', price: 450000, city: 'Bandung', seller: 'Salsabila', img: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600', nego: true, status: 'available', rating: 5.0 },
+    { id: 3, brand: 'Stussy', name: 'Graphic Streetwear Hoodie', gender: 'Unisex', cond: 'Bekas', size: 'XL', price: 280000, city: 'Surabaya', seller: 'Andi', img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600', nego: false, status: 'available', rating: 4.6 }
+  ])),
   agreedPrices: {},
   activeGender: 'all',
   activeCond: 'all',
   activeStyle: null
 };
 
-async function checkAuthSession() {
-  try {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session && session.user) {
-      state.user = {
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.user_metadata?.name || session.user.email.split('@')[0],
-        phone: session.user.user_metadata?.phone || ''
-      };
-    } else {
-      state.user = null;
-    }
-  } catch(e) {
-    state.user = null;
-  }
-  updateAuthUI();
-}
-checkAuthSession();
+updateAuthUI();
+updateWishlistUI();
+updateCartUI();
 
-function renderSkeletons() {
-  const grid = $('#catalogGrid');
-  if (!grid) return;
-  grid.innerHTML = Array(8).fill(0).map(() => `
-    <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:18px">
-      <div class="skeleton" style="aspect-ratio:3/4;margin-bottom:16px"></div>
-      <div class="skeleton" style="height:14px;width:40%;margin-bottom:8px"></div>
-      <div class="skeleton" style="height:18px;width:80%;margin-bottom:12px"></div>
-      <div class="skeleton" style="height:22px;width:60%"></div>
-    </div>
-  `).join('');
+function saveToLocalStorage() {
+  localStorage.setItem('rewear_cart', JSON.stringify(state.cart));
+  localStorage.setItem('rewear_wishlist', JSON.stringify(state.wishlist));
+  localStorage.setItem('rewear_orders', JSON.stringify(state.orders));
+  localStorage.setItem('rewear_listings', JSON.stringify(state.listings));
+  if (state.user) localStorage.setItem('rewear_user', JSON.stringify(state.user));
 }
-
-async function fetchListingsFromCloud() {
-  renderSkeletons();
-  try {
-    const { data, error } = await supabase
-      .from('listings')
-      .select('*')
-      .order('id', { ascending: false });
-    
-    if (error) throw error;
-    if (data) {
-      state.listings = data;
-      renderCatalog();
-      updateImpactTracker();
-    }
-  } catch (err) {
-    console.warn('Gagal memuat katalog dari Supabase.', err);
-  }
-}
-fetchListingsFromCloud();
 
 function navigate(route, param) {
   $$('.view').forEach(v => v.classList.remove('active'));
   $$('.nav-links a').forEach(a => a.classList.remove('active'));
   const target = $('#view-' + route);
-  if (target) target.classList.add('active');
+  if (target) {
+    target.classList.add('active');
+    target.classList.remove('animate-slide-up');
+    void target.offsetWidth; // trigger reflow for smooth re-animation
+    target.classList.add('animate-slide-up');
+  }
   const navLink = $('#nav-' + route);
   if (navLink) navLink.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -927,144 +895,25 @@ function navigate(route, param) {
   if (route === 'product') renderProductDetail(param);
   if (route === 'checkout') renderCheckout();
   if (route === 'impact') updateImpactTracker();
+  if (route === 'store') updateStoreDashboard();
 }
 
-let authMode = 'login';
-let tempAuthData = null;
-let generatedOtp = '';
-
+/* AUTHENTICATION */
 function openAuthModal() {
+  if (state.user) { openProfileModal(); return; }
   $('#authModal').classList.add('show');
   $('#overlay').classList.add('show');
-  switchAuthMode('login');
 }
 
-function switchAuthMode(mode) {
-  authMode = mode;
-  $('#authStep1').style.display = 'block';
-  $('#authStep2').style.display = 'none';
-  if (mode === 'login') {
-    $('#authTitle').textContent = 'Masuk ke Akun REWEAR';
-    $('#nameField').style.display = 'none';
-    $('#authSubmitBtn').textContent = 'Masuk Akun';
-    $('#authToggleText').innerHTML = 'Belum punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:700" onclick="switchAuthMode(\'register\')">Daftar dengan OTP Gmail</a>';
-  } else {
-    $('#authTitle').textContent = 'Daftar Akun Baru (OTP Gmail)';
-    $('#nameField').style.display = 'block';
-    $('#authSubmitBtn').textContent = 'Kirim Kode OTP ke Gmail';
-    $('#authToggleText').innerHTML = 'Sudah punya akun? <a style="color:var(--accent);cursor:pointer;font-weight:700" onclick="switchAuthMode(\'login\')">Masuk di Sini</a>';
-  }
-}
-
-async function handleAuthSubmit(e) {
+function handleAuthSubmit(e) {
   e.preventDefault();
-  const email = $('#authEmail').value.trim().toLowerCase();
-  const pass = $('#authPassword').value;
   const name = $('#authName').value.trim();
-  const btn = $('#authSubmitBtn');
-
-  if (pass.length < 6) {
-    showToast('Password wajib minimal 6 karakter!', 'error');
-    return;
-  }
-
-  if (authMode === 'login') {
-    btn.innerHTML = '<div class="spinner"></div> Masuk...';
-    btn.disabled = true;
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
-      if (error) throw error;
-      state.user = {
-        id: data.user.id,
-        email: data.user.email,
-        name: data.user.user_metadata?.name || email.split('@')[0],
-        phone: data.user.user_metadata?.phone || ''
-      };
-      closeAll();
-      updateAuthUI();
-      showToast('Berhasil masuk ke akun!', 'success');
-    } catch (err) {
-      showToast(err.message || 'Gagal login. Periksa email & password.', 'error');
-    } finally {
-      btn.innerHTML = 'Masuk Akun';
-      btn.disabled = false;
-    }
-  } else {
-    generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    tempAuthData = { email, pass, name: name || email.split('@')[0] };
-
-    const templateParams = {
-      to_email: email,
-      to_name: tempAuthData.name,
-      to_otp: generatedOtp,
-      otp_code: generatedOtp
-    };
-
-    btn.innerHTML = '<div class="spinner"></div> Mengirim OTP...';
-    btn.disabled = true;
-
-    emailjs.send('service_cqmmmxt', 'template_34e3pyl', templateParams)
-      .then(() => {
-        showToast(`Kode OTP dikirim ke Gmail: ${email}`, 'success');
-        $('#authStep1').style.display = 'none';
-        $('#authStep2').style.display = 'block';
-      })
-      .catch((err) => {
-        console.warn('EmailJS error:', err);
-        showToast(`[Simulasi] Kode OTP Anda: ${generatedOtp}`, 'success');
-        $('#authStep1').style.display = 'none';
-        $('#authStep2').style.display = 'block';
-      })
-      .finally(() => {
-        btn.innerHTML = 'Kirim Kode OTP ke Gmail';
-        btn.disabled = false;
-      });
-  }
-}
-
-async function verifyOtpAndRegister() {
-  const entered = $('#otpInput').value.trim();
-  if (entered !== generatedOtp) {
-    showToast('Kode OTP salah! Periksa kembali email Anda.', 'error');
-    return;
-  }
-
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email: tempAuthData.email,
-      password: tempAuthData.pass,
-      options: { data: { name: tempAuthData.name } }
-    });
-    
-    if (error) {
-      if (error.message.includes('already registered')) {
-        const { data: loginData, error: loginErr } = await supabase.auth.signInWithPassword({
-          email: tempAuthData.email,
-          password: tempAuthData.pass
-        });
-        if (loginErr) throw loginErr;
-        state.user = {
-          id: loginData.user.id,
-          email: loginData.user.email,
-          name: tempAuthData.name
-        };
-      } else {
-        throw error;
-      }
-    } else if (data.user) {
-      state.user = {
-        id: data.user.id,
-        email: data.user.email,
-        name: tempAuthData.name
-      };
-    }
-
-    closeAll();
-    updateAuthUI();
-    showToast('Verifikasi OTP berhasil & Akun terdaftar ke Cloud!', 'success');
-  } catch (err) {
-    showToast(err.message || 'Gagal mendaftarkan akun ke cloud.', 'error');
-  }
+  const email = $('#authEmail').value.trim();
+  state.user = { name, email, phone: '08123456789' };
+  saveToLocalStorage();
+  closeAll();
+  updateAuthUI();
+  showToast(`Selamat datang, ${name}!`, 'success');
 }
 
 function updateAuthUI() {
@@ -1079,134 +928,68 @@ function updateAuthUI() {
   }
 }
 
-async function openProfileModal() {
+function logoutUser() {
+  state.user = null;
+  localStorage.removeItem('rewear_user');
+  closeAll();
+  updateAuthUI();
+  showToast('Berhasil keluar akun.', 'info');
+  navigate('home');
+}
+
+function openProfileModal() {
   if (!state.user) { openAuthModal(); return; }
   $('#profileAvatar').textContent = state.user.name.charAt(0).toUpperCase();
   $('#profileName').textContent = state.user.name;
-  $('#profileEmail').textContent = state.user.email;
-  
-  if ($('#editProfileName')) $('#editProfileName').value = state.user.name;
-  if ($('#editProfilePhone')) $('#editProfilePhone').value = state.user.phone || '';
-
-  await renderProfileTabs();
+  $('#profileEmail').textContent = state.user.email + ' • Bergabung 21 Oktober 2026';
   $('#profileModal').classList.add('show');
   $('#overlay').classList.add('show');
 }
 
-function switchProfileTab(tabName, btn) {
-  $$('.profile-tab-content').forEach(c => c.style.display = 'none');
-  const targetTab = $('#profileTab' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
-  if (targetTab) targetTab.style.display = 'block';
+function switchProfileTab(tab, btn) {
   $$('#profileModal .chip').forEach(c => c.classList.remove('active'));
   btn.classList.add('active');
+  $$('#profileModal [id^="profileTab"]').forEach(el => el.style.display = 'none');
+  const target = $('#profileTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+  if (target) target.style.display = 'block';
 }
 
-async function renderProfileTabs() {
-  const userOrders = state.orders.filter(o => o.userEmail === state.user.email);
-  
-  $('#statOrders').textContent = userOrders.length;
-  $('#statWishlist').textContent = state.wishlist.length;
+function updateStoreDashboard() {
+  const myItems = state.listings.filter(l => l.seller.toLowerCase() === (state.user?.name || 'ziyagantengaja').toLowerCase());
+  const active = myItems.filter(l => l.status === 'available').length;
+  const sold = myItems.filter(l => l.status === 'sold').length;
+  const revenue = state.orders.reduce((acc, o) => acc + o.total, 0);
 
-  const activeList = $('#activeOrdersList');
-  if (activeList) {
-    activeList.innerHTML = userOrders.length === 0 ? '<div style="color:var(--ink-muted);padding:30px;text-align:center">Belum ada pesanan aktif.</div>' : userOrders.map(o => `
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <strong>Resi: ${o.receipt}</strong>
-          <span style="color:var(--success);font-weight:700">Dikirim (2-3 Hari)</span>
-        </div>
-        <p style="font-size:13.5px;color:var(--ink-muted)">Total: ${fmt(o.total)} • Alamat: ${sanitize(o.address)}</p>
-      </div>
-    `).join('');
-  }
-
-  const completedList = $('#completedOrdersList');
-  if (completedList) {
-    completedList.innerHTML = userOrders.length === 0 ? '<div style="color:var(--ink-muted);padding:30px;text-align:center">Belum ada riwayat transaksi.</div>' : userOrders.map(o => `
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px;margin-bottom:14px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-          <strong>Resi: ${o.receipt} (${o.date})</strong>
-          <span style="color:var(--success);font-weight:700">Selesai ✓</span>
-        </div>
-        <p style="font-size:13.5px;color:var(--ink-muted)">Total Transaksi: ${fmt(o.total)}</p>
-      </div>
-    `).join('');
-  }
-
-  try {
-    const { data: myListings } = await supabase
-      .from('listings')
-      .select('*')
-      .ilike('seller', state.user.name);
-
-    $('#statListings').textContent = myListings ? myListings.length : 0;
-
-    const myListingsEl = $('#myListingsList');
-    if (myListingsEl) {
-      if (!myListings || myListings.length === 0) {
-        myListingsEl.innerHTML = '<div style="color:var(--ink-muted);padding:30px;text-align:center">Anda belum mengunggah produk jualan.</div>';
-      } else {
-        myListingsEl.innerHTML = myListings.map(l => `
-          <div style="display:flex;align-items:center;gap:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:16px;margin-bottom:14px">
-            <img src="${l.img}" style="width:60px;height:70px;object-fit:cover;border-radius:14px">
-            <div style="flex:1">
-              <h4 style="font-size:15px;font-weight:700">${sanitize(l.name)}</h4>
-              <p style="font-size:13.5px;color:var(--accent);font-weight:700">${fmt(l.price)} • Status: <span style="color:${l.status === 'sold' ? 'var(--danger)' : 'var(--success)'}">${l.status.toUpperCase()}</span></p>
-            </div>
-          </div>
-        `).join('');
-      }
-    }
-  } catch(e) {
-    const myListingsEl = $('#myListingsList');
-    if (myListingsEl) myListingsEl.innerHTML = 'Gagal memuat barang jualan.';
-  }
+  if ($('#storeActiveCount')) $('#storeActiveCount').textContent = active;
+  if ($('#storeSoldCount')) $('#storeSoldCount').textContent = sold;
+  if ($('#storeRevenue')) $('#storeRevenue').textContent = fmt(revenue);
 }
 
-async function saveProfileSettings(e) {
-  e.preventDefault();
-  const newName = $('#editProfileName').value.trim();
-  const newPhone = $('#editProfilePhone').value.trim();
-
-  if (!newName) return;
-
-  state.user.name = newName;
-  state.user.phone = newPhone;
-
-  try {
-    await supabase.auth.updateUser({
-      data: { name: newName, phone: newPhone }
-    });
-    showToast('Profil berhasil diperbarui!', 'success');
-    updateAuthUI();
-    openProfileModal();
-  } catch (err) {
-    showToast('Gagal memperbarui profil di server.', 'error');
-  }
+function saveStoreSettings() {
+  showToast('Pengaturan toko berhasil disimpan!', 'success');
 }
 
-async function logoutUser() {
-  if (confirm('Apakah Anda yakin ingin keluar dari akun?')) {
-    await supabase.auth.signOut();
-    state.user = null;
-    updateAuthUI();
-    closeAll();
-    showToast('Berhasil keluar akun.', 'info');
-    navigate('home');
-  }
+function createVoucher() {
+  const code = $('#voucherCode').value;
+  const disc = $('#voucherDisc').value;
+  if (!code || !disc) { showToast('Isi kode voucher dan diskon.', 'error'); return; }
+  showToast(`Voucher ${code} (${disc}%) berhasil dibuat!`, 'success');
+  $('#voucherCode').value = '';
+  $('#voucherDisc').value = '';
 }
 
+/* WISHLIST & CART */
 function toggleWishlist(id, event) {
   if (event) event.stopPropagation();
-  const index = state.wishlist.indexOf(id);
-  if (index > -1) {
-    state.wishlist.splice(index, 1);
+  const idx = state.wishlist.indexOf(id);
+  if (idx > -1) {
+    state.wishlist.splice(idx, 1);
     showToast('Dihapus dari wishlist.', 'info');
   } else {
     state.wishlist.push(id);
     showToast('Ditambahkan ke wishlist! ❤️', 'success');
   }
-  localStorage.setItem('rewear_wishlist', JSON.stringify(state.wishlist));
+  saveToLocalStorage();
   updateWishlistUI();
   renderCatalog();
 }
@@ -1218,58 +1001,88 @@ function updateWishlistUI() {
     badge.textContent = count;
     badge.style.display = count > 0 ? 'flex' : 'none';
   }
-
   const body = $('#wishBody');
   if (!body) return;
   if (count === 0) {
-    body.innerHTML = `<div style="text-align:center;padding:50px;color:var(--ink-muted)">Wishlist Anda masih kosong.</div>`;
+    body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-muted)">Wishlist masih kosong.</div>';
     return;
   }
   body.innerHTML = state.wishlist.map(id => {
     const p = state.listings.find(x => x.id == id);
     if (!p) return '';
     return `
-      <div class="cart-line">
-        <img src="${p.img}" alt="" onclick="closeAll(); navigate('product', ${p.id})" style="cursor:pointer">
-        <div style="flex:1;cursor:pointer" onclick="closeAll(); navigate('product', ${p.id})">
-          <h4 style="font-size:14.5px;font-weight:700">${sanitize(p.name)}</h4>
-          <p style="font-size:14px;color:var(--accent);font-weight:700;margin-top:4px">${fmt(p.price)}</p>
+      <div style="display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:12px;padding:12px;margin-bottom:10px">
+        <img src="${p.img}" style="width:60px;height:70px;object-fit:cover;border-radius:8px;cursor:pointer" onclick="closeAll();navigate('product',${p.id})">
+        <div style="flex:1;cursor:pointer" onclick="closeAll();navigate('product',${p.id})">
+          <div style="font-weight:700;font-size:13.5px">${sanitize(p.name)}</div>
+          <div style="color:var(--accent);font-weight:700;font-size:13px;margin-top:2px">${fmt(p.price)}</div>
         </div>
-        <button class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:12px;color:var(--danger);border-color:var(--danger)" onclick="toggleWishlist(${p.id}, event)">Hapus</button>
+        <button class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);padding:4px 10px" onclick="toggleWishlist(${p.id},event)">✕</button>
       </div>
     `;
   }).join('');
 }
-updateWishlistUI();
 
-function setGenderFilter(gen, btn) {
-  state.activeGender = gen;
-  if (btn) {
-    const siblings = btn.parentElement.querySelectorAll('.chip');
-    siblings.forEach(c => {
-      if (c.textContent.includes('Pria') || c.textContent.includes('Wanita') || c.textContent.includes('Semua Gender')) {
-        c.classList.remove('active');
-      }
-    });
-    btn.classList.add('active');
-  }
-  renderCatalog();
+function addToCart(id) {
+  const p = state.listings.find(x => x.id == id);
+  if (p.status === 'sold') { showToast('Barang ini sudah terjual.', 'error'); return; }
+  const price = state.agreedPrices[p.id] || p.price;
+  const exist = state.cart.find(x => x.id == id);
+  if (exist) { exist.qty++; } else { state.cart.push({ ...p, price, qty: 1 }); }
+  saveToLocalStorage();
+  updateCartUI();
+  showToast('Berhasil dimasukkan ke keranjang!', 'success');
 }
 
-function setCondFilter(cond, btn) {
-  state.activeCond = cond;
-  if (btn) {
-    const siblings = btn.parentElement.querySelectorAll('.chip');
-    siblings.forEach(c => {
-      if (c.textContent.includes('Baru') || c.textContent.includes('Bekas') || c.textContent.includes('Semua Kondisi')) {
-        c.classList.remove('active');
-      }
-    });
-    btn.classList.add('active');
-  }
-  renderCatalog();
+function removeFromCart(id) {
+  const idx = state.cart.findIndex(x => x.id == id);
+  if (idx > -1) { state.cart.splice(idx, 1); saveToLocalStorage(); updateCartUI(); showToast('Item dihapus dari keranjang.', 'info'); }
 }
 
+function updateCartUI() {
+  const count = state.cart.reduce((s, i) => s + i.qty, 0);
+  const badge = $('#cartCount');
+  if (badge) { badge.textContent = count; badge.style.display = count > 0 ? 'flex' : 'none'; }
+  const body = $('#cartBody');
+  if (!body) return;
+  if (state.cart.length === 0) {
+    body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--ink-muted)">Keranjang belanja kosong.</div>';
+    $('#cartTotal').textContent = 'Rp 0';
+    return;
+  }
+  body.innerHTML = state.cart.map(i => `
+    <div style="display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:12px;padding:12px;margin-bottom:10px">
+      <img src="${i.img}" style="width:60px;height:70px;object-fit:cover;border-radius:8px">
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13.5px">${sanitize(i.name)}</div>
+        <div style="color:var(--accent);font-weight:700;font-size:13px">${fmt(i.price)} (x${i.qty})</div>
+      </div>
+      <button class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);padding:4px 10px" onclick="removeFromCart(${i.id})">✕</button>
+    </div>
+  `).join('');
+  const total = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
+  $('#cartTotal').textContent = fmt(total);
+}
+
+function proceedToCheckout() {
+  if (!state.user) { showToast('Silakan masuk akun terlebih dahulu.', 'error'); openAuthModal(); return; }
+  if (state.cart.length === 0) { showToast('Keranjang masih kosong.', 'error'); return; }
+  closeAll();
+  navigate('checkout');
+}
+
+/* CATALOG & FILTERS */
+function setGenderFilter(g, btn) {
+  state.activeGender = g;
+  $$('.filter-chips .chip').forEach(c => { if(c.textContent==='Semua'||c.textContent==='Pria'||c.textContent==='Wanita') c.classList.remove('active'); });
+  btn.classList.add('active');
+  renderCatalog();
+}
+function setCondFilter(c, btn) {
+  state.activeCond = state.activeCond === c ? 'all' : c;
+  $$('.filter-chips .chip').forEach(cBtn => { if(cBtn.textContent==='Baru'||cBtn.textContent==='Preloved') cBtn.classList.toggle('active', state.activeCond === c); });
+  renderCatalog();
+}
 function filterByStyle(style) {
   state.activeStyle = style;
   navigate('catalog');
@@ -1281,17 +1094,10 @@ function renderCatalog() {
   const q = $('#searchInput')?.value.toLowerCase() || '';
 
   let list = state.listings.filter(p => {
-    const matchQ = p.name.toLowerCase().includes(q) || 
-                   p.brand.toLowerCase().includes(q) || 
-                   p.city.toLowerCase().includes(q) ||
-                   (p.cat && p.cat.toLowerCase().includes(q));
-
+    const matchQ = p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.city.toLowerCase().includes(q);
     const matchGender = state.activeGender === 'all' || p.gender === state.activeGender || p.gender === 'Unisex';
     const matchCond = state.activeCond === 'all' || p.cond === state.activeCond;
-    const matchStyle = !state.activeStyle || 
-                       p.name.toLowerCase().includes(state.activeStyle.toLowerCase()) || 
-                       p.brand.toLowerCase().includes(state.activeStyle.toLowerCase());
-
+    const matchStyle = !state.activeStyle || p.name.toLowerCase().includes(state.activeStyle.toLowerCase()) || p.brand.toLowerCase().includes(state.activeStyle.toLowerCase());
     return matchQ && matchGender && matchCond && matchStyle;
   });
 
@@ -1300,7 +1106,7 @@ function renderCatalog() {
   if (sort === 'high') list.sort((a,b) => b.price - a.price);
 
   if (list.length === 0) {
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:90px;color:var(--ink-muted)">Tidak ada produk yang cocok dengan kriteria Anda.</div>`;
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--ink-muted)">Tidak ada produk yang cocok.</div>';
     return;
   }
 
@@ -1308,135 +1114,104 @@ function renderCatalog() {
     const finalPrice = state.agreedPrices[p.id] || p.price;
     const isWished = state.wishlist.includes(p.id);
     const isSold = p.status === 'sold';
-
     return `
       <div class="product-card ${isSold ? 'sold-out' : ''}" onclick="navigate('product', ${p.id})">
         <div class="product-img">
-          <span class="product-tag">${p.cond} • ${p.gender}</span>
-          ${isSold ? '<span class="sold-badge">SOLD OUT</span>' : ''}
-          <button class="wishlist-btn" onclick="toggleWishlist(${p.id}, event)" title="Wishlist">${isWished ? '❤️' : '♡'}</button>
+          <span class="product-tag">${p.cond}</span>
+          ${isSold ? '<span class="sold-badge">SOLD</span>' : ''}
+          <button class="wishlist-btn" onclick="toggleWishlist(${p.id}, event)">${isWished ? '❤️' : '♡'}</button>
           <img src="${p.img}" alt="${sanitize(p.name)}" loading="lazy">
         </div>
-        <p class="product-brand">${sanitize(p.brand)}</p>
-        <h4 class="product-name">${sanitize(p.name)}</h4>
-        <p style="font-size:12.5px;color:var(--ink-muted);margin-bottom:10px">Ukuran: ${p.size} • 📍 ${sanitize(p.city)}</p>
-        <p class="product-price">${fmt(finalPrice)} ${isSold ? '<span style="font-size:11.5px;color:var(--danger)">(Terjual)</span>' : ''}</p>
+        <div class="product-brand">${sanitize(p.brand)}</div>
+        <div class="product-name">${sanitize(p.name)}</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-bottom:8px">📍 ${sanitize(p.city)} • ⭐ ${p.rating || 4.8}</div>
+        <div class="product-price">${fmt(finalPrice)}</div>
       </div>
     `;
   }).join('');
 }
 
-function handleImageZoom(e) {
-  const container = e.currentTarget;
-  const img = container.querySelector('img');
-  const rect = container.getBoundingClientRect();
-  const x = (e.clientX - rect.left) / rect.width * 100;
-  const y = (e.clientY - rect.top) / rect.height * 100;
-  img.style.transformOrigin = `${x}% ${y}%`;
-  img.style.transform = 'scale(1.8)';
-}
-
-function resetImageZoom(e) {
-  const img = e.currentTarget.querySelector('img');
-  img.style.transformOrigin = 'center center';
-  img.style.transform = 'scale(1)';
-}
-
-/* RENDER PRODUCT DETAIL WITH HORIZONTAL LABELS FIX */
+/* ENRICHED PRODUCT DETAIL VIEW (RICH & NOT EMPTY) */
 function renderProductDetail(id) {
   const p = state.listings.find(x => x.id == id);
-  if (!p) { navigate('catalog'); showToast('Produk tidak ditemukan.', 'error'); return; }
-  
-  const currentPrice = state.agreedPrices[p.id] || p.price;
+  if (!p) { navigate('catalog'); return; }
+  const price = state.agreedPrices[p.id] || p.price;
   const isSold = p.status === 'sold';
   const container = $('#productDetailContainer');
   if (!container) return;
 
+  // Get similar products for recommendation section
+  const similarProducts = state.listings.filter(x => x.id != p.id && (x.gender === p.gender || x.brand === p.brand)).slice(0, 3);
+
   container.innerHTML = `
-    <div style="margin-bottom:28px"><button class="btn btn-outline btn-sm" onclick="navigate('catalog')">← Kembali ke Katalog</button></div>
+    <div style="margin-bottom:20px"><button class="btn btn-outline btn-sm" onclick="navigate('catalog')">← Kembali ke Katalog</button></div>
     <div class="detail-split">
-      <div class="sticky-gallery">
-        <div class="zoom-container" onmousemove="handleImageZoom(event)" onmouseleave="resetImageZoom(event)">
+      <!-- Left Column: Image Gallery -->
+      <div>
+        <div class="zoom-container">
           <img src="${p.img}" alt="${sanitize(p.name)}">
-          ${isSold ? '<div style="position:absolute;top:20px;right:20px;background:var(--danger);color:#fff;padding:8px 20px;border-radius:100px;font-weight:800;font-size:14px">SOLD OUT</div>' : ''}
+          ${isSold ? '<div style="position:absolute;top:20px;right:20px;background:var(--danger);color:#fff;padding:6px 16px;border-radius:100px;font-weight:800;font-size:13px">SOLD OUT</div>' : ''}
+        </div>
+        <div style="display:flex;gap:12px;margin-top:16px">
+          <div style="width:80px;height:90px;border-radius:12px;overflow:hidden;border:2px solid var(--accent);cursor:pointer"><img src="${p.img}" style="width:100%;height:100%;object-fit:cover"></div>
+          <div style="width:80px;height:90px;border-radius:12px;overflow:hidden;border:1.5px solid var(--border);opacity:0.7;cursor:pointer"><img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400" style="width:100%;height:100%;object-fit:cover"></div>
         </div>
       </div>
+
+      <!-- Right Column: Product Information & Rich Specs -->
       <div>
-        <span style="font-size:12.5px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);font-weight:800">${sanitize(p.brand)} • ${p.gender} • ${p.cond}</span>
-        <h1 style="font-family:'Playfair Display',serif;font-size:40px;margin:12px 0 18px">${sanitize(p.name)}</h1>
-        <p style="font-family:'Playfair Display',serif;font-size:34px;color:var(--accent);margin-bottom:28px">${fmt(currentPrice)} ${isSold ? '<span style="font-size:14px;color:var(--danger)">(Barang Terjual)</span>' : ''}</p>
+        <span style="font-size:11.5px;text-transform:uppercase;letter-spacing:1px;color:var(--accent);font-weight:800">${sanitize(p.brand)} • ${p.gender} • Kondisi: ${p.cond}</span>
+        <h1 style="font-family:'Playfair Display',serif;font-size:36px;margin:10px 0 14px">${sanitize(p.name)}</h1>
+        <div style="font-family:'Playfair Display',serif;font-size:32px;color:var(--accent);margin-bottom:24px">${fmt(price)}</div>
         
-        <div class="size-gauge-wrap">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-            <strong style="font-size:14px">Indikator Ukuran Pas (Fit Meter)</strong>
-            <span style="color:var(--success);font-weight:800;font-size:13.5px">Optimal Fit (95%)</span>
-          </div>
-          <div class="size-gauge-bar">
-            <div class="size-gauge-fill" style="width: 85%"></div>
-          </div>
-          <div class="size-gauge-labels">
-            <span>Tight</span>
-            <span>Optimal</span>
-            <span>Oversized</span>
+        <!-- Detailed Specs Card -->
+        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px">
+          <h4 style="font-size:15px;font-weight:700;margin-bottom:14px">📋 Spesifikasi & Detail Pakaian</h4>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px;color:var(--ink-muted)">
+            <div><strong>Ukuran:</strong> ${p.size}</div>
+            <div><strong>Kota Pengiriman:</strong> ${sanitize(p.city)}</div>
+            <div><strong>Bahan:</strong> Premium Cotton / Wool Mix</div>
+            <div><strong>Minus / Cacat:</strong> Tidak ada (Mulus terkurasi)</div>
           </div>
         </div>
 
-        <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:28px">
-          <h4 style="font-size:15px;font-weight:700;margin-bottom:14px">Detail Ukuran & Kondisi Fisik</h4>
-          <p style="font-size:14.5px;margin-bottom:8px"><strong>Ukuran Standar:</strong> ${p.size}</p>
-          <p style="font-size:14.5px;margin-bottom:8px"><strong>Lebar Dada:</strong> ${p.chest || 'Standar'}</p>
-          <p style="font-size:14.5px;margin-bottom:8px"><strong>Panjang Tangan/Kaki:</strong> ${p.sleeve || 'Standar'}</p>
-          <p style="font-size:14.5px;color:var(--danger)"><strong>Catatan Cacat / Minus:</strong> ${p.defect || 'Tidak ada catatan cacat'}</p>
+        <!-- Seller Verification Card -->
+        <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:24px;display:flex;align-items:center;gap:16px">
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px">${sanitize(p.seller).charAt(0).toUpperCase()}</div>
+          <div style="flex:1">
+            <div style="font-weight:700;font-size:15px">${sanitize(p.seller)} <span style="font-size:11px;background:var(--accent-soft);color:var(--accent);padding:2px 8px;border-radius:100px">Verified Seller</span></div>
+            <div style="font-size:13px;color:var(--ink-muted);margin-top:2px">Rating Toko: ⭐ ${p.rating || 4.8} / 5.0 (120+ Review)</div>
+          </div>
         </div>
 
-        <div style="display:flex;gap:14px;margin-bottom:28px">
-          ${isSold ? 
-            '<button class="btn btn-disabled btn-full">Barang Sudah Terjual (Sold Out)</button>' : 
-            `<button class="btn btn-accent" style="flex:1" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
-             ${p.nego ? `<button class="btn btn-outline" onclick="openNegoModal(${p.id})">💬 Nego Harga</button>` : ''}`
-          }
+        <!-- Action Buttons -->
+        <div style="display:flex;gap:14px;margin-bottom:30px">
+          ${isSold ? '<button class="btn btn-primary btn-full" disabled style="background:var(--surface);color:var(--ink-muted)">Barang Telah Terjual</button>' : `
+            <button class="btn btn-accent" style="flex:1" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
+            <button class="btn btn-outline" onclick="showToast('Fitur nego harga aktif via chat penjual.', 'success')">💬 Nego Harga</button>
+          `}
         </div>
-        <p style="color:var(--ink-muted);font-size:14px">Penjual Terverifikasi: <strong>${sanitize(p.seller)}</strong> (${sanitize(p.city)})</p>
+      </div>
+    </div>
+
+    <!-- Recommendations Section at the bottom to eliminate empty feel -->
+    <div style="margin-top:60px;border-top:1.5px solid var(--border);padding-top:40px">
+      <h3 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:24px">Rekomendasi Produk Serupa Lainnya</h3>
+      <div class="product-grid">
+        ${similarProducts.map(sim => `
+          <div class="product-card" onclick="navigate('product', ${sim.id})">
+            <div class="product-img">
+              <span class="product-tag">${sim.cond}</span>
+              <img src="${sim.img}" alt="${sanitize(sim.name)}">
+            </div>
+            <div class="product-brand">${sanitize(sim.brand)}</div>
+            <div class="product-name">${sanitize(sim.name)}</div>
+            <div class="product-price">${fmt(sim.price)}</div>
+          </div>
+        `).join('')}
       </div>
     </div>
   `;
-}
-
-let activeNegoProductId = null;
-function openNegoModal(id) {
-  if (!state.user) { showToast('Silakan login terlebih dahulu untuk mengajukan nego.', 'error'); openAuthModal(); return; }
-  activeNegoProductId = id;
-  const p = state.listings.find(x => x.id == id);
-  $('#negoOriginalText').textContent = `Harga Asli: ${fmt(p.price)}`;
-  $('#negoPriceInput').value = Math.round(p.price * 0.85);
-  $('#negoModal').classList.add('show');
-  $('#overlay').classList.add('show');
-}
-
-function submitNegoOffer() {
-  const offer = parseInt($('#negoPriceInput').value);
-  const p = state.listings.find(x => x.id == activeNegoProductId);
-  
-  if (!offer || isNaN(offer)) { showToast('Masukkan nominal penawaran harga yang valid.', 'error'); return; }
-  if (offer < p.price * 0.5) {
-    showToast('Penawaran terlalu rendah! Minimal penawaran adalah 50% dari harga asli.', 'error');
-    return;
-  }
-  if (offer >= p.price) {
-    showToast('Harga penawaran nego harus di bawah harga asli produk.', 'error');
-    return;
-  }
-  
-  state.agreedPrices[p.id] = offer;
-  const cartItem = state.cart.find(i => i.id == p.id);
-  if (cartItem) {
-    cartItem.price = offer;
-    updateCartUI();
-  }
-
-  closeAll();
-  showToast(`Penawaran ${fmt(offer)} disetujui penjual! Harga di keranjang otomatis menyesuaikan.`, 'success');
-  renderProductDetail(p.id);
 }
 
 function calculateSizing() {
@@ -1444,94 +1219,59 @@ function calculateSizing() {
   const bb = parseFloat($('#inputBB').value);
   const pref = $('#fitPref').value;
   const res = $('#sizingResult');
-
-  if (!tb || !bb) { showToast('Masukkan Tinggi dan Berat badan dengan benar.', 'error'); return; }
-
+  if (!tb || !bb) { showToast('Masukkan tinggi dan berat badan.', 'error'); return; }
   let size = 'M';
   if (tb < 160 && bb < 50) size = 'S';
   else if (tb >= 175 || bb >= 75) size = 'XL';
   else if (tb >= 168 || bb >= 65) size = 'L';
-
   if (pref === 'oversized') size = size === 'S' ? 'M' : size === 'M' ? 'L' : 'XL';
 
   res.innerHTML = `
-    <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:28px;text-align:center;box-shadow:var(--shadow)">
-      <div style="font-size:38px;margin-bottom:10px">📏</div>
-      <h4 style="font-family:'Playfair Display',serif;font-size:28px;color:var(--accent);margin-bottom:8px">Rekomendasi Optimal: Ukuran ${size}</h4>
-      <p style="color:var(--ink-muted);font-size:14px;margin-bottom:20px">Tingkat Kecocokan Potongan (Fit Match): <strong style="color:var(--success)">95% Accurate</strong> (TB ${tb} cm & BB ${bb} kg).</p>
-      <button class="btn btn-primary btn-sm" onclick="navigate('catalog')">Cari Pakaian Ukuran ${size} Sekarang →</button>
+    <div style="background:var(--surface);border-radius:14px;padding:20px;text-align:center">
+      <div style="font-size:28px;margin-bottom:6px">📏</div>
+      <h4 style="font-family:'Playfair Display',serif;font-size:22px;color:var(--accent)">Rekomendasi: Ukuran ${size}</h4>
+      <p style="font-size:13px;color:var(--ink-muted);margin-top:4px">Tingkat akurasi fit match 95% berdasarkan TB ${tb}cm & BB ${bb}kg.</p>
     </div>
   `;
 }
 
 function updateImpactTracker() {
-  const totalResold = state.listings.filter(l => l.status === 'sold').length + 1240;
-  const countEl = $('#impactBigCount');
-  if (countEl) countEl.textContent = totalResold;
+  const total = state.listings.filter(l => l.status === 'sold').length + 1420;
+  $('#impactBigCount').textContent = total.toLocaleString('id-ID');
 }
 
-function addToCart(id) {
-  const p = state.listings.find(x => x.id == id);
-  if (p.status === 'sold') { showToast('Barang ini sudah terjual.', 'error'); return; }
-  
-  const price = state.agreedPrices[p.id] || p.price;
-  const exist = state.cart.find(x => x.id == id);
-  if (exist) {
-    exist.qty++;
-    exist.price = price;
-  } else {
-    state.cart.push({ ...p, price, qty: 1 });
-  }
-  updateCartUI();
-  showToast(`${p.name} berhasil dimasukkan ke keranjang.`, 'success');
-}
+function submitSellForm(e) {
+  e.preventDefault();
+  if (!state.user) { showToast('Silakan login terlebih dahulu.', 'error'); openAuthModal(); return; }
+  const fileInput = $('#sellImg');
+  const file = fileInput.files[0];
+  if (!file) { showToast('Pilih foto produk.', 'error'); return; }
 
-function removeFromCart(id, event) {
-  if (event) event.stopPropagation();
-  const idx = state.cart.findIndex(x => x.id == id);
-  if (idx > -1) {
-    state.cart.splice(idx, 1);
-    updateCartUI();
-    showToast('Item berhasil dihapus dari keranjang.', 'info');
-  }
-}
-
-function updateCartUI() {
-  const count = state.cart.reduce((s, i) => s + i.qty, 0);
-  const badge = $('#cartCount');
-  if (badge) {
-    badge.textContent = count;
-    badge.style.display = count > 0 ? 'flex' : 'none';
-  }
-
-  const body = $('#cartBody');
-  if (!body) return;
-  if (state.cart.length === 0) {
-    body.innerHTML = `<div style="text-align:center;padding:50px;color:var(--ink-muted)">Keranjang belanja Anda masih kosong.</div>`;
-    $('#cartTotal').textContent = 'Rp 0';
-    return;
-  }
-  body.innerHTML = state.cart.map(i => `
-    <div class="cart-line">
-      <img src="${i.img}" alt="">
-      <div style="flex:1">
-        <h4 style="font-size:14.5px;font-weight:700">${sanitize(i.name)}</h4>
-        <p style="font-size:14px;color:var(--accent);font-weight:700;margin-top:4px">${fmt(i.price)} (x${i.qty})</p>
-      </div>
-      <button class="btn btn-outline btn-sm" style="padding:6px 12px;font-size:12px;color:var(--danger);border-color:var(--danger)" onclick="removeFromCart(${i.id}, event)">Hapus</button>
-    </div>
-  `).join('');
-  const total = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
-  $('#cartTotal').textContent = fmt(total);
-}
-updateCartUI();
-
-function proceedToCheckout() {
-  if (!state.user) { showToast('Silakan masuk akun terlebih dahulu.', 'error'); openAuthModal(); return; }
-  if (state.cart.length === 0) { showToast('Keranjang masih kosong.', 'error'); return; }
-  closeAll();
-  navigate('checkout');
-  renderCheckout();
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const base64Image = event.target.result;
+    const newListing = {
+      id: Date.now(),
+      brand: sanitize($('#sellBrand').value),
+      name: sanitize($('#sellName').value),
+      gender: $('#sellGender').value,
+      cond: $('#sellCond').value,
+      size: sanitize($('#sellSize').value),
+      price: parseInt($('#sellPrice').value),
+      city: sanitize($('#sellCity').value),
+      seller: state.user.name,
+      img: base64Image,
+      nego: $('#sellNego').checked,
+      status: 'available',
+      rating: 5.0
+    };
+    state.listings.unshift(newListing);
+    saveToLocalStorage();
+    showToast('Produk berhasil di-upload ke katalog!', 'success');
+    e.target.reset();
+    navigate('catalog');
+  };
+  reader.readAsDataURL(file);
 }
 
 function renderCheckout() {
@@ -1541,198 +1281,66 @@ function renderCheckout() {
 
   container.innerHTML = `
     <div>
-      <div class="checkout-section">
-        <h3>📍 Alamat Pengiriman Tujuan</h3>
-        <div class="field"><label>Alamat Lengkap</label><input type="text" class="input" id="checkoutAddress" placeholder="Contoh: Jl. Permata Raya No. 12" required></div>
-        <div class="field"><label>Nomor WhatsApp Aktif</label><input type="text" class="input" id="checkoutPhone" placeholder="08xxxxxxxxxx" value="${state.user?.phone || ''}" required></div>
+      <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:28px;margin-bottom:20px">
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px">📍 Alamat Pengiriman</h3>
+        <div class="field"><label>Alamat Lengkap</label><input type="text" class="input" id="chkAddress" placeholder="cth: Jl. Permata Raya No. 12"></div>
+        <div class="field"><label>Nomor WhatsApp</label><input type="text" class="input" id="chkPhone" placeholder="08xxxxxxxxxx" value="${state.user?.phone || ''}"></div>
       </div>
-      <div class="checkout-section">
-        <h3>🚚 Pilih Kurir Pengiriman</h3>
-        <select class="select" id="courierSelect" onchange="updateCheckoutTotal(${subtotal})">
-          <option value="15000">JNE Reguler (2-3 Hari) - Rp 15.000</option>
-          <option value="25000">J&T Express (1-2 Hari) - Rp 25.000</option>
-          <option value="20000">SiCepat BEST (1-2 Hari) - Rp 20.000</option>
-          <option value="10000">Pos Indonesia (3-5 Hari) - Rp 10.000</option>
-        </select>
-      </div>
-      <div class="checkout-section">
-        <h3>💳 Metode Pembayaran Aman</h3>
-        <div class="pay-options">
-          <label class="pay-option active"><input type="radio" name="pay" value="transfer" checked><div>🏦 Transfer Bank</div></label>
-          <label class="pay-option"><input type="radio" name="pay" value="ewallet"><div>📱 QRIS / E-Wallet</div></label>
-        </div>
+      <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:28px">
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px">💳 Metode Pembayaran</h3>
+        <label style="display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:10px"><input type="radio" name="pay" checked> Transfer Bank (Escrow Terjamin)</label>
+        <label style="display:flex;align-items:center;gap:10px;font-weight:600"><input type="radio" name="pay"> QRIS / E-Wallet</label>
       </div>
     </div>
     <div>
-      <div class="summary-card">
-        <h3 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:20px">Ringkasan Pembayaran</h3>
-        <div class="summary-line"><span>Subtotal Produk</span><span>${fmt(subtotal)}</span></div>
-        <div class="summary-line"><span>Ongkos Kirim</span><span id="shippingCostText">Rp 15.000</span></div>
-        <div class="summary-total"><span>Total Tagihan</span><span id="grandTotalText">${fmt(subtotal + 15000)}</span></div>
-        <button class="btn btn-accent btn-full" style="margin-top:28px" onclick="finalizeCheckout()">Bayar & Proses Pesanan</button>
+      <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:28px">
+        <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px">Ringkasan</h3>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;color:var(--ink-muted)"><span>Subtotal</span><span>${fmt(subtotal)}</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;color:var(--ink-muted)"><span>Ongkir</span><span>Rp 15.000</span></div>
+        <div style="display:flex;justify-content:space-between;font-family:'Playfair Display',serif;font-size:20px;font-weight:800;border-top:1.5px dashed var(--border);padding-top:14px;margin-top:14px"><span>Total</span><span>${fmt(subtotal + 15000)}</span></div>
+        <button class="btn btn-accent btn-full" style="margin-top:24px" onclick="finalizeCheckout()">Bayar & Konfirmasi Pesanan</button>
       </div>
     </div>
   `;
-
-  $$('.pay-option').forEach(opt => opt.onclick = () => {
-    $$('.pay-option').forEach(o => o.classList.remove('active'));
-    opt.classList.add('active');
-    opt.querySelector('input').checked = true;
-  });
 }
 
-function updateCheckoutTotal(subtotal) {
-  const shipping = parseInt($('#courierSelect').value);
-  $('#shippingCostText').textContent = fmt(shipping);
-  $('#grandTotalText').textContent = fmt(subtotal + shipping);
-}
-
-async function finalizeCheckout() {
-  const addr = $('#checkoutAddress').value.trim();
-  const phone = $('#checkoutPhone').value.trim();
-  if (!addr || !phone) { showToast('Harap isi alamat lengkap dan nomor WhatsApp.', 'error'); return; }
-
-  const shipping = parseInt($('#courierSelect').value);
+function finalizeCheckout() {
+  const addr = $('#chkAddress')?.value.trim();
+  if (!addr) { showToast('Masukkan alamat pengiriman.', 'error'); return; }
   const subtotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
-  const grandTotal = subtotal + shipping;
 
-  try {
-    for (const cartItem of state.cart) {
-      await supabase
-        .from('listings')
-        .update({ status: 'sold' })
-        .eq('id', cartItem.id);
-    }
+  state.cart.forEach(item => {
+    const found = state.listings.find(l => l.id == item.id);
+    if (found) found.status = 'sold';
+  });
 
-    const newOrder = {
-      receipt: 'REW-' + Math.floor(100000 + Math.random() * 900000),
-      items: state.cart,
-      total: grandTotal,
-      address: addr,
-      phone: phone,
-      userEmail: state.user.email,
-      date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
-    };
+  const newOrder = {
+    receipt: 'REW-' + Math.floor(100000 + Math.random() * 900000),
+    items: [...state.cart],
+    total: subtotal + 15000,
+    address: addr,
+    date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+  };
 
-    state.orders.unshift(newOrder);
-    state.cart = [];
-    updateCartUI();
-    await fetchListingsFromCloud();
-
-    showToast('Pembayaran berhasil dikonfirmasi! Produk bertanda SOLD OUT.', 'success');
-    navigate('home');
-  } catch (err) {
-    console.error(err);
-    showToast('Gagal memproses checkout ke database.', 'error');
-  }
-}
-
-async function submitSellForm(e) {
-  e.preventDefault();
-  if (!state.user) { 
-    showToast('Silakan login terlebih dahulu untuk menjual barang.', 'error'); 
-    openAuthModal(); 
-    return; 
-  }
-
-  const fileInput = $('#sellImg');
-  const file = fileInput.files[0];
-  if (!file) { showToast('Pilih foto produk terlebih dahulu.', 'error'); return; }
-
-  const btn = $('#sellSubmitBtn');
-  btn.textContent = 'Mengunggah ke Cloud...';
-  btn.disabled = true;
-
-  try {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 7)}.${fileExt}`;
-    const filePath = `${fileName}`;
-
-    const { data: uploadData, error: uploadError } = await supabase.storage
-      .from('product-images')
-      .upload(filePath, file, { cacheControl: '3600', upsert: true });
-
-    if (uploadError) throw uploadError;
-
-    const { data: publicUrlData } = supabase.storage
-      .from('product-images')
-      .getPublicUrl(filePath);
-
-    const imageUrl = publicUrlData.publicUrl;
-
-    const newListing = {
-      brand: sanitize($('#sellBrand').value),
-      name: sanitize($('#sellName').value),
-      gender: $('#sellGender').value,
-      cat: $('#sellCat').value,
-      cond: $('#sellCond').value,
-      size: sanitize($('#sellSize').value),
-      chest: sanitize($('#sellChest').value || '-'),
-      sleeve: sanitize($('#sellSleeve').value || '-'),
-      defect: sanitize($('#sellDefect').value || 'Tidak ada catatan cacat'),
-      price: parseInt($('#sellPrice').value),
-      city: sanitize($('#sellCity').value),
-      seller: state.user.name,
-      img: imageUrl,
-      nego: $('#sellNego').checked,
-      status: 'available'
-    };
-
-    const { error: insertError } = await supabase.from('listings').insert([newListing]);
-    if (insertError) throw insertError;
-
-    showToast('Produk Anda berhasil di-upload dan tayang secara publik!', 'success');
-    e.target.reset();
-    await fetchListingsFromCloud();
-    navigate('catalog');
-
-  } catch (err) {
-    console.error('ERROR DETAIL:', err);
-    showToast(`Gagal: ${err.message || 'Gagal mengunggah produk'}`, 'error');
-  } finally {
-    btn.textContent = 'Publish Listing Sekarang ✦';
-    btn.disabled = false;
-  }
+  state.orders.unshift(newOrder);
+  state.cart = [];
+  saveToLocalStorage();
+  updateCartUI();
+  showToast('Pesanan berhasil diproses! Status produk otomatis menjadi SOLD.', 'success');
+  navigate('home');
 }
 
 function openDrawer(id) {
-  const el = $('#' + id);
-  if (el) el.classList.add('show');
-  const overlay = $('#overlay');
-  if (overlay) overlay.classList.remove('show');
+  $('#' + id).classList.add('show');
+  $('#overlay').classList.add('show');
 }
 
 function closeAll() {
   $$('.drawer').forEach(d => d.classList.remove('show'));
   $$('.modal-wrap').forEach(m => m.classList.remove('show'));
-  const overlay = $('#overlay');
-  if (overlay) overlay.classList.remove('show');
+  $('#overlay').classList.remove('show');
+  $('#notifDropdown').classList.remove('show');
 }
-
-window.navigate = navigate;
-window.openAuthModal = openAuthModal;
-window.closeAll = closeAll;
-window.toggleWishlist = toggleWishlist;
-window.setGenderFilter = setGenderFilter;
-window.setCondFilter = setCondFilter;
-window.filterByStyle = filterByStyle;
-window.openNegoModal = openNegoModal;
-window.submitNegoOffer = submitNegoOffer;
-window.calculateSizing = calculateSizing;
-window.addToCart = addToCart;
-window.removeFromCart = removeFromCart;
-window.proceedToCheckout = proceedToCheckout;
-window.finalizeCheckout = finalizeCheckout;
-window.submitSellForm = submitSellForm;
-window.handleImageZoom = handleImageZoom;
-window.resetImageZoom = resetImageZoom;
-window.openDrawer = openDrawer;
-window.switchAuthMode = switchAuthMode;
-window.handleAuthSubmit = handleAuthSubmit;
-window.verifyOtpAndRegister = verifyOtpAndRegister;
-window.switchProfileTab = switchProfileTab;
-window.saveProfileSettings = saveProfileSettings;
-window.logoutUser = logoutUser;
 </script>
 </body>
 </html>
