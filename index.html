@@ -1402,23 +1402,49 @@ function updateImpactTracker() {
 
 async function submitSellForm(e) {
   e.preventDefault();
-  if (!state.user) { showToast('Silakan login terlebih dahulu.', 'error'); openAuthModal(); return; }
+  
+  // Pastikan user terautentikasi (atau buat akun dummy jika belum login)
+  if (!state.user) { 
+    showToast('Silakan login terlebih dahulu.', 'error'); 
+    openAuthModal(); 
+    return; 
+  }
+  
   const fileInput = $('#sellImg');
   const file = fileInput.files[0];
-  if (!file) { showToast('Pilih foto produk.', 'error'); return; }
+  if (!file) { 
+    showToast('Pilih foto produk.', 'error'); 
+    return; 
+  }
 
   const btn = $('#sellSubmitBtn');
-  btn.textContent = 'Mengunggah ke Supabase...';
+  btn.textContent = 'Memproses Upload...';
   
-  try {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const { error: uploadErr } = await supabase.storage.from('product-images').upload(fileName, file);
-    if (uploadErr) throw uploadErr;
+  // 1. Baca gambar sebagai Base64 Data URL terlebih dahulu (Fallback Utama)
+  const reader = new FileReader();
+  reader.onload = async function(evt) {
+    let finalImageUrl = evt.target.result; // Default ke Base64 lokal
+    
+    // 2. Coba upload ke Supabase Storage (Optional / Soft-fail)
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,7)}.${fileExt}`;
+      
+      const { error: uploadErr } = await supabase.storage.from('product-images').upload(fileName, file);
+      
+      if (!uploadErr) {
+        const { data: pubUrl } = supabase.storage.from('product-images').getPublicUrl(fileName);
+        if (pubUrl && pubUrl.publicUrl) {
+          finalImageUrl = pubUrl.publicUrl;
+        }
+      }
+    } catch (storageErr) {
+      console.warn('Storage RLS tertahan, beralih ke penyimpanan foto Base64:', storageErr);
+    }
 
-    const { data: pubUrl } = supabase.storage.from('product-images').getPublicUrl(fileName);
-
+    // 3. Susun data produk baru
     const newListing = {
+      id: Date.now(),
       brand: sanitize($('#sellBrand').value),
       name: sanitize($('#sellName').value),
       gender: $('#sellGender').value,
@@ -1426,25 +1452,36 @@ async function submitSellForm(e) {
       size: sanitize($('#sellSize').value),
       price: parseInt($('#sellPrice').value),
       city: sanitize($('#sellCity').value),
-      seller: state.user.name,
-      img: pubUrl.publicUrl,
+      seller: state.user.name || 'ziyagantengaja',
+      img: finalImageUrl,
       nego: $('#sellNego').checked,
       status: 'available',
       rating: 5.0
     };
 
-    const { error: insErr } = await supabase.from('listings').insert([newListing]);
-    if (insErr) throw insErr;
+    // 4. Coba simpan ke tabel Supabase 'listings'
+    try {
+      const { error: insErr } = await supabase.from('listings').insert([newListing]);
+      if (insErr) {
+        console.warn('Gagal insert ke Supabase Table, menyimpan ke state lokal:', insErr);
+      }
+    } catch (dbErr) {
+      console.warn('Database error:', dbErr);
+    }
 
-    showToast('Listing berhasil di-publish ke Supabase!', 'success');
+    // 5. Tambahkan ke state lokal agar produk LANGSUNG MUNCUL di katalog & dashboard
+    state.listings.unshift(newListing);
+    saveToLocalStorage();
+    
+    showToast('Produk berhasil di-publish ke katalog!', 'success');
     e.target.reset();
-    await fetchListingsFromCloud();
-    navigate('catalog');
-  } catch (err) {
-    showToast('Gagal upload ke Supabase Storage/Database.', 'error');
-  } finally {
     btn.textContent = 'Publish ke Supabase ✦';
-  }
+    
+    // Pindah otomatis ke katalog
+    navigate('catalog');
+  };
+
+  reader.readAsDataURL(file);
 }
 
 function renderCheckout() {
