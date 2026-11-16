@@ -145,7 +145,7 @@ body {
 }
 .notif-dropdown.show { display: block; }
 @keyframes dropIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-.notif-item { padding: 16px 20px; border-bottom: 1.5px solid var(--border); display: flex; gap: 12px; align-items: start; cursor: pointer; transition: background 0.2s; }
+.notif-item { padding: 16px 20px; border-bottom: 1.5px solid var(--border); display: flex; gap: 12px; align-items: start; transition: background 0.2s; }
 .notif-item:hover { background: var(--surface); }
 
 /* BUTTONS & INTERACTIONS */
@@ -163,32 +163,60 @@ body {
 .btn-sm { padding: 12px 24px; font-size: 13px; }
 .btn-full { width: 100%; }
 
-/* FORM CONTROLS */
-.input, .select, .textarea {
+/* FORM CONTROLS & CUSTOM SORT DROPDOWN */
+.input, .textarea {
   width: 100%; padding: 16px 20px; border: 1.5px solid var(--border);
   border-radius: var(--radius-lg); font-family: inherit; font-size: 14.5px;
   background: var(--surface); color: var(--ink); outline: none; transition: var(--anim-smooth);
 }
-.select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ea580c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 20px center; padding-right: 48px; cursor: pointer;
-}
-.input:focus, .select:focus, .textarea:focus {
+.input:focus, .textarea:focus {
   border-color: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft);
 }
 .field { margin-bottom: 22px; }
 .field label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--ink); }
-.field .hint { font-size: 12px; color: var(--ink-muted); margin-top: 6px; }
 .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* CUSTOM SORT DROPDOWN UI */
+.custom-sort { position: relative; min-width: 210px; user-select: none; z-index: 50; }
+.custom-sort-trigger {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 13px 20px; background: var(--bg-card); backdrop-filter: blur(16px);
+  border: 1.5px solid var(--border); border-radius: var(--radius-pill);
+  font-size: 13.5px; font-weight: 600; color: var(--ink); cursor: pointer;
+  box-shadow: var(--shadow); transition: var(--anim-smooth);
+}
+.custom-sort-trigger:hover, .custom-sort.open .custom-sort-trigger {
+  border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft);
+}
+.custom-sort-arrow { color: var(--accent); transition: transform 0.3s ease; font-size: 12px; }
+.custom-sort.open .custom-sort-arrow { transform: rotate(180deg); }
+
+.custom-sort-menu {
+  position: absolute; top: calc(100% + 8px); right: 0; width: 100%;
+  background: var(--bg-card); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border: 1.5px solid var(--border); border-radius: 20px; padding: 6px;
+  box-shadow: var(--shadow-lg); opacity: 0; visibility: hidden;
+  transform: translateY(-8px) scale(0.97); transition: var(--anim-smooth);
+  z-index: 99;
+}
+.custom-sort.open .custom-sort-menu {
+  opacity: 1; visibility: visible; transform: translateY(0) scale(1);
+}
+.custom-sort-option {
+  padding: 11px 16px; border-radius: 14px; font-size: 13.5px; font-weight: 600;
+  color: var(--ink); cursor: pointer; display: flex; align-items: center;
+  justify-content: space-between; transition: background 0.2s, color 0.2s;
+}
+.custom-sort-option:hover { background: var(--accent-soft); color: var(--accent); }
+.custom-sort-option.active { background: var(--accent); color: #fff; }
 
 /* VIEW SYSTEM */
 .view { display: none; opacity: 0; transform: translateY(15px); transition: opacity 0.4s ease, transform 0.4s ease; }
 .view.active { display: block; opacity: 1; transform: translateY(0); }
 
-/* FULL ANIMATION SYSTEM (SLIDE UP + FADE IN) */
+/* ANIMATION */
 .animate-slide-up {
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 0; transform: translateY(40px);
   animation: slideUpFade 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .delay-1 { animation-delay: 0.1s; }
@@ -197,12 +225,7 @@ body {
 .delay-4 { animation-delay: 0.4s; }
 .delay-5 { animation-delay: 0.5s; }
 
-@keyframes slideUpFade {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+@keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
 
 /* HERO SECTION */
 .hero { padding: 60px 0 90px; position: relative; overflow: hidden; }
@@ -234,7 +257,7 @@ body {
 .bento-badge { display: inline-block; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: var(--radius-pill); font-size: 10.5px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
 
 /* CATALOG TOOLBAR */
-.toolbar { display: flex; gap: 16px; margin: 30px 0 40px; flex-wrap: wrap; align-items: center; }
+.toolbar { display: flex; gap: 16px; margin: 30px 0 40px; flex-wrap: wrap; align-items: center; position: relative; z-index: 60; }
 .search-box {
   display: flex; align-items: center; gap: 14px; padding: 14px 22px;
   background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-pill);
@@ -275,12 +298,11 @@ body {
 .product-name { font-size: 15px; font-weight: 700; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .product-price { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--accent); }
 
-/* ENRICHED PRODUCT DETAIL VIEW */
+/* DETAIL VIEW */
 .detail-split { display: grid; grid-template-columns: 1.1fr 1fr; gap: 50px; align-items: start; padding: 30px 0 80px; }
 .zoom-container { position: relative; overflow: hidden; cursor: zoom-in; aspect-ratio: 3/4; border-radius: var(--radius-xl); background: var(--surface); border: 1.5px solid var(--border); box-shadow: var(--shadow); }
 .zoom-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
 
-/* WIDGET & STORE DASHBOARD CARDS */
 .widget-card { background: var(--bg-card); border: 1.5px solid var(--border); border-radius: var(--radius-xl); padding: 36px; margin-bottom: 30px; box-shadow: var(--shadow); }
 .impact-hero { background: linear-gradient(135deg, var(--ink), #2d2621); color: var(--bg); border-radius: var(--radius-xl); padding: 50px; margin: 20px 0 80px; text-align: center; box-shadow: var(--shadow-lg); }
 
@@ -314,7 +336,6 @@ body {
 }
 .modal-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-/* TOAST NOTIFICATIONS */
 #toastContainer { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px; pointer-events: none; }
 .toast {
   pointer-events: auto; background: var(--bg-card); color: var(--ink); padding: 16px 22px; border-radius: 16px;
@@ -325,7 +346,6 @@ body {
 .toast.error { border-color: var(--danger); }
 @keyframes toastIn { from { opacity: 0; transform: translateX(50px) scale(0.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
 
-/* FOOTER */
 footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padding: 60px 0 30px; margin-top: 80px; }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
 
@@ -335,11 +355,184 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
   .detail-split, .footer-grid, .hero-grid { grid-template-columns: 1fr; }
   .nav-links { display: none; }
 }
+/* ==========================================================
+   DYNAMIC ISLAND MUSIC PLAYER
+   ========================================================== */
+.music-widget {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 250;
+  background: rgba(17, 14, 12, 0.88);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  border-radius: 100px;
+  padding: 7px 14px 7px 7px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  max-width: 96px;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .music-widget {
+  background: rgba(24, 21, 18, 0.92);
+  border-color: rgba(255, 94, 20, 0.3);
+}
+
+/* Saat tidak diputar, tampil sedikit lebih lebar untuk ajakan klik */
+.music-widget:not(.is-playing) {
+  max-width: 145px;
+  padding-right: 16px;
+}
+
+/* Melebar penuh saat kursor diarahkan (Hover) */
+.music-widget:hover {
+  max-width: 360px;
+  padding: 8px 16px 8px 8px;
+  gap: 12px;
+  border-color: var(--accent);
+  box-shadow: 0 22px 50px rgba(234, 88, 12, 0.25);
+  transform: translateY(-2px);
+}
+
+.music-disc {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #f97316);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4);
+  transition: transform 0.4s ease;
+}
+
+.music-disc.playing {
+  animation: spinDisc 4s linear infinite;
+}
+
+@keyframes spinDisc {
+  100% { transform: rotate(360deg); }
+}
+
+/* Gelombang Equalizer Mini saat Island Mengecil */
+.music-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 14px;
+  margin-left: 10px;
+  flex-shrink: 0;
+  transition: opacity 0.25s ease, width 0.25s ease, margin 0.25s ease;
+}
+
+.music-wave span {
+  width: 3px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 10px;
+  transition: height 0.2s ease;
+}
+
+.music-widget.is-playing .music-wave span:nth-child(1) { animation: waveBar 0.7s ease-in-out infinite alternate; }
+.music-widget.is-playing .music-wave span:nth-child(2) { animation: waveBar 0.5s ease-in-out infinite alternate 0.2s; }
+.music-widget.is-playing .music-wave span:nth-child(3) { animation: waveBar 0.8s ease-in-out infinite alternate 0.4s; }
+.music-widget.is-playing .music-wave span:nth-child(4) { animation: waveBar 0.6s ease-in-out infinite alternate 0.1s; }
+
+@keyframes waveBar {
+  0% { height: 4px; }
+  100% { height: 14px; }
+}
+
+/* Sembunyikan equalizer saat melebar (hover) */
+.music-widget:hover .music-wave {
+  opacity: 0;
+  width: 0;
+  margin-left: 0;
+  overflow: hidden;
+}
+
+/* Teks & Kontrol yang muncul halus saat Hover */
+.music-expandable {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity 0.35s ease 0.1s;
+}
+
+.music-widget:hover .music-expandable {
+  opacity: 1;
+  width: auto;
+}
+
+.music-info {
+  max-width: 135px;
+  overflow: hidden;
+}
+
+.music-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #ffffff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.music-artist {
+  font-size: 10.5px;
+  color: #a8a29e;
+}
+
+.music-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.m-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.m-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.1);
+}
+
+.m-btn.play-btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  width: 34px;
+  height: 34px;
+  font-size: 12px;
+}
 </style>
 </head>
 <body>
 
-<!-- AMBIENT GLOW ORBS -->
 <div class="ambient-glow-wrap">
   <div class="ambient-orb orb-1"></div>
   <div class="ambient-orb orb-2"></div>
@@ -386,32 +579,14 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
           <div class="theme-switch-thumb" id="themeThumb">☀️</div>
         </div>
         <button class="icon-btn" onclick="toggleNotifDropdown()" title="Notifikasi">
-          🔔<span class="badge" id="notifBadge">3</span>
+          🔔<span class="badge" id="notifBadge" style="display:none">0</span>
         </button>
-        <!-- NOTIFICATION DROPDOWN PANEL -->
         <div class="notif-dropdown" id="notifDropdown">
           <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1.5px solid var(--border)">
             <strong style="font-family:'Playfair Display',serif;font-size:18px">Notifikasi</strong>
             <a style="font-size:12px;color:var(--accent);cursor:pointer;font-weight:700" onclick="markAllRead()">Tandai semua dibaca</a>
           </div>
-          <div style="max-height:320px;overflow-y:auto;" id="notifList">
-            <div class="notif-item" onclick="handleNotificationClick('flashsale')">
-              <span style="color:var(--accent);font-size:18px">⚡</span>
-              <div>
-                <div style="font-size:13.5px;font-weight:700">Flash Sale aktif!</div>
-                <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">Diskon hingga 30% untuk produk pilihan. Berakhir dalam beberapa jam.</div>
-                <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">Baru saja</div>
-              </div>
-            </div>
-            <div class="notif-item" onclick="handleNotificationClick('welcome')">
-              <span style="color:var(--accent);font-size:18px">🔔</span>
-              <div>
-                <div style="font-size:13.5px;font-weight:700">Selamat datang di REWEAR!</div>
-                <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">Jelajahi katalog, nego harga, dan belanja aman dengan escrow.</div>
-                <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">Hari ini</div>
-              </div>
-            </div>
-          </div>
+          <div style="max-height:320px;overflow-y:auto;" id="notifList"></div>
         </div>
 
         <button class="icon-btn" onclick="openDrawer('wishDrawer')" title="Wishlist">♡<span class="badge" id="wishCount" style="display:none">0</span></button>
@@ -509,11 +684,26 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
           <button class="chip" onclick="setCondFilter('Baru', this)">Baru</button>
           <button class="chip" onclick="setCondFilter('Bekas', this)">Preloved</button>
         </div>
-        <select class="select" id="sortSelect" onchange="renderCatalog()" style="width:auto;">
-          <option value="default">Urutkan: Terbaru</option>
-          <option value="low">Harga Terendah</option>
-          <option value="high">Harga Tertinggi</option>
-        </select>
+
+        <!-- CUSTOM SORT DROPDOWN UI -->
+        <div class="custom-sort" id="customSort">
+          <input type="hidden" id="sortSelect" value="default">
+          <div class="custom-sort-trigger" onclick="toggleSortMenu(event)">
+            <span id="sortLabel">Urutkan: Terbaru</span>
+            <span class="custom-sort-arrow">▼</span>
+          </div>
+          <div class="custom-sort-menu">
+            <div class="custom-sort-option active" onclick="selectSortOption('default', 'Urutkan: Terbaru', this)">
+              <span>Urutkan: Terbaru</span><span>✓</span>
+            </div>
+            <div class="custom-sort-option" onclick="selectSortOption('low', 'Harga Terendah', this)">
+              <span>Harga Terendah</span>
+            </div>
+            <div class="custom-sort-option" onclick="selectSortOption('high', 'Harga Tertinggi', this)">
+              <span>Harga Tertinggi</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="product-grid animate-slide-up delay-3" id="catalogGrid"></div>
@@ -539,7 +729,7 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
         </div>
         <div class="field">
           <label>Preferensi Potongan (Fit)</label>
-          <select class="select" id="fitPref">
+          <select class="input select" id="fitPref">
             <option value="regular">Regular Fit (Pas & Nyaman)</option>
             <option value="oversized">Oversized / Longgar Modern</option>
             <option value="slim">Slim Fit (Pas Badan)</option>
@@ -584,14 +774,14 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
         </div>
         <div class="row-2">
           <div class="field"><label>Gender</label>
-            <select class="select" id="sellGender" required>
+            <select class="input select" id="sellGender" required>
               <option value="Cewe">Wanita (Cewe)</option>
               <option value="Cowo">Pria (Cowo)</option>
               <option value="Unisex">Unisex</option>
             </select>
           </div>
           <div class="field"><label>Kondisi</label>
-            <select class="select" id="sellCond" required>
+            <select class="input select" id="sellCond" required>
               <option value="Baru">Baru (New w/ Tag)</option>
               <option value="Bekas">Bekas (Preloved Terkurasi)</option>
             </select>
@@ -613,7 +803,7 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
     </div>
   </section>
 
-  <!-- STORE DASHBOARD VIEW (TOKO SAYA) -->
+  <!-- STORE DASHBOARD VIEW -->
   <section class="view" id="view-store">
     <div class="container animate-slide-up delay-1">
       <div style="padding:40px 0 20px">
@@ -653,16 +843,6 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
         <div class="field"><label>Deskripsi Toko</label><textarea class="textarea" id="storeDescInput" rows="3">Koleksi preloved terkurasi original & berkualitas tinggi.</textarea></div>
         <button class="btn btn-accent" onclick="saveStoreSettings()">Simpan Pengaturan</button>
       </div>
-
-      <div class="widget-card">
-        <h3 style="font-family:'Playfair Display',serif;font-size:22px;margin-bottom:8px">🎟️ Voucher Toko</h3>
-        <p style="font-size:13.5px;color:var(--ink-muted);margin-bottom:20px">Buat voucher untuk menarik pembeli.</p>
-        <div class="row-2">
-          <div class="field"><label>Kode Voucher</label><input type="text" class="input" id="voucherCode" placeholder="cth: REWEARHEBAT"></div>
-          <div class="field"><label>Diskon (%)</label><input type="number" class="input" id="voucherDisc" placeholder="10"></div>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="createVoucher()">Tambah Voucher Toko</button>
-      </div>
     </div>
   </section>
 
@@ -699,7 +879,7 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
   <div class="drawer-body" id="wishBody"></div>
 </aside>
 
-<!-- AUTH MODAL (WITH GMAIL OTP & SUPABASE) -->
+<!-- AUTH MODAL -->
 <div class="modal-wrap" id="authModal">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAll()">✕</button>
@@ -758,37 +938,58 @@ footer { background: var(--bg-card); border-top: 1.5px solid var(--border); padd
       </div>
     </div>
 
-    <!-- REFERRAL BOX -->
-    <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin:20px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
-      <div>
-        <div style="font-weight:700;font-size:13.5px;margin-bottom:2px">🎁 Ajak teman, dapat saldo!</div>
-        <div style="font-size:12px;color:var(--ink-muted)">Bagikan kode referralmu. Temanmu dapat diskon 10%, kamu dapat Rp25.000.</div>
-      </div>
-      <div style="display:flex;gap:8px;background:var(--bg-card);padding:6px 12px;border-radius:12px;border:1.5px solid var(--border);align-items:center">
-        <strong style="font-family:monospace;letter-spacing:1px;font-size:13.5px">RWMVI49B</strong>
-        <button class="btn btn-accent btn-sm" style="padding:6px 12px;font-size:11.5px" onclick="copyReferralCode()">Salin</button>
-      </div>
-    </div>
-
-    <div style="display:flex;gap:8px;margin-bottom:20px;border-bottom:1.5px solid var(--border);padding-bottom:12px;overflow-x:auto" class="filter-chips">
+    <div style="display:flex;gap:8px;margin:20px 0 16px;border-bottom:1.5px solid var(--border);padding-bottom:12px;overflow-x:auto" class="filter-chips">
       <button class="chip active" onclick="switchProfileTab('orders', this)">📦 Pesanan</button>
       <button class="chip" onclick="switchProfileTab('listings', this)">🏷️ Listing</button>
-      <button class="chip" onclick="switchProfileTab('nego', this)">💬 Nego</button>
-      <button class="chip" onclick="switchProfileTab('alamat', this)">📍 Alamat</button>
       <button class="chip" onclick="switchProfileTab('koleksi', this)">❤️ Koleksi</button>
     </div>
 
     <div id="profileTabOrders" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px">Memuat pesanan...</div>
     <div id="profileTabListings" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none">Memuat listing...</div>
-    <div id="profileTabNego" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Tidak ada nego aktif</div>
-    <div id="profileTabAlamat" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none;text-align:center;color:var(--ink-muted);padding:30px">Jl. Permata Raya No. 12, Purwakarta</div>
     <div id="profileTabKoleksi" style="min-height:120px;max-height:220px;overflow-y:auto;font-size:13.5px;display:none">Memuat wishlist...</div>
   </div>
 </div>
 
+<!-- NEGO MODAL -->
+<div class="modal-wrap" id="negoModal">
+  <div class="modal-box" style="max-width:480px">
+    <button class="modal-close" onclick="closeAll()">✕</button>
+    <h2 style="font-family:'Playfair Display',serif;font-size:24px;margin-bottom:8px">Nego Harga Barang</h2>
+    <p style="color:var(--ink-muted);font-size:13.5px;margin-bottom:20px" id="negoModalSub">Ajukan harga penawaran terbaik Anda kepada penjual.</p>
+    <div class="field">
+      <label>Harga Penawaran Anda (Rp)</label>
+      <input type="number" class="input" id="negoInputPrice" placeholder="cth: 120000">
+    </div>
+    <button class="btn btn-accent btn-full" onclick="submitNegoOffer()">Kirim Penawaran Nego 💬</button>
+  </div>
+</div>
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 
-<!-- FOOTER -->
+<!-- DYNAMIC ISLAND MUSIC PLAYER -->
+<div class="music-widget" id="musicWidget" onclick="if(!isPlaying) toggleMusic()">
+  <div class="music-disc" id="musicDisc">🎵</div>
+  
+  <!-- Indikator Gelombang saat Mengecil -->
+  <div class="music-wave">
+    <span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- Konten yang Muncul saat Hover -->
+  <div class="music-expandable" onclick="event.stopPropagation()">
+    <div class="music-info">
+      <div class="music-title" id="musicTitle">Lofi Chill Shopping</div>
+      <div class="music-artist" id="musicArtist">REWEAR Lounge</div>
+    </div>
+    <div class="music-controls">
+      <button class="m-btn" onclick="prevSong()" title="Sebelumnya">⏮</button>
+      <button class="m-btn play-btn" id="playPauseBtn" onclick="toggleMusic()" title="Play / Pause">▶</button>
+      <button class="m-btn" onclick="nextSong()" title="Ganti Lagu">⏭</button>
+    </div>
+  </div>
+
+  <audio id="bgAudio" preload="none"></audio>
+</div>
+
 <footer>
   <div class="container">
     <div class="footer-grid">
@@ -843,42 +1044,60 @@ $('#themeToggle').onclick = () => {
 };
 
 /* NOTIFICATION SYSTEM */
+let notifications = JSON.parse(localStorage.getItem('rewear_notifications') || '[]');
+
+function addNotification(title, message, icon = '🔔') {
+  const newNotif = { id: Date.now(), title, message, icon, time: 'Baru saja', read: false };
+  notifications.unshift(newNotif);
+  saveNotifications();
+  renderNotifications();
+  showToast(title, 'success');
+}
+
+function saveNotifications() {
+  localStorage.setItem('rewear_notifications', JSON.stringify(notifications));
+}
+
+function renderNotifications() {
+  const listEl = $('#notifList');
+  const badgeEl = $('#notifBadge');
+  if (!listEl || !badgeEl) return;
+
+  const unreadCount = notifications.filter(n => !n.read).length;
+  if (unreadCount > 0) {
+    badgeEl.textContent = unreadCount;
+    badgeEl.style.display = 'flex';
+  } else {
+    badgeEl.style.display = 'none';
+  }
+
+  if (notifications.length === 0) {
+    listEl.innerHTML = '<div style="padding:30px;text-align:center;color:var(--ink-muted);font-size:13.5px">Belum ada notifikasi aktivitas.</div>';
+    return;
+  }
+
+  listEl.innerHTML = notifications.map(n => `
+    <div class="notif-item" style="${n.read ? 'opacity:0.6;' : ''}">
+      <span style="color:var(--accent);font-size:18px">${n.icon}</span>
+      <div style="flex:1">
+        <div style="font-size:13.5px;font-weight:700">${sanitize(n.title)}</div>
+        <div style="font-size:12px;color:var(--ink-muted);margin-top:2px">${sanitize(n.message)}</div>
+        <div style="font-size:11px;color:var(--ink-muted);margin-top:6px">${n.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
 function toggleNotifDropdown() {
   $('#notifDropdown').classList.toggle('show');
 }
 
 function markAllRead() {
-  $('#notifBadge').style.display = 'none';
+  notifications.forEach(n => n.read = true);
+  saveNotifications();
+  renderNotifications();
   showToast('Semua notifikasi ditandai dibaca.', 'success');
   $('#notifDropdown').classList.remove('show');
-}
-
-function handleNotificationClick(type) {
-  $('#notifDropdown').classList.remove('show');
-  if (type === 'flashsale') {
-    navigate('catalog');
-    showToast('Flash Sale aktif! Gunakan kode kupon REWEARSHIP untuk gratis ongkir.', 'success');
-  } else {
-    showToast('Selamat datang di REWEAR! Nikmati belanja preloved aman dengan garansi escrow.', 'info');
-  }
-}
-
-function copyReferralCode() {
-  navigator.clipboard.writeText('RWMVI49B');
-  showToast('Kode referral RWMVI49B disalin!', 'success');
-}
-
-function showToast(msg, type = 'success') {
-  const container = $('#toastContainer');
-  if (!container) return;
-  const toast = document.createElement('div');
-  toast.className = `toast ${type}`;
-  toast.innerHTML = `<span>${type === 'success' ? '✓' : 'ℹ'}</span> <div>${sanitize(msg)}</div>`;
-  container.appendChild(toast);
-  setTimeout(() => {
-    toast.style.animation = 'toastIn 0.3s reverse forwards';
-    setTimeout(() => toast.remove(), 300);
-  }, 3500);
 }
 
 /* STATE & SUPABASE SYNC */
@@ -921,23 +1140,17 @@ async function fetchListingsFromCloud() {
     if (data && data.length > 0) {
       state.listings = data;
     } else {
-      // Fallback demo items if table is empty
-      state.listings = [
-        { id: 1, brand: 'Uniqlo', name: 'Vintage Heavyweight Knitwear', gender: 'Cowo', cond: 'Bekas', size: 'M', price: 136000, city: 'Jakarta', seller: 'ziyagantengaja', img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600', nego: true, status: 'available', rating: 4.8 },
-        { id: 2, brand: 'Zara', name: 'Oversized Trench Coat', gender: 'Cewe', cond: 'Baru', size: 'L', price: 450000, city: 'Bandung', seller: 'Salsabila', img: 'https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600', nego: true, status: 'available', rating: 5.0 }
-      ];
+      state.listings = []; // Katalog bersih tanpa produk demo jika tabel Supabase kosong
     }
     renderCatalog();
     updateImpactTracker();
   } catch (err) {
-    console.warn('Gagal memuat dari Supabase, menggunakan data lokal.', err);
-    state.listings = [
-      { id: 1, brand: 'Uniqlo', name: 'Vintage Heavyweight Knitwear', gender: 'Cowo', cond: 'Bekas', size: 'M', price: 136000, city: 'Jakarta', seller: 'ziyagantengaja', img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600', nego: true, status: 'available', rating: 4.8 }
-    ];
+    state.listings = [];
     renderCatalog();
   }
 }
 fetchListingsFromCloud();
+renderNotifications();
 
 function saveToLocalStorage() {
   localStorage.setItem('rewear_cart', JSON.stringify(state.cart));
@@ -1015,7 +1228,7 @@ async function handleAuthSubmit(e) {
       };
       closeAll();
       updateAuthUI();
-      showToast('Berhasil masuk ke akun!', 'success');
+      addNotification('Berhasil Masuk 🔓', `Selamat datang kembali, ${state.user.name}!`, '✨');
     } catch (err) {
       showToast(err.message || 'Gagal login. Periksa kembali email & password.', 'error');
     } finally {
@@ -1066,7 +1279,7 @@ async function verifyOtpAndRegister() {
     };
     closeAll();
     updateAuthUI();
-    showToast('Registrasi & Verifikasi OTP Berhasil!', 'success');
+    addNotification('Akun Terdaftar 🎉', `Pendaftaran berhasil untuk ${state.user.name}. Selamat bergabung di REWEAR!`, '🌿');
   } catch (err) {
     showToast('Gagal mendaftar ke Supabase.', 'error');
   }
@@ -1109,9 +1322,7 @@ function switchProfileTab(tab, btn) {
   btn.classList.add('active');
   $$('#profileModal [id^="profileTab"]').forEach(el => el.style.display = 'none');
   const target = $('#profileTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-  if (target) {
-    target.style.display = 'block';
-  }
+  if (target) target.style.display = 'block';
 }
 
 function renderProfileTabsData() {
@@ -1156,25 +1367,17 @@ function saveStoreSettings() {
   showToast('Pengaturan toko berhasil disimpan!', 'success');
 }
 
-function createVoucher() {
-  const code = $('#voucherCode').value;
-  const disc = $('#voucherDisc').value;
-  if (!code || !disc) { showToast('Isi kode voucher dan diskon.', 'error'); return; }
-  showToast(`Voucher ${code} (${disc}%) berhasil dibuat!`, 'success');
-  $('#voucherCode').value = '';
-  $('#voucherDisc').value = '';
-}
-
 /* WISHLIST & CART */
 function toggleWishlist(id, event) {
   if (event) event.stopPropagation();
   const idx = state.wishlist.indexOf(id);
+  const p = state.listings.find(x => x.id == id);
   if (idx > -1) {
     state.wishlist.splice(idx, 1);
     showToast('Dihapus dari wishlist.', 'info');
   } else {
     state.wishlist.push(id);
-    showToast('Ditambahkan ke wishlist! ❤️', 'success');
+    addNotification('Wishlist Ditambahkan ❤️', `Produk "${p ? p.name : 'Pilihan'}" berhasil disimpan ke koleksi favoritmu.`, '❤️');
   }
   saveToLocalStorage();
   updateWishlistUI();
@@ -1215,7 +1418,7 @@ function addToCart(id) {
   if (exist) { exist.qty++; } else { state.cart.push({ ...p, price, qty: 1 }); }
   saveToLocalStorage();
   updateCartUI();
-  showToast('Berhasil dimasukkan ke keranjang!', 'success');
+  addNotification('Keranjang Belanja 🛍️', `"${p.name}" dimasukkan ke keranjang belanja.`, '🛒');
 }
 
 function removeFromCart(id) {
@@ -1255,22 +1458,56 @@ function proceedToCheckout() {
   navigate('checkout');
 }
 
-/* CATALOG & FILTERS */
+/* CATALOG & FIXED FILTERS */
 function setGenderFilter(g, btn) {
   state.activeGender = g;
   $$('.filter-chips .chip').forEach(c => { if(c.textContent==='Semua'||c.textContent==='Pria'||c.textContent==='Wanita') c.classList.remove('active'); });
   btn.classList.add('active');
   renderCatalog();
 }
-function setCondFilter(c, btn) {
-  state.activeCond = state.activeCond === c ? 'all' : c;
-  $$('.filter-chips .chip').forEach(cBtn => { if(cBtn.textContent==='Baru'||cBtn.textContent==='Preloved') cBtn.classList.toggle('active', state.activeCond === c); });
+
+function setCondFilter(cond, btn) {
+  state.activeCond = state.activeCond === cond ? 'all' : cond;
+  $$('.filter-chips .chip').forEach(cBtn => {
+    const text = cBtn.textContent.trim();
+    if (text === 'Baru') {
+      cBtn.classList.toggle('active', state.activeCond === 'Baru');
+    } else if (text === 'Preloved') {
+      cBtn.classList.toggle('active', state.activeCond === 'Bekas');
+    }
+  });
   renderCatalog();
 }
+
 function filterByStyle(style) {
   state.activeStyle = style;
   navigate('catalog');
 }
+
+/* CUSTOM SORT CONTROLS */
+function toggleSortMenu(e) {
+  e.stopPropagation();
+  $('#customSort').classList.toggle('open');
+}
+
+function selectSortOption(val, label, el) {
+  $('#sortSelect').value = val;
+  $('#sortLabel').textContent = label;
+  $$('.custom-sort-option').forEach(opt => {
+    opt.classList.remove('active');
+    const check = opt.querySelector('span:last-child');
+    if (check && check.textContent === '✓') check.remove();
+  });
+  el.classList.add('active');
+  el.insertAdjacentHTML('beforeend', '<span>✓</span>');
+  $('#customSort').classList.remove('open');
+  renderCatalog();
+}
+
+document.addEventListener('click', () => {
+  const sortEl = $('#customSort');
+  if (sortEl) sortEl.classList.remove('open');
+});
 
 function renderCatalog() {
   const grid = $('#catalogGrid');
@@ -1290,7 +1527,7 @@ function renderCatalog() {
   if (sort === 'high') list.sort((a,b) => b.price - a.price);
 
   if (list.length === 0) {
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--ink-muted)">Tidak ada produk yang cocok.</div>';
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--ink-muted)">Belum ada produk di database. Silakan lakukan listing melalui menu Jual Barang.</div>';
     return;
   }
 
@@ -1352,26 +1589,58 @@ function renderProductDetail(id) {
         <div style="display:flex;gap:14px;margin-bottom:30px">
           ${isSold ? '<button class="btn btn-primary btn-full" disabled style="background:var(--surface);color:var(--ink-muted)">Barang Telah Terjual</button>' : `
             <button class="btn btn-accent" style="flex:1" onclick="addToCart(${p.id})">Tambah ke Keranjang</button>
-            <button class="btn btn-outline" onclick="showToast('Fitur nego harga aktif.', 'success')">💬 Nego Harga</button>
+            <button class="btn btn-outline" onclick="openNegoModal(${p.id})">💬 Nego Harga</button>
           `}
         </div>
       </div>
     </div>
-
-    <div style="margin-top:60px;border-top:1.5px solid var(--border);padding-top:40px">
-      <h3 style="font-family:'Playfair Display',serif;font-size:26px;margin-bottom:24px">Rekomendasi Produk Serupa Lainnya</h3>
-      <div class="product-grid">
-        ${similarProducts.map(sim => `
-          <div class="product-card" onclick="navigate('product', ${sim.id})">
-            <div class="product-img"><span class="product-tag">${sim.cond}</span><img src="${sim.img}"></div>
-            <div class="product-brand">${sanitize(sim.brand)}</div>
-            <div class="product-name">${sanitize(sim.name)}</div>
-            <div class="product-price">${fmt(sim.price)}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
   `;
+}
+let currentNegoProductId = null;
+
+function openNegoModal(id) {
+  if (!state.user) {
+    showToast('Silakan masuk akun terlebih dahulu untuk melakukan nego.', 'error');
+    openAuthModal();
+    return;
+  }
+  const p = state.listings.find(x => x.id == id);
+  if (!p) return;
+  if (!p.nego) {
+    showToast('Penjual tidak mengizinkan nego untuk produk ini.', 'error');
+    return;
+  }
+  currentNegoProductId = id;
+  $('#negoInputPrice').value = '';
+  $('#negoModalSub').textContent = `Harga awal ${sanitize(p.brand)} ${sanitize(p.name)} adalah ${fmt(p.price)}.`;
+  $('#negoModal').classList.add('show');
+  $('#overlay').classList.add('show');
+}
+
+function submitNegoOffer() {
+  const offeredPrice = parseInt($('#negoInputPrice').value);
+  if (!offeredPrice || offeredPrice <= 0) {
+    showToast('Masukkan nominal harga penawaran yang valid.', 'error');
+    return;
+  }
+
+  const p = state.listings.find(x => x.id == currentNegoProductId);
+  if (!p) return;
+
+  // Validasi kewajaran nego (minimal 50% dari harga asli)
+  if (offeredPrice < p.price * 0.5) {
+    showToast('Penawaran terlalu rendah (min. 50% dari harga asli).', 'error');
+    return;
+  }
+
+  // Simpan harga kesepakatan nego sementara
+  state.agreedPrices[p.id] = offeredPrice;
+  closeAll();
+  showToast(`Penawaran ${fmt(offeredPrice)} dikirim! Penjual menyetujui harga deal.`, 'success');
+  addNotification('Nego Disetujui 🤝', `Harga "${p.name}" berhasil dinego menjadi ${fmt(offeredPrice)}.`, '💬');
+  
+  // Refresh tampilan detail produk
+  renderProductDetail(p.id);
 }
 
 function calculateSizing() {
@@ -1402,19 +1671,10 @@ function updateImpactTracker() {
 
 async function submitSellForm(e) {
   e.preventDefault();
-  
-  if (!state.user) { 
-    showToast('Silakan login terlebih dahulu.', 'error'); 
-    openAuthModal(); 
-    return; 
-  }
-  
+  if (!state.user) { showToast('Silakan login terlebih dahulu.', 'error'); openAuthModal(); return; }
   const fileInput = $('#sellImg');
   const file = fileInput.files[0];
-  if (!file) { 
-    showToast('Pilih foto produk.', 'error'); 
-    return; 
-  }
+  if (!file) { showToast('Pilih foto produk.', 'error'); return; }
 
   const btn = $('#sellSubmitBtn');
   btn.textContent = 'Memproses Upload ke Supabase...';
@@ -1423,7 +1683,6 @@ async function submitSellForm(e) {
   reader.onload = async function(evt) {
     let finalImageUrl = evt.target.result;
     
-    // Coba upload ke Supabase Storage
     try {
       const fileExt = file.name.split('.').pop();
       const fileName = `${Date.now()}_${Math.random().toString(36).substring(2,7)}.${fileExt}`;
@@ -1431,47 +1690,41 @@ async function submitSellForm(e) {
       
       if (!uploadErr) {
         const { data: pubUrl } = supabase.storage.from('product-images').getPublicUrl(fileName);
-        if (pubUrl && pubUrl.publicUrl) {
-          finalImageUrl = pubUrl.publicUrl;
-        }
+        if (pubUrl && pubUrl.publicUrl) finalImageUrl = pubUrl.publicUrl;
       }
     } catch (storageErr) {
       console.warn('Storage fallback ke Base64:', storageErr);
     }
 
-    // Susun data persis sesuai kolom di Supabase (brand, name, gender, cat, cond, size, chest, sleeve, defect, price, city, seller, img, nego, status)
     const newListing = {
       brand: sanitize($('#sellBrand').value),
       name: sanitize($('#sellName').value),
       gender: $('#sellGender').value,
-      cat: 'Atasan', // Nilai default sesuai kolom tabel Anda
+      cat: 'Atasan',
       cond: $('#sellCond').value,
       size: sanitize($('#sellSize').value),
-      chest: '54',   // Nilai default agar kolom tidak null/ditolak database
-      sleeve: '62',  // Nilai default agar kolom tidak null/ditolak database
-      defect: 'mulus terkurasi', // Sesuai kolom database
+      chest: '54',
+      sleeve: '62',
+      defect: 'mulus terkurasi',
       price: parseInt($('#sellPrice').value),
       city: sanitize($('#sellCity').value),
-      seller: state.user.name || 'ziyagantengaja',
+      seller: state.user.name,
       img: finalImageUrl,
       nego: $('#sellNego').checked,
       status: 'available'
     };
 
-    // Kirim langsung ke tabel Supabase 'listings'
     try {
-      const { data, error: insErr } = await supabase.from('listings').insert([newListing]).select();
+      const { error: insErr } = await supabase.from('listings').insert([newListing]).select();
       if (insErr) {
-        console.error('Error Supabase insert:', insErr);
         showToast('Gagal masuk database: ' + insErr.message, 'error');
       } else {
-        showToast('Produk berhasil masuk ke Database Supabase! ✦', 'success');
+        addNotification('Listing Berhasil 📦', `Produk "${newListing.name}" berhasil dipublish ke katalog toko.`, '🏷️');
         e.target.reset();
         await fetchListingsFromCloud();
         navigate('catalog');
       }
     } catch (dbErr) {
-      console.error('Database exception:', dbErr);
       showToast('Gagal terhubung ke database Supabase.', 'error');
     } finally {
       btn.textContent = 'Publish ke Supabase ✦';
@@ -1480,6 +1733,7 @@ async function submitSellForm(e) {
 
   reader.readAsDataURL(file);
 }
+
 function renderCheckout() {
   const subtotal = state.cart.reduce((s, i) => s + i.price * i.qty, 0);
   const container = $('#checkoutContainer');
@@ -1489,13 +1743,12 @@ function renderCheckout() {
     <div>
       <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:28px;margin-bottom:20px">
         <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px">📍 Alamat Pengiriman</h3>
-        <div class="field"><label>Alamat Lengkap</label><input type="text" class="input" id="chkAddress" placeholder="cth: Jl. Permata Raya No. 12" value="Jl. Permata Raya No. 12, Purwakarta"></div>
-        <div class="field"><label>Nomor WhatsApp</label><input type="text" class="input" id="chkPhone" placeholder="08xxxxxxxxxx" value="${state.user?.phone || '08123456789'}"></div>
+        <div class="field"><label>Alamat Lengkap</label><input type="text" class="input" id="chkAddress" value="Jl. Permata Raya No. 12, Purwakarta"></div>
+        <div class="field"><label>Nomor WhatsApp</label><input type="text" class="input" id="chkPhone" value="${state.user?.phone || '08123456789'}"></div>
       </div>
       <div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--radius-xl);padding:28px">
         <h3 style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:16px">💳 Metode Pembayaran</h3>
         <label style="display:flex;align-items:center;gap:10px;font-weight:600;margin-bottom:10px"><input type="radio" name="pay" checked> Transfer Bank (Escrow Terjamin)</label>
-        <label style="display:flex;align-items:center;gap:10px;font-weight:600"><input type="radio" name="pay"> QRIS / E-Wallet</label>
       </div>
     </div>
     <div>
@@ -1534,7 +1787,7 @@ async function finalizeCheckout() {
   saveToLocalStorage();
   updateCartUI();
   await fetchListingsFromCloud();
-  showToast('Pesanan berhasil diproses! Status produk otomatis menjadi SOLD.', 'success');
+  addNotification('Pesanan Berhasil Diproses 💳', `No. Resi ${newOrder.receipt} sedang disiapkan oleh penjual.`, '📦');
   navigate('home');
 }
 
@@ -1548,6 +1801,98 @@ function closeAll() {
   $$('.modal-wrap').forEach(m => m.classList.remove('show'));
   $('#overlay').classList.remove('show');
   $('#notifDropdown').classList.remove('show');
+}
+
+function showToast(msg, type = 'success') {
+  const container = $('#toastContainer');
+  if (!container) return;
+  const el = document.createElement('div');
+  el.className = `toast ${type}`;
+  el.innerHTML = `<span>${type === 'success' ? '✨' : '⚠️'}</span> <div>${sanitize(msg)}</div>`;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+/* ==========================================================
+   REWEAR AMBIENT MUSIC PLAYER (BISA GANTI LAGU)
+   ========================================================== */
+const playlist = [
+  {
+    title: "Best Part",
+    artist: "Daniel Caesar ft. H.E.R.",
+    url: "https://ekyttonjtqjwpkepuhjy.supabase.co/storage/v1/object/public/music/Best%20Part%20(feat.%20H.E.R.)%20-%20Daniel%20Caesar.mp3"
+  },
+  {
+    title: "Pink + White",
+    artist: "Frank Ocean",
+    url: "https://ekyttonjtqjwpkepuhjy.supabase.co/storage/v1/object/public/music/Pink%20+%20White%20-%20Frank%20Ocean.mp3"
+  },
+  {
+    title: "Sunflower",
+    artist: "Rex Orange County",
+    url: "https://ekyttonjtqjwpkepuhjy.supabase.co/storage/v1/object/public/music/Sunflower%20-%20Rex%20Orange%20County.mp3"
+  },
+];
+
+let currentSongIdx = 0;
+let isPlaying = false;
+const audioEl = $('#bgAudio');
+
+function loadSong(idx) {
+  const song = playlist[idx];
+  $('#musicTitle').textContent = song.title;
+  $('#musicArtist').textContent = song.artist;
+  audioEl.src = song.url;
+  audioEl.volume = 0.35; // Volume nyaman agar tidak kaget
+}
+
+function toggleMusic() {
+  if (!audioEl.src) loadSong(currentSongIdx);
+  const widget = $('#musicWidget');
+  
+  if (isPlaying) {
+    audioEl.pause();
+    isPlaying = false;
+    $('#playPauseBtn').textContent = '▶';
+    $('#musicDisc').classList.remove('playing');
+    widget.classList.remove('is-playing');
+  } else {
+    audioEl.play().then(() => {
+      isPlaying = true;
+      $('#playPauseBtn').textContent = '⏸';
+      $('#musicDisc').classList.add('playing');
+      widget.classList.add('is-playing');
+    }).catch(() => {
+      showToast('Klik sekali lagi untuk memutar audio.', 'info');
+    });
+  }
+}
+
+function nextSong() {
+  currentSongIdx = (currentSongIdx + 1) % playlist.length;
+  loadSong(currentSongIdx);
+  if (isPlaying) {
+    audioEl.play();
+  } else {
+    toggleMusic();
+  }
+  showToast(`Memutar: ${playlist[currentSongIdx].title}`, 'success');
+}
+
+function prevSong() {
+  currentSongIdx = (currentSongIdx - 1 + playlist.length) % playlist.length;
+  loadSong(currentSongIdx);
+  if (isPlaying) {
+    audioEl.play();
+  } else {
+    toggleMusic();
+  }
+  showToast(`Memutar: ${playlist[currentSongIdx].title}`, 'success');
+}
+
+// Otomatis lanjut ke lagu berikutnya jika lagu selesai
+if (audioEl) {
+  audioEl.addEventListener('ended', nextSong);
+  loadSong(0);
 }
 </script>
 </body>
